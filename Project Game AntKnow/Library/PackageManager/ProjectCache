@@ -1,33 +1,300 @@
 m_ProjectFiles:
   m_ManifestFileStatus:
-    m_FilePath: C:/Users/DN_Hocvien/Downloads/AntKnow/Project Game AntKnow/Packages/manifest.json
+    m_FilePath: D:/AntKnow/Project Game AntKnow/Packages/manifest.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638788513111412884
-    m_Hash: 2405387192
+      ticks: 638835264418699759
+    m_Hash: 1321375012
   m_LockFileStatus:
-    m_FilePath: C:/Users/DN_Hocvien/Downloads/AntKnow/Project Game AntKnow/Packages/packages-lock.json
+    m_FilePath: D:/AntKnow/Project Game AntKnow/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638788513125546400
-    m_Hash: 517873031
+      ticks: 638835264418729769
+    m_Hash: 1969949891
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
   m_LocalFileStatus: []
-m_ProjectPath: C:/Users/DN_Hocvien/Downloads/AntKnow/Project Game AntKnow/Packages
-m_EditorVersion: 2022.3.52f1 (1120fcb54228)
+m_ProjectPath: D:/AntKnow/Project Game AntKnow/Packages
+m_EditorVersion: 6000.0.48f1 (170d2541580d)
 m_ResolvedPackages:
+- packageId: com.unity.feature.gameplay-storytelling@1.0.0
+  testable: 0
+  isDirectDependency: 1
+  version: 1.0.0
+  source: 2
+  resolvedPath: D:\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.feature.gameplay-storytelling@16ce2b9ee1fa
+  assetPath: Packages/com.unity.feature.gameplay-storytelling
+  name: com.unity.feature.gameplay-storytelling
+  displayName: Gameplay and Storytelling
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: feature
+  description: 'Bring your project to life with the easy-to-use story creation features
+    provided in the Gameplay and Storytelling feature set.
+
+    Arrange cinematic
+    content and audiovisual sequences with Timeline.
+
+    Leverage Cinemachine to
+    quickly setup the right dynamic camera shots.
+
+    Use Visual Scripting to connect
+    it all together with intuitive, node-based graphs.'
+  errors: []
+  versions:
+    all:
+    - 1.0.0
+    compatible:
+    - 1.0.0
+    recommended: 1.0.0
+    deprecated: []
+  dependencies:
+  - name: com.unity.cinemachine
+    version: default
+  - name: com.unity.timeline
+    version: default
+  - name: com.unity.visualscripting
+    version: default
+  resolvedDependencies:
+  - name: com.unity.cinemachine
+    version: 3.1.3
+  - name: com.unity.splines
+    version: 2.8.0
+  - name: com.unity.mathematics
+    version: 1.3.2
+  - name: com.unity.modules.imgui
+    version: 1.0.0
+  - name: com.unity.settings-manager
+    version: 2.1.0
+  - name: com.unity.timeline
+    version: 1.8.8
+  - name: com.unity.modules.audio
+    version: 1.0.0
+  - name: com.unity.modules.director
+    version: 1.0.0
+  - name: com.unity.modules.animation
+    version: 1.0.0
+  - name: com.unity.modules.particlesystem
+    version: 1.0.0
+  - name: com.unity.visualscripting
+    version: 1.9.7
+  - name: com.unity.ugui
+    version: 2.0.0
+  - name: com.unity.modules.ui
+    version: 1.0.0
+  - name: com.unity.modules.jsonserialize
+    version: 1.0.0
+  keywords: []
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 0
+  isAssetStorePackage: 0
+  datePublishedTicks: 0
+  documentationUrl: 
+  hasRepository: 0
+  repository:
+    type: 
+    url: 
+    revision: 
+    path: 
+  unityLifecycle:
+    version: 1.0.0
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: '{"quickstart":"https://docs.unity3d.com/Documentation/Manual/GameplayStorytellingFeature.html"}'
+  assetStore:
+    productId: 
+  fingerprint: 16ce2b9ee1fa9d0f59f73c45c78840e4f0c92871
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
+- packageId: com.unity.multiplayer.center@1.0.0
+  testable: 0
+  isDirectDependency: 1
+  version: 1.0.0
+  source: 2
+  resolvedPath: D:\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.multiplayer.center@f3fb577b3546
+  assetPath: Packages/com.unity.multiplayer.center
+  name: com.unity.multiplayer.center
+  displayName: Multiplayer Center
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: 
+  description: The multiplayer center provides a starting point to create multiplayer
+    games. It will recommend specific packages and enable you to easily access integrations,
+    samples and documentation.
+  errors: []
+  versions:
+    all:
+    - 0.2.1
+    - 0.3.0
+    - 0.4.0
+    - 1.0.0-pre.1
+    - 1.0.0-pre.2
+    - 1.0.0-pre.3
+    - 1.0.0
+    compatible:
+    - 1.0.0
+    recommended: 1.0.0
+    deprecated: []
+  dependencies:
+  - name: com.unity.modules.uielements
+    version: 1.0.0
+  resolvedDependencies:
+  - name: com.unity.modules.uielements
+    version: 1.0.0
+  - name: com.unity.modules.ui
+    version: 1.0.0
+  - name: com.unity.modules.imgui
+    version: 1.0.0
+  - name: com.unity.modules.jsonserialize
+    version: 1.0.0
+  - name: com.unity.modules.hierarchycore
+    version: 1.0.0
+  keywords:
+  - Multiplayer
+  - Netcode
+  - Services
+  - Tools
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 0
+  isAssetStorePackage: 0
+  datePublishedTicks: 0
+  documentationUrl: 
+  hasRepository: 0
+  repository:
+    type: 
+    url: 
+    revision: 
+    path: 
+  unityLifecycle:
+    version: 1.0.0
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
+  fingerprint: f3fb577b3546594b97b8cc34307cd621f60f1c73
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 6000.0.0a1
+- packageId: com.unity.modules.accessibility@1.0.0
+  testable: 0
+  isDirectDependency: 1
+  version: 1.0.0
+  source: 2
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.accessibility
+  assetPath: Packages/com.unity.modules.accessibility
+  name: com.unity.modules.accessibility
+  displayName: Accessibility
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: module
+  description: 'The Accessibility module includes utilities to facilitate the development
+    of accessible user experiences in Unity. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.AccessibilityModule.html'
+  errors: []
+  versions:
+    all:
+    - 1.0.0
+    compatible:
+    - 1.0.0
+    recommended: 1.0.0
+    deprecated: []
+  dependencies: []
+  resolvedDependencies: []
+  keywords: []
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 0
+  isAssetStorePackage: 0
+  datePublishedTicks: 0
+  documentationUrl: 
+  hasRepository: 0
+  repository:
+    type: 
+    url: 
+    revision: 
+    path: 
+  unityLifecycle:
+    version: 1.0.0
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
+  fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.ai@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.ai@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ai
   assetPath: Packages/com.unity.modules.ai
   name: com.unity.modules.ai
   displayName: AI
@@ -39,7 +306,6 @@ m_ResolvedPackages:
   type: module
   description: 'The AI module implements the path finding features in Unity. Scripting
     API: https://docs.unity3d.com/ScriptReference/UnityEngine.AIModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -60,6 +326,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -77,13 +345,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.androidjni@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.androidjni@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.androidjni
   assetPath: Packages/com.unity.modules.androidjni
   name: com.unity.modules.androidjni
   displayName: Android JNI
@@ -94,7 +372,6 @@ m_ResolvedPackages:
   category: 
   type: module
   description: 'AndroidJNI module allows you to call Java code. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.AndroidJNIModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -115,6 +392,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -132,13 +411,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.animation@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.animation@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.animation
   assetPath: Packages/com.unity.modules.animation
   name: com.unity.modules.animation
   displayName: Animation
@@ -150,7 +439,6 @@ m_ResolvedPackages:
   type: module
   description: 'The Animation module implements Unity''s animation system. Scripting
     API: https://docs.unity3d.com/ScriptReference/UnityEngine.AnimationModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -171,6 +459,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -188,13 +478,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.assetbundle@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.assetbundle@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.assetbundle
   assetPath: Packages/com.unity.modules.assetbundle
   name: com.unity.modules.assetbundle
   displayName: Asset Bundle
@@ -206,7 +506,6 @@ m_ResolvedPackages:
   type: module
   description: 'The AssetBundle module implements the AssetBundle class and related
     APIs to load data from AssetBundles. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.AssetBundleModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -227,6 +526,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -244,13 +545,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.audio@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.audio@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.audio
   assetPath: Packages/com.unity.modules.audio
   name: com.unity.modules.audio
   displayName: Audio
@@ -262,7 +573,6 @@ m_ResolvedPackages:
   type: module
   description: 'The Audio module implements Unity''s audio system. Scripting API:
     https://docs.unity3d.com/ScriptReference/UnityEngine.AudioModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -283,6 +593,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -300,13 +612,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.cloth@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.cloth@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.cloth
   assetPath: Packages/com.unity.modules.cloth
   name: com.unity.modules.cloth
   displayName: Cloth
@@ -318,7 +640,6 @@ m_ResolvedPackages:
   type: module
   description: 'The Cloth module implements cloth physics simulation through the
     Cloth component. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.ClothModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -343,6 +664,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -360,13 +683,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.director@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.director@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.director
   assetPath: Packages/com.unity.modules.director
   name: com.unity.modules.director
   displayName: Director
@@ -378,7 +711,6 @@ m_ResolvedPackages:
   type: module
   description: 'The Director module implements the PlayableDirector class. Scripting
     API: https://docs.unity3d.com/ScriptReference/UnityEngine.DirectorModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -407,6 +739,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -424,13 +758,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.imageconversion@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.imageconversion@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imageconversion
   assetPath: Packages/com.unity.modules.imageconversion
   name: com.unity.modules.imageconversion
   displayName: Image Conversion
@@ -441,9 +785,7 @@ m_ResolvedPackages:
   category: 
   type: module
   description: 'The ImageConversion module implements the ImageConversion class which
-    provides helper methods to convert images from and to PNG, JPEG or EXR formats.
-    Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.ImageConversionModule.html'
-  status: 0
+    provides helper methods for converting image data. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.ImageConversionModule.html'
   errors: []
   versions:
     all:
@@ -464,6 +806,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -481,13 +825,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.imgui@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.imgui@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imgui
   assetPath: Packages/com.unity.modules.imgui
   name: com.unity.modules.imgui
   displayName: IMGUI
@@ -499,7 +853,6 @@ m_ResolvedPackages:
   type: module
   description: 'The IMGUI module provides Unity''s immediate mode GUI solution for
     creating in-game and editor user interfaces. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.IMGUIModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -520,6 +873,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -537,13 +892,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.jsonserialize@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.jsonserialize@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.jsonserialize
   assetPath: Packages/com.unity.modules.jsonserialize
   name: com.unity.modules.jsonserialize
   displayName: JSONSerialize
@@ -555,7 +920,6 @@ m_ResolvedPackages:
   type: module
   description: 'The JSONSerialize module provides the JsonUtility class which lets
     you serialize Unity Objects to JSON format. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.JSONSerializeModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -576,6 +940,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -593,13 +959,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.particlesystem@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.particlesystem@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.particlesystem
   assetPath: Packages/com.unity.modules.particlesystem
   name: com.unity.modules.particlesystem
   displayName: Particle System
@@ -611,7 +987,6 @@ m_ResolvedPackages:
   type: module
   description: 'The ParticleSystem module implements Unity''s Particle System. Scripting
     API: https://docs.unity3d.com/ScriptReference/UnityEngine.ParticleSystemModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -632,6 +1007,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -649,13 +1026,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.physics@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.physics@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics
   assetPath: Packages/com.unity.modules.physics
   name: com.unity.modules.physics
   displayName: Physics
@@ -667,7 +1054,6 @@ m_ResolvedPackages:
   type: module
   description: 'The Physics module implements 3D physics in Unity. Scripting API:
     https://docs.unity3d.com/ScriptReference/UnityEngine.PhysicsModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -688,6 +1074,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -705,13 +1093,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.physics2d@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.physics2d@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics2d
   assetPath: Packages/com.unity.modules.physics2d
   name: com.unity.modules.physics2d
   displayName: Physics 2D
@@ -723,7 +1121,6 @@ m_ResolvedPackages:
   type: module
   description: 'The Physics2d module implements 2D physics in Unity. Scripting API:
     https://docs.unity3d.com/ScriptReference/UnityEngine.Physics2DModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -744,6 +1141,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -761,13 +1160,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.screencapture@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.screencapture@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.screencapture
   assetPath: Packages/com.unity.modules.screencapture
   name: com.unity.modules.screencapture
   displayName: Screen Capture
@@ -779,7 +1188,6 @@ m_ResolvedPackages:
   type: module
   description: 'The ScreenCapture module provides functionality to take screen shots
     using the ScreenCapture class. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.ScreenCaptureModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -804,6 +1212,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -821,13 +1231,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.terrain@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.terrain@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrain
   assetPath: Packages/com.unity.modules.terrain
   name: com.unity.modules.terrain
   displayName: Terrain
@@ -839,7 +1259,6 @@ m_ResolvedPackages:
   type: module
   description: 'The Terrain module implements Unity''s Terrain rendering engine available
     through the Terrain component. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.TerrainModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -860,6 +1279,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -877,13 +1298,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.terrainphysics@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.terrainphysics@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrainphysics
   assetPath: Packages/com.unity.modules.terrainphysics
   name: com.unity.modules.terrainphysics
   displayName: Terrain Physics
@@ -895,7 +1326,6 @@ m_ResolvedPackages:
   type: module
   description: 'The TerrainPhysics module connects the Terrain and Physics modules
     by implementing the TerrainCollider component. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.TerrainPhysicsModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -924,6 +1354,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -941,13 +1373,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.tilemap@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.tilemap@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.tilemap
   assetPath: Packages/com.unity.modules.tilemap
   name: com.unity.modules.tilemap
   displayName: Tilemap
@@ -958,7 +1400,6 @@ m_ResolvedPackages:
   category: 
   type: module
   description: 'The Tilemap module implements the Tilemap class. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.TilemapModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -983,6 +1424,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -1000,13 +1443,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.ui@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.ui@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ui
   assetPath: Packages/com.unity.modules.ui
   name: com.unity.modules.ui
   displayName: UI
@@ -1018,7 +1471,6 @@ m_ResolvedPackages:
   type: module
   description: 'The UI module implements basic components required for Unity''s UI
     system Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.UIModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -1039,6 +1491,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -1056,13 +1510,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.uielements@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.uielements@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.uielements
   assetPath: Packages/com.unity.modules.uielements
   name: com.unity.modules.uielements
   displayName: UIElements
@@ -1074,7 +1538,6 @@ m_ResolvedPackages:
   type: module
   description: 'The UIElements module implements the UIElements retained mode UI
     framework. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.UIElementsModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -1090,12 +1553,16 @@ m_ResolvedPackages:
     version: 1.0.0
   - name: com.unity.modules.jsonserialize
     version: 1.0.0
+  - name: com.unity.modules.hierarchycore
+    version: 1.0.0
   resolvedDependencies:
   - name: com.unity.modules.ui
     version: 1.0.0
   - name: com.unity.modules.imgui
     version: 1.0.0
   - name: com.unity.modules.jsonserialize
+    version: 1.0.0
+  - name: com.unity.modules.hierarchycore
     version: 1.0.0
   keywords: []
   registry:
@@ -1107,6 +1574,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -1124,13 +1593,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.umbra@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.umbra@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.umbra
   assetPath: Packages/com.unity.modules.umbra
   name: com.unity.modules.umbra
   displayName: Umbra
@@ -1142,7 +1621,6 @@ m_ResolvedPackages:
   type: module
   description: 'The Umbra module implements Unity''s occlusion culling system. Scripting
     API: https://docs.unity3d.com/ScriptReference/UnityEngine.UmbraModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -1163,6 +1641,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -1180,13 +1660,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.unityanalytics@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.unityanalytics@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unityanalytics
   assetPath: Packages/com.unity.modules.unityanalytics
   name: com.unity.modules.unityanalytics
   displayName: Unity Analytics
@@ -1196,9 +1686,7 @@ m_ResolvedPackages:
     url: 
   category: 
   type: module
-  description: 'The UnityAnalytics module implements APIs required to use Unity Analytics.
-    Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.UnityAnalyticsModule.html'
-  status: 0
+  description: 
   errors: []
   versions:
     all:
@@ -1227,6 +1715,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -1244,13 +1734,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.unitywebrequest@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.unitywebrequest@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequest
   assetPath: Packages/com.unity.modules.unitywebrequest
   name: com.unity.modules.unitywebrequest
   displayName: Unity Web Request
@@ -1262,7 +1762,6 @@ m_ResolvedPackages:
   type: module
   description: 'The UnityWebRequest module lets you communicate with http services.
     Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.UnityWebRequestModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -1283,6 +1782,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -1300,13 +1801,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.unitywebrequestassetbundle@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestassetbundle
   assetPath: Packages/com.unity.modules.unitywebrequestassetbundle
   name: com.unity.modules.unitywebrequestassetbundle
   displayName: Unity Web Request Asset Bundle
@@ -1318,7 +1829,6 @@ m_ResolvedPackages:
   type: module
   description: 'The UnityWebRequestAssetBundle module provides the DownloadHandlerAssetBundle
     class to use UnityWebRequest to download Asset Bundles. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.UnityWebRequestAssetBundleModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -1347,6 +1857,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -1364,13 +1876,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.unitywebrequestaudio@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.unitywebrequestaudio@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestaudio
   assetPath: Packages/com.unity.modules.unitywebrequestaudio
   name: com.unity.modules.unitywebrequestaudio
   displayName: Unity Web Request Audio
@@ -1382,7 +1904,6 @@ m_ResolvedPackages:
   type: module
   description: 'The UnityWebRequestAudio module provides the DownloadHandlerAudioClip
     class to use UnityWebRequest to download AudioClips. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.UnityWebRequestAudioModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -1411,6 +1932,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -1428,13 +1951,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.unitywebrequesttexture@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.unitywebrequesttexture@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequesttexture
   assetPath: Packages/com.unity.modules.unitywebrequesttexture
   name: com.unity.modules.unitywebrequesttexture
   displayName: Unity Web Request Texture
@@ -1446,7 +1979,6 @@ m_ResolvedPackages:
   type: module
   description: 'The UnityWebRequestTexture module provides the DownloadHandlerTexture
     class to use UnityWebRequest to download Textures. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.UnityWebRequestTextureModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -1475,6 +2007,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -1492,13 +2026,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.unitywebrequestwww@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.unitywebrequestwww@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestwww
   assetPath: Packages/com.unity.modules.unitywebrequestwww
   name: com.unity.modules.unitywebrequestwww
   displayName: Unity Web Request WWW
@@ -1510,7 +2054,6 @@ m_ResolvedPackages:
   type: module
   description: 'The UnityWebRequestWWW module implements the legacy WWW lets you
     communicate with http services. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.UnityWebRequestWWWModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -1555,6 +2098,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -1572,13 +2117,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.vehicles@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.vehicles@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.vehicles
   assetPath: Packages/com.unity.modules.vehicles
   name: com.unity.modules.vehicles
   displayName: Vehicles
@@ -1590,7 +2145,6 @@ m_ResolvedPackages:
   type: module
   description: 'The Vehicles module implements vehicle physics simulation through
     the WheelCollider component. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.VehiclesModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -1615,6 +2169,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -1632,13 +2188,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.video@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.video@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.video
   assetPath: Packages/com.unity.modules.video
   name: com.unity.modules.video
   displayName: Video
@@ -1650,7 +2216,6 @@ m_ResolvedPackages:
   type: module
   description: 'The Video module lets you play back video files in your content.
     Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.VideoModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -1683,6 +2248,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -1700,13 +2267,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.vr@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.vr@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.vr
   assetPath: Packages/com.unity.modules.vr
   name: com.unity.modules.vr
   displayName: VR
@@ -1718,7 +2295,6 @@ m_ResolvedPackages:
   type: module
   description: 'The VR module implements support for virtual reality devices in Unity.
     Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.VRModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -1753,6 +2329,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -1770,13 +2348,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.wind@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.wind@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.wind
   assetPath: Packages/com.unity.modules.wind
   name: com.unity.modules.wind
   displayName: Wind
@@ -1788,7 +2376,6 @@ m_ResolvedPackages:
   type: module
   description: 'The Wind module implements the WindZone component which can affect
     terrain rendering and particle simulations. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.WindModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -1809,6 +2396,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -1826,13 +2415,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.xr@1.0.0
   testable: 0
   isDirectDependency: 1
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.xr@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.xr
   assetPath: Packages/com.unity.modules.xr
   name: com.unity.modules.xr
   displayName: XR
@@ -1844,7 +2443,6 @@ m_ResolvedPackages:
   type: module
   description: 'The XR module contains the VR and AR related platform support functionality.
     Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.XRModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -1877,6 +2475,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -1894,13 +2494,23 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
 - packageId: com.unity.modules.subsystems@1.0.0
   testable: 0
   isDirectDependency: 0
   version: 1.0.0
   source: 2
-  resolvedPath: C:\Users\DN_Hocvien\Downloads\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.modules.subsystems@1.0.0
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.subsystems
   assetPath: Packages/com.unity.modules.subsystems
   name: com.unity.modules.subsystems
   displayName: Subsystems
@@ -1912,7 +2522,6 @@ m_ResolvedPackages:
   type: module
   description: 'The Subsystem module contains the definitions and runtime support
     for general subsystems in Unity. Scripting API: https://docs.unity3d.com/ScriptReference/UnityEngine.SubsystemsModule.html'
-  status: 0
   errors: []
   versions:
     all:
@@ -1937,6 +2546,8 @@ m_ResolvedPackages:
     capabilities: 7
     configSource: 0
   hideInEditor: 1
+  entitlements:
+    licensingModel: 0
   isAssetStorePackage: 0
   datePublishedTicks: 0
   documentationUrl: 
@@ -1954,5 +2565,971 @@ m_ResolvedPackages:
     deprecationMessage: 
   isDeprecated: 0
   deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
   fingerprint: 
-m_BuiltInPackagesHash: 79d214925fd256adaedc1492c8692e1596da56c6
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
+- packageId: com.unity.modules.hierarchycore@1.0.0
+  testable: 0
+  isDirectDependency: 0
+  version: 1.0.0
+  source: 2
+  resolvedPath: C:\Program Files\Unity\Hub\Editor\6000.0.48f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.hierarchycore
+  assetPath: Packages/com.unity.modules.hierarchycore
+  name: com.unity.modules.hierarchycore
+  displayName: Hierarchy Core
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: module
+  description: 'Module that contains a high-performance hierarchy container. Scripting
+    API: https://docs.unity3d.com/ScriptReference/UnityEngine.HierarchyCoreModule.html'
+  errors: []
+  versions:
+    all:
+    - 1.0.0
+    compatible:
+    - 1.0.0
+    recommended: 1.0.0
+    deprecated: []
+  dependencies: []
+  resolvedDependencies: []
+  keywords: []
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 0
+  isAssetStorePackage: 0
+  datePublishedTicks: 0
+  documentationUrl: 
+  hasRepository: 0
+  repository:
+    type: 
+    url: 
+    revision: 
+    path: 
+  unityLifecycle:
+    version: 
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
+  fingerprint: 
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 
+- packageId: com.unity.cinemachine@3.1.3
+  testable: 0
+  isDirectDependency: 0
+  version: 3.1.3
+  source: 1
+  resolvedPath: D:\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.cinemachine@624f919d8cdd
+  assetPath: Packages/com.unity.cinemachine
+  name: com.unity.cinemachine
+  displayName: Cinemachine
+  author:
+    name: 
+    email: 
+    url: 
+  category: cinematography
+  type: 
+  description: "Smart camera tools for passionate creators. \n\nCinemachine 3 is
+    a newer and better version of Cinemachine, but upgrading an existing project
+    from 2.X will likely require some effort.  If you're considering upgrading an
+    older project, please see our upgrade guide in the user manual."
+  errors: []
+  versions:
+    all:
+    - 2.1.11-beta.1
+    - 2.1.12
+    - 2.1.13
+    - 2.2.0
+    - 2.2.7
+    - 2.2.8
+    - 2.2.9
+    - 2.2.10-preview.3
+    - 2.2.10-preview.4
+    - 2.3.1
+    - 2.3.3
+    - 2.3.4
+    - 2.3.5-preview.3
+    - 2.4.0-preview.3
+    - 2.4.0-preview.4
+    - 2.4.0-preview.6
+    - 2.4.0-preview.7
+    - 2.4.0-preview.8
+    - 2.4.0-preview.9
+    - 2.4.0-preview.10
+    - 2.4.0
+    - 2.5.0
+    - 2.6.0-preview.2
+    - 2.6.0-preview.3
+    - 2.6.0-preview.5
+    - 2.6.0-preview.8
+    - 2.6.0
+    - 2.6.1-preview.6
+    - 2.6.1
+    - 2.6.2-preview.1
+    - 2.6.2
+    - 2.6.3-preview.2
+    - 2.6.3
+    - 2.6.4
+    - 2.6.5
+    - 2.6.9
+    - 2.6.10
+    - 2.6.11
+    - 2.6.14
+    - 2.6.15
+    - 2.6.17
+    - 2.7.1
+    - 2.7.2
+    - 2.7.3
+    - 2.7.4
+    - 2.7.5
+    - 2.7.8
+    - 2.7.9
+    - 2.8.0-exp.1
+    - 2.8.0-exp.2
+    - 2.8.0-pre.1
+    - 2.8.0
+    - 2.8.1
+    - 2.8.2
+    - 2.8.3
+    - 2.8.4
+    - 2.8.6
+    - 2.8.9
+    - 2.9.0-pre.1
+    - 2.9.0-pre.6
+    - 2.9.1
+    - 2.9.2
+    - 2.9.4
+    - 2.9.5
+    - 2.9.7
+    - 2.10.0
+    - 2.10.1
+    - 2.10.2
+    - 2.10.3
+    - 3.0.0-pre.3
+    - 3.0.0-pre.4
+    - 3.0.0-pre.5
+    - 3.0.0-pre.6
+    - 3.0.0-pre.7
+    - 3.0.0-pre.8
+    - 3.0.0-pre.9
+    - 3.0.1
+    - 3.1.0
+    - 3.1.1
+    - 3.1.2
+    - 3.1.3
+    compatible:
+    - 2.10.3
+    - 3.0.0-pre.3
+    - 3.0.0-pre.4
+    - 3.0.0-pre.5
+    - 3.0.0-pre.6
+    - 3.0.0-pre.7
+    - 3.0.0-pre.8
+    - 3.0.0-pre.9
+    - 3.0.1
+    - 3.1.0
+    - 3.1.1
+    - 3.1.2
+    - 3.1.3
+    recommended: 3.1.3
+    deprecated: []
+  dependencies:
+  - name: com.unity.splines
+    version: 2.0.0
+  - name: com.unity.modules.imgui
+    version: 1.0.0
+  resolvedDependencies:
+  - name: com.unity.splines
+    version: 2.8.0
+  - name: com.unity.mathematics
+    version: 1.3.2
+  - name: com.unity.modules.imgui
+    version: 1.0.0
+  - name: com.unity.settings-manager
+    version: 2.1.0
+  keywords:
+  - camera
+  - follow
+  - rig
+  - fps
+  - cinematography
+  - aim
+  - orbit
+  - cutscene
+  - cinematic
+  - collision
+  - freelook
+  - cinemachine
+  - compose
+  - composition
+  - dolly
+  - track
+  - clearshot
+  - noise
+  - framing
+  - handheld
+  - lens
+  - impulse
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 638739355014480000
+  documentationUrl: https://docs.unity3d.com/Packages/com.unity.cinemachine@3.1/manual/index.html
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.com/Unity-Technologies/com.unity.cinemachine.git
+    revision: 23940e5601df6628d349dc9d1912bd2bb34ad631
+    path: 
+  unityLifecycle:
+    version: 2.10.3
+    nextVersion: 
+    recommendedVersion: 3.1.0
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: '{"changelog":"### Bugfixes\n- Regression fix: CinemachinePanTilt
+    recentering was ignoring axis Center setting.\n- CameraDeactivated events were
+    not sent consistently when a blend interrupted another blend before completion.\n-
+    CameraActivated events were not sent consistently when activation was due to
+    timeline blends.\n- FramingTransposer with a dead zone would sometimes drift.\n-
+    Decollider would sometimes cause camera to slip inside cracks between adjacent
+    colliders.\n- The Deoccluder failed to reset its state when initially enabled,
+    and sometimes caused small spurious camera rotations.\n- Fixed the Radial Axis
+    input axis in the CinemachineOrbitalFollow component to map to the y axis.\n-
+    Desired blend time is respected when interrupting blends with heterogeneous blend-in
+    and blend-out times.\n\n### Changed\n- Added delayed processing to near and far
+    clip plane inspector fields for the CinemachineCamera lens.\n- Updated the gamepad
+    inputs in the CinemachineDefaultInputActions asset to closer match standard gamepad
+    conventions. Renamed the Player action map to CM Default.\n\n### Added\n- CinemachineConfiner2D.BoundingShapeIsBaked
+    can be used to check if the confiner''s bounding shape is baked.\n- CinemachineConfiner2D.BakeBoundingShape()
+    can be used to force-complete the confiner''s baking of the bounding shape."}'
+  assetStore:
+    productId: 
+  fingerprint: 624f919d8cdd376712eda21b43abcb0330c023e2
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 2.10.3
+    minimumUnityVersion: 2022.3.0a1
+- packageId: com.unity.timeline@1.8.8
+  testable: 0
+  isDirectDependency: 0
+  version: 1.8.8
+  source: 1
+  resolvedPath: D:\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.timeline@fa3a0bab2b90
+  assetPath: Packages/com.unity.timeline
+  name: com.unity.timeline
+  displayName: Timeline
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: 
+  description: Use Unity Timeline to create cinematic content, game-play sequences,
+    audio sequences, and complex particle effects.
+  errors: []
+  versions:
+    all:
+    - 1.2.0
+    - 1.2.1
+    - 1.2.2
+    - 1.2.3
+    - 1.2.4
+    - 1.2.5
+    - 1.2.6
+    - 1.2.7
+    - 1.2.9
+    - 1.2.10
+    - 1.2.11
+    - 1.2.12
+    - 1.2.13
+    - 1.2.14
+    - 1.2.15
+    - 1.2.16
+    - 1.2.17
+    - 1.2.18
+    - 1.3.0-preview.2
+    - 1.3.0-preview.3
+    - 1.3.0-preview.5
+    - 1.3.0-preview.6
+    - 1.3.0-preview.7
+    - 1.3.0
+    - 1.3.1
+    - 1.3.2
+    - 1.3.3
+    - 1.3.4
+    - 1.3.5
+    - 1.3.6
+    - 1.3.7
+    - 1.4.0-preview.1
+    - 1.4.0-preview.2
+    - 1.4.0-preview.3
+    - 1.4.0-preview.5
+    - 1.4.0-preview.6
+    - 1.4.0-preview.7
+    - 1.4.0
+    - 1.4.1
+    - 1.4.2
+    - 1.4.3
+    - 1.4.4
+    - 1.4.5
+    - 1.4.6
+    - 1.4.7
+    - 1.4.8
+    - 1.5.0-pre.2
+    - 1.5.0-preview.1
+    - 1.5.0-preview.2
+    - 1.5.0-preview.3
+    - 1.5.0-preview.4
+    - 1.5.0-preview.5
+    - 1.5.1-pre.1
+    - 1.5.1-pre.2
+    - 1.5.1-pre.3
+    - 1.5.2
+    - 1.5.4
+    - 1.5.5
+    - 1.5.6
+    - 1.5.7
+    - 1.6.0-pre.1
+    - 1.6.0-pre.3
+    - 1.6.0-pre.4
+    - 1.6.0-pre.5
+    - 1.6.1
+    - 1.6.2
+    - 1.6.3
+    - 1.6.4
+    - 1.6.5
+    - 1.7.0-pre.1
+    - 1.7.0-pre.2
+    - 1.7.0
+    - 1.7.1
+    - 1.7.2
+    - 1.7.3
+    - 1.7.4
+    - 1.7.5
+    - 1.7.6
+    - 1.7.7
+    - 1.8.0
+    - 1.8.1
+    - 1.8.2
+    - 1.8.3
+    - 1.8.4
+    - 1.8.5
+    - 1.8.6
+    - 1.8.7
+    - 1.8.8
+    compatible:
+    - 1.8.7
+    - 1.8.8
+    recommended: 1.8.8
+    deprecated: []
+  dependencies:
+  - name: com.unity.modules.audio
+    version: 1.0.0
+  - name: com.unity.modules.director
+    version: 1.0.0
+  - name: com.unity.modules.animation
+    version: 1.0.0
+  - name: com.unity.modules.particlesystem
+    version: 1.0.0
+  resolvedDependencies:
+  - name: com.unity.modules.audio
+    version: 1.0.0
+  - name: com.unity.modules.director
+    version: 1.0.0
+  - name: com.unity.modules.animation
+    version: 1.0.0
+  - name: com.unity.modules.particlesystem
+    version: 1.0.0
+  keywords:
+  - unity
+  - animation
+  - editor
+  - timeline
+  - tools
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 638739338167810000
+  documentationUrl: https://docs.unity3d.com/Packages/com.unity.timeline@1.8/manual/index.html
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.cds.internal.unity3d.com/unity/com.unity.timeline.git
+    revision: b01f8fc6766a468476830dec57fdf694f16104e6
+    path: 
+  unityLifecycle:
+    version: 1.8.7
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: '{"changelog":"### Fixed\n\n- Fixed bug where the first property,
+    when it is a collection of objects, of a TrackAsset would not be properly displayed
+    in the inspector.\n- TimelineAsset.EditorSettings.SetStandardFrameRate would
+    incorrectly throw an ArgumentException if given a valid StandardFrameRates, this
+    has been corrected.\n- Clip blends will now be computed when using the API to
+    add clips to tracks - IN-66759\n- Improved performance when evaluating Timeline
+    Playables with a large number of clip based Animation Tracks (TB-259)\n- Updated
+    the Gameplay Sequence sample to show materials when using the Universal and HD
+    Render Pipelines."}'
+  assetStore:
+    productId: 
+  fingerprint: fa3a0bab2b909389f8e6c20d5ff275c9e15ae0a2
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.8.7
+    minimumUnityVersion: 2021.3.0a1
+- packageId: com.unity.visualscripting@1.9.7
+  testable: 0
+  isDirectDependency: 0
+  version: 1.9.7
+  source: 1
+  resolvedPath: D:\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.visualscripting@6279e2b7c485
+  assetPath: Packages/com.unity.visualscripting
+  name: com.unity.visualscripting
+  displayName: Visual Scripting
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: tool
+  description: 'Visual scripting is a workflow that uses visual, node-based graphs
+    to design behaviors rather than write lines of C# script.
+
+
+    Enabling artists,
+    designers and programmers alike, visual scripting can be used to design final
+    logic, quickly create prototypes, iterate on gameplay and create custom nodes
+    to help streamline collaboration.
+
+
+    Visual scripting is compatible with third-party
+    APIs, including most packages, assets and custom libraries.'
+  errors: []
+  versions:
+    all:
+    - 1.5.0
+    - 1.5.1-pre.3
+    - 1.5.1-pre.5
+    - 1.5.1
+    - 1.5.2
+    - 1.6.0-pre.3
+    - 1.6.0
+    - 1.6.1
+    - 1.7.1
+    - 1.7.2
+    - 1.7.3
+    - 1.7.5
+    - 1.7.6
+    - 1.7.7
+    - 1.7.8
+    - 1.8.0-pre.1
+    - 1.8.0
+    - 1.9.0
+    - 1.9.1
+    - 1.9.2
+    - 1.9.4
+    - 1.9.5
+    - 1.9.6
+    - 1.9.7
+    compatible:
+    - 1.9.6
+    - 1.9.7
+    recommended: 1.9.7
+    deprecated:
+    - 1.8.0-pre.1
+  dependencies:
+  - name: com.unity.ugui
+    version: 1.0.0
+  - name: com.unity.modules.jsonserialize
+    version: 1.0.0
+  resolvedDependencies:
+  - name: com.unity.ugui
+    version: 2.0.0
+  - name: com.unity.modules.ui
+    version: 1.0.0
+  - name: com.unity.modules.imgui
+    version: 1.0.0
+  - name: com.unity.modules.jsonserialize
+    version: 1.0.0
+  keywords: []
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 638835226812630000
+  documentationUrl: 
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.cds.internal.unity3d.com/unity/com.unity.visualscripting.git
+    revision: 8292335505915a41ec7c5cc8e08ac436e24120a9
+    path: 
+  unityLifecycle:
+    version: 1.9.6
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: '{"changelog":"### Fixed\n- Fixed a warning \"Unable to load Unity.Android.Gradle''s
+    referenced assembly NiceIO\" when scanning assemblies. [UVSB-2594](https://issuetracker.unity3d.com/product/unity/issues/guid/UVSB-2594)\n-
+    Fixed error when trying to load fuzzy finder on multi screen setup on Mac. [UVSB-2419](https://issuetracker.unity3d.com/product/unity/issues/guid/UVSB-2419)\n-
+    Fixed the `AOTSafeMode` project setting appearing in the Editor Preferences window.
+    It is now shown in the Project Settings tab for Visual Scripting. [UVSB-2590](https://issuetracker.unity3d.com/product/unity/issues/guid/UVSB-2590)\n-
+    Fixed possible crash on VisionOS. [UVSB-2565](https://issuetracker.unity3d.com/product/unity/issues/guid/UVSB-2565)\n\n###
+    Changed\n- The `AOTSafeMode` project setting has been marked as not visible,
+    it will no longer be included when calling `ConfigurationPanel.GetSearchKeywords`.
+    [UVSB-2590](https://issuetracker.unity3d.com/product/unity/issues/guid/UVSB-2590)"}'
+  assetStore:
+    productId: 
+  fingerprint: 6279e2b7c4858e56cca7f367cd38c49ef66778c9
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.9.6
+    minimumUnityVersion: 2021.3.0a1
+- packageId: com.unity.ugui@2.0.0
+  testable: 0
+  isDirectDependency: 0
+  version: 2.0.0
+  source: 2
+  resolvedPath: D:\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.ugui@4027c60e8806
+  assetPath: Packages/com.unity.ugui
+  name: com.unity.ugui
+  displayName: Unity UI
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: 
+  description: "Unity UI is a set of tools for developing user interfaces for games
+    and applications. It is a GameObject-based UI system that uses Components and
+    the Game View to arrange, position, and style user interfaces. \u200B You cannot
+    use Unity UI to create or change user interfaces in the Unity Editor."
+  errors: []
+  versions:
+    all:
+    - 2.0.0
+    - 3.0.0-exp.1
+    - 3.0.0-exp.3
+    - 3.0.0-exp.4
+    compatible:
+    - 2.0.0
+    - 3.0.0-exp.1
+    - 3.0.0-exp.3
+    - 3.0.0-exp.4
+    recommended: 2.0.0
+    deprecated: []
+  dependencies:
+  - name: com.unity.modules.ui
+    version: 1.0.0
+  - name: com.unity.modules.imgui
+    version: 1.0.0
+  resolvedDependencies:
+  - name: com.unity.modules.ui
+    version: 1.0.0
+  - name: com.unity.modules.imgui
+    version: 1.0.0
+  keywords:
+  - UI
+  - ugui
+  - Unity UI
+  - Canvas
+  - TextMeshPro
+  - TextMesh Pro
+  - Text
+  - TMP
+  - SDF
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 0
+  isAssetStorePackage: 0
+  datePublishedTicks: 0
+  documentationUrl: 
+  hasRepository: 0
+  repository:
+    type: 
+    url: 
+    revision: 
+    path: 
+  unityLifecycle:
+    version: 2.0.0
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
+  fingerprint: 4027c60e8806d4bec21d243459a556359e0533bc
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 2.0.0
+    minimumUnityVersion: 2019.2.0a1
+- packageId: com.unity.splines@2.8.0
+  testable: 0
+  isDirectDependency: 0
+  version: 2.8.0
+  source: 1
+  resolvedPath: D:\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.splines@30918147f39c
+  assetPath: Packages/com.unity.splines
+  name: com.unity.splines
+  displayName: Splines
+  author:
+    name: 
+    email: 
+    url: 
+  category: Tool
+  type: 
+  description: Work with curves and paths. Use the Splines package to generate objects
+    and behaviors along paths, create trajectories, and draw shapes.
+  errors: []
+  versions:
+    all:
+    - 0.1.0-preview.1
+    - 1.0.0-pre.5
+    - 1.0.0-pre.7
+    - 1.0.0-pre.8
+    - 1.0.0-pre.9
+    - 1.0.0
+    - 1.0.1
+    - 2.0.0-pre.2
+    - 2.0.0-pre.4
+    - 2.0.0
+    - 2.1.0
+    - 2.2.0
+    - 2.2.1
+    - 2.3.0
+    - 2.4.0
+    - 2.5.1
+    - 2.5.2
+    - 2.6.0
+    - 2.6.1
+    - 2.7.1
+    - 2.7.2
+    - 2.8.0
+    - 2.8.1
+    compatible:
+    - 2.8.0
+    - 2.8.1
+    recommended: 2.8.1
+    deprecated: []
+  dependencies:
+  - name: com.unity.mathematics
+    version: 1.2.1
+  - name: com.unity.modules.imgui
+    version: 1.0.0
+  - name: com.unity.settings-manager
+    version: 1.0.3
+  resolvedDependencies:
+  - name: com.unity.mathematics
+    version: 1.3.2
+  - name: com.unity.modules.imgui
+    version: 1.0.0
+  - name: com.unity.settings-manager
+    version: 2.1.0
+  keywords:
+  - spline
+  - curve
+  - path
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 638779131899380000
+  documentationUrl: https://docs.unity3d.com/Packages/com.unity.splines@2.8/manual/index.html
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.cds.internal.unity3d.com/unity/com.unity.splines.git
+    revision: 62fda6a9f01314d27d0dfc41f6fc0bbd13e1c300
+    path: 
+  unityLifecycle:
+    version: 2.8.0
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: '{"changelog":"### Bug Fixes\n- [SPLB-322] Fixed a bug where `SplineExtrude`
+    wouldn''t update when multiple splines where modified.\n- [SPLB-323] Fixed a
+    bug where splines displayed in the Scene view would not match serialization changes.\n-
+    [SPLB-324] Re-added a dependency to the IMGUI module that was removed along with
+    the UGUI package.\n- [SPLB-332] Fixed a bug where `Element Inspector` fields
+    get pushed and squashed.\n- [SPLB-329] Fixed a bug where `SplineExtrude` could
+    affect the mesh of other `SplineExtrude`.\n- [SPLB-336] Fixed a bug where `SplineExtrude`
+    would break with a range value of 0.\n- [SPLB-333] Fixed a bug where `Create
+    Spline` tool would sometimes throw an exception when the Esc or Enter keys were
+    pressed.\n\n### Added\n- [SPLB-329] Added the ability to target a mesh in the
+    library with a `SplineExtrude` component"}'
+  assetStore:
+    productId: 
+  fingerprint: 30918147f39c617439e1a955017afede0429d1bd
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 2.8.0
+    minimumUnityVersion: 2022.3.0a1
+- packageId: com.unity.mathematics@1.3.2
+  testable: 0
+  isDirectDependency: 0
+  version: 1.3.2
+  source: 1
+  resolvedPath: D:\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.mathematics@8017b507cc74
+  assetPath: Packages/com.unity.mathematics
+  name: com.unity.mathematics
+  displayName: Mathematics
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: assets
+  description: Unity's C# SIMD math library providing vector types and math functions
+    with a shader like syntax.
+  errors: []
+  versions:
+    all:
+    - 0.0.12-preview.2
+    - 0.0.12-preview.5
+    - 0.0.12-preview.8
+    - 0.0.12-preview.10
+    - 0.0.12-preview.11
+    - 0.0.12-preview.13
+    - 0.0.12-preview.17
+    - 0.0.12-preview.19
+    - 0.0.12-preview.20
+    - 1.0.0-preview.1
+    - 1.0.1
+    - 1.1.0-preview.1
+    - 1.1.0
+    - 1.2.1
+    - 1.2.4
+    - 1.2.5
+    - 1.2.6
+    - 1.3.1
+    - 1.3.2
+    compatible:
+    - 1.3.2
+    recommended: 1.3.2
+    deprecated: []
+  dependencies: []
+  resolvedDependencies: []
+  keywords:
+  - unity
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 638409134840000000
+  documentationUrl: https://docs.unity3d.com/Packages/com.unity.mathematics@1.3/manual/index.html
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.com/Unity-Technologies/Unity.Mathematics.git
+    revision: 1695a8503482a3131be78cc26308a93f82c05b04
+    path: 
+  unityLifecycle:
+    version: 1.3.2
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: '{"changelog":"### Fixed\n* Fixed `math.hash` crash when using IL2CPP
+    builds on Arm 32 bit devices.\n* Fixed obsolete method usage warnings for `MatrixDrawer.CanCacheInspectorGUI`
+    and `PrimitiveVectorDrawer.CanCacheInspectorGUI` in UNITY_2023_2_OR_NEWER.\n*
+    Updated minimum editor version to 2021.3"}'
+  assetStore:
+    productId: 
+  fingerprint: 8017b507cc74bf0a1dd14b18aa860569f807314d
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.3.2
+    minimumUnityVersion: 2021.3.0a1
+- packageId: com.unity.settings-manager@2.1.0
+  testable: 0
+  isDirectDependency: 0
+  version: 2.1.0
+  source: 1
+  resolvedPath: D:\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.settings-manager@41738c275190
+  assetPath: Packages/com.unity.settings-manager
+  name: com.unity.settings-manager
+  displayName: Settings Manager
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: 
+  description: A framework for making any serializable field a setting, complete
+    with a pre-built settings interface.
+  errors: []
+  versions:
+    all:
+    - 0.1.0-preview.4
+    - 0.1.0-preview.8
+    - 1.0.0
+    - 1.0.1
+    - 1.0.2
+    - 1.0.3
+    - 2.0.0
+    - 2.0.1
+    - 2.1.0
+    compatible:
+    - 2.1.0
+    recommended: 2.1.0
+    deprecated: []
+  dependencies: []
+  resolvedDependencies: []
+  keywords: []
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 0
+  isAssetStorePackage: 0
+  datePublishedTicks: 638792046006940000
+  documentationUrl: https://docs.unity3d.com/Packages/com.unity.settings-manager@2.1/manual/index.html
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.com/Unity-Technologies/com.unity.settings-manager.git
+    revision: 6eb5ed85eaf3276cc09f0cc4fc3311c72f0fc196
+    path: 
+  unityLifecycle:
+    version: 2.1.0
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: '{"changelog":"### Changes\n\n- Enable Auto Reference on main assembly.\n\n###
+    Bug Fixes\n\n- [case: PBLD-56] Added tooltip to \"Options\" gear icon to specify
+    that context menu items are relevant only to the selected category."}'
+  assetStore:
+    productId: 
+  fingerprint: 41738c27519039c335849eb78949382f4d7a3544
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 2.1.0
+    minimumUnityVersion: 2022.3.0a1
+m_BuiltInPackagesHash: a988967e9595aa7854d138a569db4a8d22c02460
