@@ -97,7 +97,7 @@
 
 > 🧑‍💻 **Nguyễn Bá Hoàng**  
 🎮 Lớp: K23_GAME1  
-💌 Email: *[tuỳ bạn chèn vào nếu cần]*  
+💌 Email: *bahoangcran@gmail.com*  
 ✨ "Một game dev đam mê kiến thức và anime~"  
 
 ---
