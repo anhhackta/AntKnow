@@ -46,7 +46,7 @@
 
 | Thành phần        | Công nghệ sử dụng             |
 |------------------|------------------------------|
-| Game Engine       | Unity 2022 (URP)             |
+| Game Engine       | Unity 6 (URP)             |
 | Networking        | Photon PUN / Netcode         |
 | Backend           | Firebase, MongoDB, PostgreSQL|
 | UI/UX             | Unity UI Toolkit, Photoshop  |
@@ -59,9 +59,9 @@
 
 | Giai đoạn     | Mục tiêu chính                             | Deadline     |
 |---------------|---------------------------------------------|--------------|
-| Sprint 1      | Prototype cơ bản (board + di chuyển)        | 25/03/2025   |
-| Sprint 4      | Core gameplay hoàn chỉnh                    | 06/05/2025   |
-| Sprint 7      | Multiplayer + Chat voice/text               | 17/06/2025   |
+| Sprint 1      | Prototype cơ bản (board + di chuyển)        | Loading...   |
+| Sprint 4      | Core gameplay hoàn chỉnh                    | Loading...   |
+| Sprint 7      | Multiplayer + Chat voice/text               | Loading...   |
 | Sprint 9      | Testing, tối ưu hóa                         | 15/07/2025   |
 | Sprint 10     | Ra mắt Gold version (PC & Mobile)           | 01/01/2026   |
 
