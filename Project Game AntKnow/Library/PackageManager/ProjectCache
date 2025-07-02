@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638835264418699759
-    m_Hash: 1321375012
+      ticks: 638835269983350441
+    m_Hash: 3178043534
   m_LockFileStatus:
     m_FilePath: D:/AntKnow/Project Game AntKnow/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638835264418729769
-    m_Hash: 1969949891
+      ticks: 638835269983350441
+    m_Hash: 907656687
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
@@ -2734,6 +2734,7 @@ m_ResolvedPackages:
     - 2.10.1
     - 2.10.2
     - 2.10.3
+    - 2.10.4
     - 3.0.0-pre.3
     - 3.0.0-pre.4
     - 3.0.0-pre.5
@@ -2746,8 +2747,10 @@ m_ResolvedPackages:
     - 3.1.1
     - 3.1.2
     - 3.1.3
+    - 3.1.4
     compatible:
     - 2.10.3
+    - 2.10.4
     - 3.0.0-pre.3
     - 3.0.0-pre.4
     - 3.0.0-pre.5
@@ -2760,7 +2763,8 @@ m_ResolvedPackages:
     - 3.1.1
     - 3.1.2
     - 3.1.3
-    recommended: 3.1.3
+    - 3.1.4
+    recommended: 3.1.4
     deprecated: []
   dependencies:
   - name: com.unity.splines
@@ -3091,10 +3095,12 @@ m_ResolvedPackages:
     - 1.9.5
     - 1.9.6
     - 1.9.7
+    - 1.9.8
     compatible:
     - 1.9.6
     - 1.9.7
-    recommended: 1.9.7
+    - 1.9.8
+    recommended: 1.9.8
     deprecated:
     - 1.8.0-pre.1
   dependencies:
@@ -3191,7 +3197,10 @@ m_ResolvedPackages:
     - 3.0.0-exp.3
     - 3.0.0-exp.4
     recommended: 2.0.0
-    deprecated: []
+    deprecated:
+    - 3.0.0-exp.1
+    - 3.0.0-exp.3
+    - 3.0.0-exp.4
   dependencies:
   - name: com.unity.modules.ui
     version: 1.0.0
@@ -3501,7 +3510,7 @@ m_ResolvedPackages:
     configSource: 0
   hideInEditor: 1
   entitlements:
-    licensingModel: 0
+    licensingModel: 1
   isAssetStorePackage: 0
   datePublishedTicks: 638792046006940000
   documentationUrl: https://docs.unity3d.com/Packages/com.unity.settings-manager@2.1/manual/index.html
