@@ -1,30 +1,101 @@
 {
   "context": {
-    "projectPath": "D:/AntKnow/Project Game AntKnow/Packages",
+    "projectPath": "D:/ProjectGame/AntKnow/Project Game AntKnow/Packages",
     "unityVersion": "6000.0.48f1"
   },
   "inputs": [
-    "D:\\AntKnow\\Project Game AntKnow\\Packages\\manifest.json",
-    "D:\\AntKnow\\Project Game AntKnow\\Packages\\packages-lock.json",
+    "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Packages\\manifest.json",
+    "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Packages\\packages-lock.json",
     "C:\\Program Files\\Unity\\Hub\\Editor\\6000.0.48f1\\Editor\\Data\\Resources\\PackageManager\\BuiltInPackages\\BuiltInPackagesCombined.sha1"
   ],
   "outputs": {
-    "com.unity.feature.gameplay-storytelling@1.0.0": {
-      "name": "com.unity.feature.gameplay-storytelling",
-      "displayName": "Gameplay and Storytelling",
-      "resolvedPath": "D:\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.feature.gameplay-storytelling@16ce2b9ee1fa",
-      "fingerprint": "16ce2b9ee1fa9d0f59f73c45c78840e4f0c92871",
-      "version": "1.0.0",
-      "source": "builtin",
+    "com.unity.ai.navigation@2.0.7": {
+      "name": "com.unity.ai.navigation",
+      "displayName": "AI Navigation",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.ai.navigation@39ae74efb85f",
+      "fingerprint": "39ae74efb85f9b44dc389774fc59c2ce4a8aa3b6",
+      "editorCompatibility": "6000.0.0a1",
+      "version": "2.0.7",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.collab-proxy@2.7.1": {
+      "name": "com.unity.collab-proxy",
+      "displayName": "Version Control",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.collab-proxy@50ac96531b63",
+      "fingerprint": "50ac96531b6358586ccfdf8cc845939bf50d9fab",
+      "editorCompatibility": "2021.3.0f1",
+      "version": "2.7.1",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.ide.rider@3.0.36": {
+      "name": "com.unity.ide.rider",
+      "displayName": "JetBrains Rider Editor",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.ide.rider@4d374c7eb6db",
+      "fingerprint": "4d374c7eb6db6907c7e6925e3086c3c73f926e13",
+      "editorCompatibility": "2019.4.6f1",
+      "version": "3.0.36",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.ide.visualstudio@2.0.23": {
+      "name": "com.unity.ide.visualstudio",
+      "displayName": "Visual Studio Editor",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.ide.visualstudio@198cdf337d13",
+      "fingerprint": "198cdf337d13c83ca953581515630d66b779e92b",
+      "editorCompatibility": "2019.4.25f1",
+      "version": "2.0.23",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.ide.vscode@1.2.4": {
+      "name": "com.unity.ide.vscode",
+      "displayName": "Visual Studio Code Editor",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.ide.vscode@eb5de66d4c77",
+      "fingerprint": "eb5de66d4c77580302e328d62de70e3074f61721",
+      "editorCompatibility": "2019.2.0a12",
+      "version": "1.2.4",
+      "source": "registry",
       "testable": false
     },
     "com.unity.multiplayer.center@1.0.0": {
       "name": "com.unity.multiplayer.center",
       "displayName": "Multiplayer Center",
-      "resolvedPath": "D:\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.multiplayer.center@f3fb577b3546",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.multiplayer.center@f3fb577b3546",
       "fingerprint": "f3fb577b3546594b97b8cc34307cd621f60f1c73",
       "editorCompatibility": "6000.0.0a1",
       "version": "1.0.0",
+      "source": "builtin",
+      "testable": false
+    },
+    "com.unity.test-framework@1.5.1": {
+      "name": "com.unity.test-framework",
+      "displayName": "Test Framework",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.test-framework@388540dd9ce6",
+      "fingerprint": "388540dd9ce60b7f4463a23bfdf0d2dafa9a6f3e",
+      "editorCompatibility": "2022.3.0a1",
+      "version": "1.5.1",
+      "source": "builtin",
+      "testable": false
+    },
+    "com.unity.timeline@1.8.7": {
+      "name": "com.unity.timeline",
+      "displayName": "Timeline",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.timeline@c58b4ee65782",
+      "fingerprint": "c58b4ee65782ad38338e29f7ee67787cb6998f04",
+      "editorCompatibility": "2019.3.0a1",
+      "version": "1.8.7",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.ugui@2.0.0": {
+      "name": "com.unity.ugui",
+      "displayName": "Unity UI",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.ugui@4027c60e8806",
+      "fingerprint": "4027c60e8806d4bec21d243459a556359e0533bc",
+      "editorCompatibility": "2019.2.0a1",
+      "version": "2.0.0",
       "source": "builtin",
       "testable": false
     },
@@ -300,74 +371,14 @@
       "source": "builtin",
       "testable": false
     },
-    "com.unity.cinemachine@3.1.3": {
-      "name": "com.unity.cinemachine",
-      "displayName": "Cinemachine",
-      "resolvedPath": "D:\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.cinemachine@624f919d8cdd",
-      "fingerprint": "624f919d8cdd376712eda21b43abcb0330c023e2",
-      "editorCompatibility": "2022.3.0a1",
-      "version": "3.1.3",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.timeline@1.8.8": {
-      "name": "com.unity.timeline",
-      "displayName": "Timeline",
-      "resolvedPath": "D:\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.timeline@fa3a0bab2b90",
-      "fingerprint": "fa3a0bab2b909389f8e6c20d5ff275c9e15ae0a2",
-      "editorCompatibility": "2021.3.0a1",
-      "version": "1.8.8",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.visualscripting@1.9.7": {
-      "name": "com.unity.visualscripting",
-      "displayName": "Visual Scripting",
-      "resolvedPath": "D:\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.visualscripting@6279e2b7c485",
-      "fingerprint": "6279e2b7c4858e56cca7f367cd38c49ef66778c9",
-      "editorCompatibility": "2021.3.0a1",
-      "version": "1.9.7",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.ugui@2.0.0": {
-      "name": "com.unity.ugui",
-      "displayName": "Unity UI",
-      "resolvedPath": "D:\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.ugui@4027c60e8806",
-      "fingerprint": "4027c60e8806d4bec21d243459a556359e0533bc",
-      "editorCompatibility": "2019.2.0a1",
-      "version": "2.0.0",
+    "com.unity.ext.nunit@2.0.5": {
+      "name": "com.unity.ext.nunit",
+      "displayName": "Custom NUnit",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.ext.nunit@031a54704bff",
+      "fingerprint": "031a54704bffe39e6a0324909f8eaa4565bdebf2",
+      "editorCompatibility": "2019.4.0a1",
+      "version": "2.0.5",
       "source": "builtin",
-      "testable": false
-    },
-    "com.unity.splines@2.8.0": {
-      "name": "com.unity.splines",
-      "displayName": "Splines",
-      "resolvedPath": "D:\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.splines@30918147f39c",
-      "fingerprint": "30918147f39c617439e1a955017afede0429d1bd",
-      "editorCompatibility": "2022.3.0a1",
-      "version": "2.8.0",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.mathematics@1.3.2": {
-      "name": "com.unity.mathematics",
-      "displayName": "Mathematics",
-      "resolvedPath": "D:\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.mathematics@8017b507cc74",
-      "fingerprint": "8017b507cc74bf0a1dd14b18aa860569f807314d",
-      "editorCompatibility": "2021.3.0a1",
-      "version": "1.3.2",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.settings-manager@2.1.0": {
-      "name": "com.unity.settings-manager",
-      "displayName": "Settings Manager",
-      "resolvedPath": "D:\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.settings-manager@41738c275190",
-      "fingerprint": "41738c27519039c335849eb78949382f4d7a3544",
-      "editorCompatibility": "2022.3.0a1",
-      "version": "2.1.0",
-      "source": "registry",
       "testable": false
     }
   }
