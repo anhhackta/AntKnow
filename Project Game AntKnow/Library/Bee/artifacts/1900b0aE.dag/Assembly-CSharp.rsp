@@ -389,6 +389,7 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.0.48f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.0.48f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.UIToolkit.SourceGenerator.dll"
 "Assets/Script/BaseScript.cs"
+"Assets/Script/Data/Enums.cs"
 "Assets/Script/DiceCheckZoneScript.cs"
 "Assets/Script/DiceScript.cs"
 "Assets/Script/DiceScript1.cs"

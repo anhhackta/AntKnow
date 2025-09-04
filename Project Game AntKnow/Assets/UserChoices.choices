@@ -27,7 +27,10 @@ MonoBehaviour:
     - QuestionId: NetcodeArchitecture
       Answers:
       - NoNetcode
+    - QuestionId: PlayerCount
+      Answers:
+      - 4
   Preset: 4
   SelectedSolutions:
-    SelectedHostingModel: 0
-    SelectedNetcodeSolution: 0
+    SelectedHostingModel: 1
+    SelectedNetcodeSolution: 1
