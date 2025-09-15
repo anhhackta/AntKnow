@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/justincase.unity
+- path: Assets/Scenes/Login-Register.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
