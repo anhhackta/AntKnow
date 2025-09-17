@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638918137274079462
-    m_Hash: 286524842
+      ticks: 638936679625151454
+    m_Hash: 483957081
   m_LockFileStatus:
     m_FilePath: D:/ProjectGame/AntKnow/Project Game AntKnow/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638918137395874799
-    m_Hash: 3407235460
+      ticks: 638936679625151454
+    m_Hash: 842095500
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
@@ -65,10 +65,12 @@ m_ResolvedPackages:
     - 2.0.6
     - 2.0.7
     - 2.0.8
+    - 2.0.9
     compatible:
     - 2.0.7
     - 2.0.8
-    recommended: 2.0.8
+    - 2.0.9
+    recommended: 2.0.9
     deprecated: []
   dependencies:
   - name: com.unity.modules.ai
@@ -239,12 +241,14 @@ m_ResolvedPackages:
     - 2.8.2
     - 2.9.1
     - 2.9.2
+    - 2.9.3
     compatible:
     - 2.7.1
     - 2.8.1
     - 2.8.2
     - 2.9.1
     - 2.9.2
+    - 2.9.3
     recommended: 2.7.1
     deprecated: []
   dependencies: []
@@ -395,9 +399,11 @@ m_ResolvedPackages:
     - 3.0.34
     - 3.0.35
     - 3.0.36
+    - 3.0.37
     compatible:
     - 3.0.36
-    recommended: 3.0.36
+    - 3.0.37
+    recommended: 3.0.37
     deprecated: []
   dependencies:
   - name: com.unity.ext.nunit
