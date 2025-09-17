@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1072608686710",
+    "project_id": "db-antknow",
+    "storage_bucket": "db-antknow.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1072608686710:android:3b368a3d2aaffd8de02557",
+        "android_client_info": {
+          "package_name": "com.antchill.antknow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1072608686710-6isqdq3bcmgr273aedafvrlcjk726lha.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmxON1RydqWUyHvRSeV8Chl4cyhngUcXc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1072608686710-6isqdq3bcmgr273aedafvrlcjk726lha.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
