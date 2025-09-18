@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Keys:
   - __PanelContainer__rootVisualContainer__settings-main-splitter__view-data-key__UnityEngine.UIElements.TwoPaneSplitView
+  - __PanelContainer__rootVisualContainer__settings-main-splitter__view-data-key__unity-vertical-collection-scroll-view__Slider__UnityEngine.UIElements.Scroller+ScrollerSlider
   m_Values:
   - '{"m_FixedPaneDimension":255.0}'
+  - '{"m_Value":0.0,"m_LowValue":0.0,"m_HighValue":0.0}'

@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour {
   [Header("Data")]
   [SerializeField] BoardConfig board;
   [SerializeField] PropertyRuleSet propertyRules;
+  [SerializeField] CardLibrary cardLibrary;
   [Header("Refs")]
   [SerializeField] PlayerController[] players;   // 2..4
   [SerializeField] TextMeshProUGUI turnText;
@@ -15,7 +16,7 @@ public class GameController : MonoBehaviour {
   [SerializeField] TextMeshProUGUI p3Money;
   [SerializeField] TextMeshProUGUI p4Money;
 
-  GameState _g; TurnSystem _turn; PropertyEconomy _econ;
+  GameState _g; TurnSystem _turn; PropertyEconomy _econ; CardRuleEngine _cardRules;
 
   void Start() {
     if (board == null || board.tiles == null || board.tiles.Length == 0) {
@@ -46,6 +47,12 @@ public class GameController : MonoBehaviour {
       new int[]{150,200,300,400,500,600},
       false
     );
+    var cardDefs = new List<CardDefinition>();
+    if (cardLibrary != null && cardLibrary.cards != null) {
+      foreach (var asset in cardLibrary.cards) if (asset != null) cardDefs.Add(asset.ToDefinition());
+    }
+    _cardRules = cardDefs.Count > 0 ? new CardRuleEngine(cardDefs) : null;
+
     _turn = new TurnSystem(
       _g,
       tileId => board != null && board.tiles != null && board.tiles[tileId] != null ? board.tiles[tileId].type : TileType.Start,
@@ -59,8 +66,10 @@ public class GameController : MonoBehaviour {
         return (0, null);
       },
       baseSalary: 200,
-      econ: _econ
+      econ: _econ,
+      cardRules: _cardRules
     );
+    _turn.StartTurn();
     RefreshUI();
   }
 
@@ -76,6 +85,7 @@ public class GameController : MonoBehaviour {
     _turn.MoveAndResolve(sum);
     RefreshUI();
     _turn.EndTurn();
+    _turn.StartTurn();
     RefreshUI();
   }
 
