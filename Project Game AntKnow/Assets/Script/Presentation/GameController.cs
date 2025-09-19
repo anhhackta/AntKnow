@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using Unity.Netcode;
+using UnityEngine;
+using RandomGenerator = Unity.Mathematics.Random;
 
-public class GameController : MonoBehaviour {
+public class GameController : NetworkBehaviour {
   [Header("Data")]
   [SerializeField] BoardConfig board;
   [SerializeField] PropertyRuleSet propertyRules;
@@ -14,8 +17,17 @@ public class GameController : MonoBehaviour {
   [SerializeField] TextMeshProUGUI p2Money;
   [SerializeField] TextMeshProUGUI p3Money;
   [SerializeField] TextMeshProUGUI p4Money;
+  [SerializeField] DiceView diceView;
 
   GameState _g; TurnSystem _turn; PropertyEconomy _econ;
+  readonly NetworkVariable<DiceRollData> _lastDiceRoll = new NetworkVariable<DiceRollData>(
+    new DiceRollData(),
+    NetworkVariableReadPermission.Everyone,
+    NetworkVariableWritePermission.Server
+  );
+  RandomGenerator _serverRandom;
+  bool _randomInitialized;
+  int? _pendingRollSum;
 
   void Start() {
     if (board == null || board.tiles == null || board.tiles.Length == 0) {
@@ -62,10 +74,72 @@ public class GameController : MonoBehaviour {
       econ: _econ
     );
     RefreshUI();
+
+    if (_pendingRollSum.HasValue) {
+      StartCoroutine(DoRoll(_pendingRollSum.Value));
+      _pendingRollSum = null;
+    }
+  }
+
+  public override void OnNetworkSpawn() {
+    base.OnNetworkSpawn();
+    _lastDiceRoll.OnValueChanged += HandleDiceRollChanged;
+    if (IsServer) EnsureRandomInitialized();
+
+    if (HasValidRoll(_lastDiceRoll.Value)) {
+      HandleDiceRollChanged(default, _lastDiceRoll.Value);
+    }
+  }
+
+  public override void OnNetworkDespawn() {
+    _lastDiceRoll.OnValueChanged -= HandleDiceRollChanged;
+    base.OnNetworkDespawn();
   }
 
   public void OnRoll() {
-    var (d1, d2, sum, isDouble) = _turn.Roll();
+    if (IsServer) {
+      ExecuteServerRoll();
+    } else if (IsClient) {
+      RequestRollServerRpc();
+    } else {
+      Debug.LogWarning("OnRoll called without an active Netcode client or server.");
+    }
+  }
+
+  [ServerRpc(RequireOwnership = false)]
+  void RequestRollServerRpc(ServerRpcParams serverRpcParams = default) {
+    ExecuteServerRoll();
+  }
+
+  void ExecuteServerRoll() {
+    if (!IsServer) return;
+    EnsureRandomInitialized();
+    int d1 = _serverRandom.NextInt(1, 7);
+    int d2 = _serverRandom.NextInt(1, 7);
+    _lastDiceRoll.Value = new DiceRollData(d1, d2);
+  }
+
+  void EnsureRandomInitialized() {
+    if (_randomInitialized) return;
+    uint seed = (uint)(DateTime.UtcNow.Ticks & 0xFFFFFFFF);
+    if (seed == 0) seed = 1u;
+    if ((seed & 1u) == 0u) seed |= 1u; // Unity.Mathematics.Random requires an odd seed
+    _serverRandom = new RandomGenerator(seed);
+    _randomInitialized = true;
+  }
+
+  static bool HasValidRoll(in DiceRollData data) => data.Die1 > 0 && data.Die2 > 0;
+
+  void HandleDiceRollChanged(DiceRollData previous, DiceRollData current) {
+    if (!HasValidRoll(current)) return;
+
+    diceView?.ShowRoll(current.Die1, current.Die2);
+    int sum = current.Die1 + current.Die2;
+    if (_turn == null) {
+      _pendingRollSum = sum;
+      return;
+    }
+
     StartCoroutine(DoRoll(sum));
   }
 
@@ -134,5 +208,23 @@ public class GameController : MonoBehaviour {
     var seller = _g.Players.Find(x => x.Id == (int)pr.Owner);
     if (BoardRules.CanTakeover(buyer, pr, _econ)) BoardRules.BuyTakeover(buyer, seller, pr, _econ);
     RefreshUI();
+  }
+}
+
+public struct DiceRollData : INetworkSerializable {
+  public int Die1;
+  public int Die2;
+  public bool IsDouble;
+
+  public DiceRollData(int die1, int die2) {
+    Die1 = die1;
+    Die2 = die2;
+    IsDouble = die1 == die2;
+  }
+
+  public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter {
+    serializer.SerializeValue(ref Die1);
+    serializer.SerializeValue(ref Die2);
+    serializer.SerializeValue(ref IsDouble);
   }
 }
