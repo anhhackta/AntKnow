@@ -23,8 +23,6 @@ public sealed class TurnSystem {
     );
   }
 
-  public (int,int,int,bool) Roll() => DiceRng.Roll2();
-
   public void MoveAndResolve(int steps) {
     var p = _g.Players.Find(x=>x.Id==_g.CurrentTurnPlayerId);
     int prev = p.NodeIndex, next = (prev+steps)%_g.BoardLength;
