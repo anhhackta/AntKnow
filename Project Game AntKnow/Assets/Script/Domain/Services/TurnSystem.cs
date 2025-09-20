@@ -26,17 +26,6 @@ public sealed class TurnSystem {
     _cardRules = cardRules;
   }
 
-  public (int,int,int,bool) Roll() => DiceRng.Roll2();
-
-  public void StartTurn() {
-    var current = _g.Players.Find(x => x.Id == _g.CurrentTurnPlayerId);
-    if (current == null) return;
-    if (current.JailTurns > 0) {
-      current.JailTurns -= 1;
-    }
-    _cardRules?.ApplyPassiveStartOfTurn(current);
-  }
-
   public void MoveAndResolve(int steps) {
     var p = _g.Players.Find(x=>x.Id==_g.CurrentTurnPlayerId);
     int prev = p.NodeIndex, next = (prev+steps)%_g.BoardLength;
