@@ -7,5 +7,8 @@ public sealed class PlayerState {
   public int JailTurns;          // 0 if free
   public int Luck, Resistance, Intelligence, Health, Agility;
   public readonly List<int> Owned = new();
+  public readonly List<int> PassiveCardIds = new();
+  public readonly List<int> ActiveCardIds = new();
+  public readonly Dictionary<int, int> PassiveCooldown = new(); // cardId -> turns remaining
 }
 

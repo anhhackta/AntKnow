@@ -6,11 +6,19 @@ public class PlayerController : MonoBehaviour {
   [SerializeField] float moveSpeed = 3f;
   public int PlayerId { get; private set; }
   public int NodeIndex { get; private set; }
+  public int PathLength => waypoints != null ? waypoints.Length : 0;
 
   public void Init(int id, int start = 0) {
     PlayerId = id; NodeIndex = start;
     if (waypoints != null && waypoints.Length > start)
       transform.position = waypoints[start].position;
+  }
+
+  public void SetNode(int nodeIndex) {
+    if (waypoints == null || waypoints.Length == 0) return;
+    int idx = Mathf.Abs(nodeIndex) % waypoints.Length;
+    NodeIndex = idx;
+    transform.position = waypoints[idx].position;
   }
 
   public IEnumerator MoveBySteps(int steps) {

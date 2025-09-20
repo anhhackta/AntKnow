@@ -850,11 +850,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 532fa264-a1f5-460d-8e13-ac206d80c1d5
+  cloudProjectId: 483f797d-9a46-4ecc-b048-c10c1d7b4f10
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 3d monopolyyoi
-  organizationId: kip0215
+  projectName: Project Game AntKnow
+  organizationId: unity_c38918bb48c75fcf6907
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

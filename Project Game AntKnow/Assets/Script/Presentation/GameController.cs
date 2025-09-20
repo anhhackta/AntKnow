@@ -11,6 +11,7 @@ public class GameController : NetworkBehaviour {
   [Header("Data")]
   [SerializeField] BoardConfig board;
   [SerializeField] PropertyRuleSet propertyRules;
+  [SerializeField] CardLibrary cardLibrary;
   [Header("Refs")]
   [SerializeField] PlayerController[] players;
   [SerializeField] TextMeshProUGUI turnText;
@@ -57,8 +58,6 @@ public class GameController : NetworkBehaviour {
     _playerSlots = new NetworkList<PlayerSlotData>();
   }
 
-  public override void OnNetworkSpawn() {
-    base.OnNetworkSpawn();
 
     _playerStates.OnListChanged += HandlePlayerStatesChanged;
     _propertyStates.OnListChanged += HandlePropertyStatesChanged;
@@ -122,15 +121,6 @@ public class GameController : NetworkBehaviour {
       new int[]{150,200,300,400,500,600},
       false
     );
-
-    _turnSystem = new TurnSystem(
-      _serverGame,
-      tileId => {
-        if (board == null || board.tiles == null) return TileType.Start;
-        if (tileId < 0 || tileId >= board.tiles.Length) return TileType.Start;
-        return board.tiles[tileId] != null ? board.tiles[tileId].type : TileType.Start;
-      },
-      tileId => _serverGame.Properties.ContainsKey(tileId) ? _serverGame.Properties[tileId] : null,
       tileId => {
         if (board != null && board.tiles != null && tileId >= 0 && tileId < board.tiles.Length) {
           var tile = board.tiles[tileId];
@@ -143,19 +133,6 @@ public class GameController : NetworkBehaviour {
         return (0, (int?)null);
       },
       baseSalary: 200,
-      econ: _economy
-    );
-
-    _round = 1;
-    _serverStatePrepared = true;
-
-    var meta = _metaState.Value;
-    meta.BoardLength = boardLength;
-    meta.CurrentTurnPlayerId = 0;
-    meta.PlayerCount = 0;
-    meta.Round = _round;
-    meta.SessionActive = false;
-    _metaState.Value = meta;
   }
 
   void HandleClientConnected(ulong clientId) {
@@ -222,13 +199,6 @@ public class GameController : NetworkBehaviour {
 
     if (!replaced) _playerSlots.Add(slot);
   }
-
-  int GetNextAvailablePlayerId() {
-    int limit = players != null && players.Length > 0 ? players.Length : 4;
-    for (int i = 1; i <= limit; i++) {
-      if (_serverGame.Players.All(p => p.Id != i)) return i;
-    }
-    return -1;
   }
 
   void UpdateMetaAfterPlayerChange(bool fromDisconnect) {
