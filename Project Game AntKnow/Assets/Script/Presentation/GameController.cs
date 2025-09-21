@@ -10,205 +10,204 @@ public class GameController : NetworkBehaviour {
   [Header("Data")]
   [SerializeField] BoardConfig board;
   [SerializeField] PropertyRuleSet propertyRules;
+  [SerializeField] CardLibrary cardLibrary;
   [Header("Refs")]
-  [SerializeField] PlayerController[] players;   // 2..4
+  [SerializeField] PlayerController[] players;
   [SerializeField] TextMeshProUGUI turnText;
   [SerializeField] TextMeshProUGUI p1Money;
   [SerializeField] TextMeshProUGUI p2Money;
   [SerializeField] TextMeshProUGUI p3Money;
   [SerializeField] TextMeshProUGUI p4Money;
   [SerializeField] DiceView diceView;
-
-  GameState _g; TurnSystem _turn; PropertyEconomy _econ;
-  readonly NetworkVariable<DiceRollData> _lastDiceRoll = new NetworkVariable<DiceRollData>(
-    new DiceRollData(),
-    NetworkVariableReadPermission.Everyone,
-    NetworkVariableWritePermission.Server
-  );
-  RandomGenerator _serverRandom;
-  bool _randomInitialized;
-  int? _pendingRollSum;
-
-  void Start() {
-    var tiles = board?.tiles;
-    if (tiles == null || tiles.Length == 0) {
-      Debug.LogWarning("BoardConfig is missing or empty. Create a BoardConfig asset and assign it.");
-    }
-
-    // 1) init GameState
-    _g = new GameState { BoardLength = tiles?.Length ?? 32, CurrentTurnPlayerId = 1 };
-    int n = players?.Length ?? 0;
-    for (int i = 0; i < n; i++) {
-      var ps = new PlayerState { Id = i + 1, Money = 1500, NodeIndex = 0 };
-      _g.Players.Add(ps);
-      if (players[i] != null) players[i].Init(ps.Id, 0);
-    }
-    // 2) property states
-    if (tiles != null) {
-      for (int i = 0; i < tiles.Length; i++) {
-        var tile = tiles[i];
-        if (tile != null && tile.type == TileType.Property) {
-          _g.Properties[i] = new PropertyState { TileId = i, BasePrice = tile.basePrice };
         }
       }
     }
-    // 3) Economy + TurnSystem with SO queries
-    _econ = propertyRules != null ? propertyRules.ToEconomy() : new PropertyEconomy(
+
+    _economy = propertyRules != null ? propertyRules.ToEconomy() : new PropertyEconomy(
       new int[]{100,150,200,250,300},
       new int[]{25,50,75,100,125,150},
       400, 250,
       new int[]{150,200,300,400,500,600},
       false
     );
-    _turn = new TurnSystem(
-      _g,
-      tileId => TryGetTile(tileId, out var tile) ? tile.type : TileType.Start,
-      tileId => _g.Properties.TryGetValue(tileId, out var prop) ? prop : null,
-      tileId => {
-        if (TryGetTile(tileId, out var tile)) {
-          int amount = tile.amount;
-          int dest = tile.destNode;
-          return (amount, dest >= 0 ? (int?)dest : null);
+
         }
-        return (0, null);
+        return (0, (int?)null);
       },
       baseSalary: 200,
-      econ: _econ
-    );
-    RefreshUI();
+  }
 
-    if (_pendingRollSum.HasValue) {
-      StartCoroutine(DoRoll(_pendingRollSum.Value));
-      _pendingRollSum = null;
+  void RefreshUIFromNetwork() {
+    var meta = _metaState.Value;
+    if (turnText != null) {
+      if (meta.SessionActive && meta.CurrentTurnPlayerId > 0) turnText.text = $"Lượt: P{meta.CurrentTurnPlayerId}";
+      else turnText.text = "Đang chờ người chơi";
+    }
+
+    TextMeshProUGUI[] moneyTxt = { p1Money, p2Money, p3Money, p4Money };
+    for (int i = 0; i < moneyTxt.Length; i++) {
+      if (moneyTxt[i] == null) continue;
+      if (i < _playerStates.Count) {
+        var data = _playerStates[i];
+        moneyTxt[i].text = $"P{data.Id}: {data.Money}";
+      } else {
+        moneyTxt[i].text = string.Empty;
+      }
     }
   }
 
-  public override void OnNetworkSpawn() {
-    base.OnNetworkSpawn();
-    _lastDiceRoll.OnValueChanged += HandleDiceRollChanged;
-    if (IsServer) EnsureRandomInitialized();
+  void ApplyPlayersToBoard(bool teleport) {
+    if (players == null) return;
 
-    if (HasValidRoll(_lastDiceRoll.Value)) {
-      HandleDiceRollChanged(default, _lastDiceRoll.Value);
+    HashSet<int> active = new HashSet<int>();
+    foreach (var data in _playerStates) {
+      int index = data.Id - 1;
+      if (index < 0 || index >= players.Length) continue;
+      var view = players[index];
+      if (view == null) continue;
+
+      active.Add(index);
+      if (teleport || view.PlayerId != data.Id || view.NodeIndex != data.NodeIndex) {
+        view.gameObject.SetActive(true);
+        view.Init(data.Id, data.NodeIndex);
+      }
+    }
+
+    for (int i = 0; i < players.Length; i++) {
+      var view = players[i];
+      if (view == null) continue;
+      if (!active.Contains(i)) view.gameObject.SetActive(false);
     }
   }
 
-  public override void OnNetworkDespawn() {
-    _lastDiceRoll.OnValueChanged -= HandleDiceRollChanged;
-    base.OnNetworkDespawn();
+  void UpdateLocalPlayerId() {
+    if (!IsClient || NetworkManager.Singleton == null) {
+      _localPlayerId = -1;
+      return;
+    }
+
+    ulong localId = NetworkManager.Singleton.LocalClientId;
+    _localPlayerId = -1;
+    foreach (var slot in _playerSlots) {
+      if (slot.IsConnected && slot.ClientId == localId) {
+        _localPlayerId = slot.PlayerId;
+        break;
+      }
+    }
+  }
+
+  bool IsLocalPlayersTurn() {
+    int current = _metaState.Value.CurrentTurnPlayerId;
+    if (current <= 0) return false;
+    if (IsServer) return _serverGame != null && _serverGame.CurrentTurnPlayerId == current;
+    return _localPlayerId > 0 && _localPlayerId == current;
   }
 
   public void OnRoll() {
+    if (!IsClient) {
+      Debug.LogWarning("OnRoll called without an active Netcode client.");
+      return;
+    }
+
+    if (!_metaState.Value.SessionActive) {
+      Debug.LogWarning("Cannot roll before the session is active.");
+      return;
+    }
+
+    if (!IsServer && !IsLocalPlayersTurn()) {
+      Debug.LogWarning("It is not your turn to roll.");
+      return;
+    }
+
     if (IsServer) {
-      ExecuteServerRoll();
-    } else if (IsClient) {
-      RequestRollServerRpc();
+      var manager = NetworkManager.Singleton;
+      ulong requester = manager != null ? manager.LocalClientId : NetworkManager.ServerClientId;
+      ExecuteServerRoll(requester);
     } else {
-      Debug.LogWarning("OnRoll called without an active Netcode client or server.");
+      RequestRollServerRpc();
     }
   }
 
   [ServerRpc(RequireOwnership = false)]
   void RequestRollServerRpc(ServerRpcParams serverRpcParams = default) {
-    ExecuteServerRoll();
+    ExecuteServerRoll(serverRpcParams.Receive.SenderClientId);
   }
 
-  void ExecuteServerRoll() {
-    if (!IsServer) return;
+  void ExecuteServerRoll(ulong requesterClientId) {
+    if (!IsServer || _serverGame == null || _serverGame.Players.Count == 0) return;
+
+    int currentPlayerId = _serverGame.CurrentTurnPlayerId;
+    if (currentPlayerId <= 0) return;
+
+    if (requesterClientId != NetworkManager.ServerClientId) {
+      if (!_clientToPlayer.TryGetValue(requesterClientId, out int requesterPlayerId) || requesterPlayerId != currentPlayerId) {
+        Debug.LogWarning($"Client {requesterClientId} attempted to roll out of turn.");
+        return;
+      }
+    }
+
     EnsureRandomInitialized();
     int d1 = _serverRandom.NextInt(1, 7);
     int d2 = _serverRandom.NextInt(1, 7);
-    _lastDiceRoll.Value = new DiceRollData(d1, d2);
+    var roll = new DiceRollData(d1, d2);
+    _lastDiceRoll.Value = roll;
+    StartCoroutine(ServerResolveTurn(currentPlayerId, roll));
   }
 
-  void EnsureRandomInitialized() {
-    if (_randomInitialized) return;
-    uint seed = (uint)(DateTime.UtcNow.Ticks & 0xFFFFFFFF);
-    if (seed == 0) seed = 1u;
-    if ((seed & 1u) == 0u) seed |= 1u; // Unity.Mathematics.Random requires an odd seed
-    _serverRandom = new RandomGenerator(seed);
-    _randomInitialized = true;
-  }
+  IEnumerator ServerResolveTurn(int playerId, DiceRollData roll) {
+    var player = _serverGame.Players.Find(x => x.Id == playerId);
+    if (player == null) yield break;
 
-  static bool HasValidRoll(in DiceRollData data) => data.Die1 > 0 && data.Die2 > 0;
-
-  void HandleDiceRollChanged(DiceRollData previous, DiceRollData current) {
-    if (!HasValidRoll(current)) return;
-
-    diceView?.ShowRoll(current.Die1, current.Die2);
-    int sum = current.Die1 + current.Die2;
-    if (_turn == null) {
-      _pendingRollSum = sum;
-      return;
+    int steps = roll.Die1 + roll.Die2;
+    if (players != null && playerId - 1 >= 0 && playerId - 1 < players.Length) {
+      var view = players[playerId - 1];
+      if (view != null) yield return StartCoroutine(view.MoveBySteps(steps));
     }
 
-    StartCoroutine(DoRoll(sum));
-  }
+    MovePlayerClientRpc(playerId, steps);
 
-  IEnumerator DoRoll(int sum) {
-    var cur = _g.Players.Find(x => x.Id == _g.CurrentTurnPlayerId);
-    PlayerController view = null;
-    if (players != null) {
-      int viewIndex = cur.Id - 1;
-      if ((uint)viewIndex < (uint)players.Length) view = players[viewIndex];
+    _turnSystem.MoveAndResolve(steps);
+    int previousPlayerId = playerId;
+    _turnSystem.EndTurn();
+    int nextPlayerId = _serverGame.CurrentTurnPlayerId;
+    if (_serverGame.Players.Count > 0) {
+      int minId = _serverGame.Players.Min(x => x.Id);
+      if (nextPlayerId == minId && previousPlayerId != minId) _round++;
     }
-    if (view != null) yield return StartCoroutine(view.MoveBySteps(sum));
-    _turn.MoveAndResolve(sum);
-    RefreshUI();
-    _turn.EndTurn();
-    RefreshUI();
+
+    var meta = _metaState.Value;
+    meta.CurrentTurnPlayerId = nextPlayerId;
+    meta.Round = Mathf.Max(1, _round);
+    meta.SessionActive = _serverGame.Players.Count > 0;
+    _metaState.Value = meta;
+
+    SyncNetworkStateFromDomain();
   }
 
-  void RefreshUI() {
-    if (turnText != null) turnText.text = $"Lượt: P{_g.CurrentTurnPlayerId}";
-    TextMeshProUGUI[] moneyTxt = { p1Money, p2Money, p3Money, p4Money };
-    for (int i = 0; i < moneyTxt.Length; i++) {
-      if (moneyTxt[i] == null) continue;
-      if (i < _g.Players.Count) moneyTxt[i].text = $"P{i + 1}: {_g.Players[i].Money}";
-      else moneyTxt[i].text = string.Empty;
-    }
+  [ClientRpc]
+  void MovePlayerClientRpc(int playerId, int steps, ClientRpcParams rpcParams = default) {
+    if (IsServer || players == null) return;
+    int index = playerId - 1;
+    if (index < 0 || index >= players.Length) return;
+    var view = players[index];
+    if (view == null) return;
+    StartCoroutine(view.MoveBySteps(steps));
   }
 
-  // UI hook: buy when standing on an unowned property
   public void OnBuyCurrent() {
-    var p = _g.Players.Find(x => x.Id == _g.CurrentTurnPlayerId);
-    if (!_g.Properties.TryGetValue(p.NodeIndex, out var pr)) return;
-    if (BoardRules.CanBuy(p, pr)) BoardRules.Buy(p, pr);
-    RefreshUI();
   }
 
-  // UI hook: upgrade house at current tile (levels 0..4 -> 1..5)
   public void OnUpgradeHouseCurrent() {
-    var p = _g.Players.Find(x => x.Id == _g.CurrentTurnPlayerId);
-    if (!_g.Properties.TryGetValue(p.NodeIndex, out var pr)) return;
-    if (BoardRules.CanUpgradeHouse(p, pr, _econ)) BoardRules.UpgradeHouse(p, pr, _econ);
-    RefreshUI();
   }
 
-  // UI hook: upgrade to hotel if level==5
   public void OnUpgradeHotelCurrent() {
-    var p = _g.Players.Find(x => x.Id == _g.CurrentTurnPlayerId);
-    if (!_g.Properties.TryGetValue(p.NodeIndex, out var pr)) return;
-    if (BoardRules.CanUpgradeHotel(p, pr, _econ)) BoardRules.UpgradeHotel(p, pr, _econ);
-    RefreshUI();
   }
 
-  // UI hook: upgrade to hotel for a chosen owned tile when at Start (policy-based)
   public void OnUpgradeHotelAt(int tileId) {
-    var p = _g.Players.Find(x => x.Id == _g.CurrentTurnPlayerId);
-    if (!_g.Properties.TryGetValue(tileId, out var pr)) return;
-    if (BoardRules.CanUpgradeHotel(p, pr, _econ)) BoardRules.UpgradeHotel(p, pr, _econ);
-    RefreshUI();
   }
 
-  // UI hook: takeover property from another player if allowed and affordable
   public void OnTakeoverCurrent() {
-    var buyer = _g.Players.Find(x => x.Id == _g.CurrentTurnPlayerId);
-    if (!_g.Properties.TryGetValue(buyer.NodeIndex, out var pr)) return;
-    if (pr.Owner == Owner.None || (int)pr.Owner == buyer.Id) return;
-    var seller = _g.Players.Find(x => x.Id == (int)pr.Owner);
-    if (BoardRules.CanTakeover(buyer, pr, _econ)) BoardRules.BuyTakeover(buyer, seller, pr, _econ);
-    RefreshUI();
+
   }
 
   bool TryGetTile(int tileId, out TileDef tile) {

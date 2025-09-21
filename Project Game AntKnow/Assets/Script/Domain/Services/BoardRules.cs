@@ -76,10 +76,11 @@ public static class BoardRules {
     return rent;
   }
 
-  public static void PayRent(PlayerState payer, PlayerState owner, int rent) {
+  public static int PayRent(PlayerState payer, PlayerState owner, int rent) {
     int reducePct = payer.Resistance / 100;
     int pay = Math.Max(0, rent - rent * reducePct / 100);
     payer.Money -= pay;
-    owner.Money += rent;
+    owner.Money += pay;
+    return pay;
   }
 }

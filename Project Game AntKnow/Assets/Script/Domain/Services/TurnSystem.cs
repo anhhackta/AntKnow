@@ -7,13 +7,15 @@ public sealed class TurnSystem {
   readonly Func<int, (int amount, int? destNode)> _tileParam;
   readonly int _baseSalary;
   readonly PropertyEconomy _econ;
+  readonly CardRuleEngine _cardRules;
 
   public TurnSystem(GameState g,
                     Func<int,TileType> tileType,
                     Func<int,PropertyState> prop,
                     Func<int,(int amount,int? destNode)> tileParam,
                     int baseSalary = 200,
-                    PropertyEconomy econ = null) {
+                    PropertyEconomy econ = null,
+                    CardRuleEngine cardRules = null) {
     _g=g; _tileType=tileType; _prop=prop; _tileParam=tileParam; _baseSalary=baseSalary; _econ = econ ?? new PropertyEconomy(
       new int[]{100,150,200,250,300},
       new int[]{25,50,75,100,125,150},
@@ -21,6 +23,7 @@ public sealed class TurnSystem {
       new int[]{150,200,300,400,500,600},
       false
     );
+    _cardRules = cardRules;
   }
 
   public void MoveAndResolve(int steps) {

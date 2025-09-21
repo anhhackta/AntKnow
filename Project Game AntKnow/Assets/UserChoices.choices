@@ -20,17 +20,17 @@ MonoBehaviour:
       - Slow
     - QuestionId: Cheating
       Answers:
-      - CheatingNotImportant
+      - CheatingImportant
     - QuestionId: CostSensitivity
       Answers:
-      - BestMargin
+      - BestExperience
     - QuestionId: NetcodeArchitecture
       Answers:
-      - NoNetcode
+      - ClientServer
     - QuestionId: PlayerCount
       Answers:
       - 4
   Preset: 4
   SelectedSolutions:
-    SelectedHostingModel: 1
+    SelectedHostingModel: 2
     SelectedNetcodeSolution: 1
