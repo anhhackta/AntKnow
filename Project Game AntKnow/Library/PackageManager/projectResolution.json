@@ -11,6 +11,16 @@
     "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Packages\\com.unity.nuget.newtonsoft-json\\package.json"
   ],
   "outputs": {
+    "com.boxqkrtm.ide.cursor@https://github.com/boxqkrtm/com.unity.ide.cursor.git": {
+      "name": "com.boxqkrtm.ide.cursor",
+      "displayName": "Cursor Editor",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.boxqkrtm.ide.cursor@38fecf55e4fd",
+      "fingerprint": "38fecf55e4fd94ccfe58a92ed8ad1a529ba1694e",
+      "editorCompatibility": "2019.4.25f1",
+      "version": "2.0.25",
+      "source": "git",
+      "testable": false
+    },
     "com.unity.ai.navigation@2.0.7": {
       "name": "com.unity.ai.navigation",
       "displayName": "AI Navigation",
@@ -61,53 +71,13 @@
       "source": "registry",
       "testable": false
     },
-    "com.unity.ide.vscode@1.2.4": {
+    "com.unity.ide.vscode@1.2.5": {
       "name": "com.unity.ide.vscode",
       "displayName": "Visual Studio Code Editor",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.ide.vscode@eb5de66d4c77",
-      "fingerprint": "eb5de66d4c77580302e328d62de70e3074f61721",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.ide.vscode@82e68656b7bd",
+      "fingerprint": "82e68656b7bdc5da8beb1fbaf1bb4ecf13456d51",
       "editorCompatibility": "2019.2.0a12",
-      "version": "1.2.4",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.multiplayer.center@1.0.0": {
-      "name": "com.unity.multiplayer.center",
-      "displayName": "Multiplayer Center",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.multiplayer.center@f3fb577b3546",
-      "fingerprint": "f3fb577b3546594b97b8cc34307cd621f60f1c73",
-      "editorCompatibility": "6000.0.0a1",
-      "version": "1.0.0",
-      "source": "builtin",
-      "testable": false
-    },
-    "com.unity.multiplayer.center.quickstart@1.0.1": {
-      "name": "com.unity.multiplayer.center.quickstart",
-      "displayName": "Multiplayer Center Quickstart Content",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.multiplayer.center.quickstart@1fcc41c23ee5",
-      "fingerprint": "1fcc41c23ee54bd90f68bb85c9270ba3af0c22fb",
-      "editorCompatibility": "6000.0.19f1",
-      "version": "1.0.1",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.multiplayer.playmode@1.6.1": {
-      "name": "com.unity.multiplayer.playmode",
-      "displayName": "Multiplayer Play Mode",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.multiplayer.playmode@3acaa705f0f9",
-      "fingerprint": "3acaa705f0f994547817cc7e4e98b83a8596a677",
-      "editorCompatibility": "6000.0.48f1",
-      "version": "1.6.1",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.multiplayer.tools@2.2.6": {
-      "name": "com.unity.multiplayer.tools",
-      "displayName": "Multiplayer Tools",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.multiplayer.tools@8395f16a9a9a",
-      "fingerprint": "8395f16a9a9a77c66f48d3ef8dfd3a1bae8cfbf4",
-      "editorCompatibility": "6000.0.0a1",
-      "version": "2.2.6",
+      "version": "1.2.5",
       "source": "registry",
       "testable": false
     },
@@ -128,26 +98,6 @@
       "fingerprint": "60f197570e52b734f92255529829e8708961d5f0",
       "editorCompatibility": "6000.0.0a1",
       "version": "2.5.1",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.services.multiplayer@1.1.8": {
-      "name": "com.unity.services.multiplayer",
-      "displayName": "Multiplayer Services",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.services.multiplayer@34def56704ad",
-      "fingerprint": "34def56704ad0a5fe3e7ec2c421f070f2a5bff1e",
-      "editorCompatibility": "2022.3.0a1",
-      "version": "1.1.8",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.services.vivox@16.7.0": {
-      "name": "com.unity.services.vivox",
-      "displayName": "Vivox",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.services.vivox@563fb2c43dc5",
-      "fingerprint": "563fb2c43dc5ef3aba89b7f55c945a06a2c1ba10",
-      "editorCompatibility": "2021.3.0a1",
-      "version": "16.7.0",
       "source": "registry",
       "testable": false
     },
@@ -512,26 +462,6 @@
       "source": "builtin",
       "testable": false
     },
-    "com.unity.services.core@1.14.0": {
-      "name": "com.unity.services.core",
-      "displayName": "Services Core",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.services.core@9e81a5e38245",
-      "fingerprint": "9e81a5e382457b799480b311ce51187be99abbbf",
-      "editorCompatibility": "2021.3.0a1",
-      "version": "1.14.0",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.settings-manager@2.1.0": {
-      "name": "com.unity.settings-manager",
-      "displayName": "Settings Manager",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.settings-manager@41738c275190",
-      "fingerprint": "41738c27519039c335849eb78949382f4d7a3544",
-      "editorCompatibility": "2022.3.0a1",
-      "version": "2.1.0",
-      "source": "registry",
-      "testable": false
-    },
     "com.unity.transport@2.5.1": {
       "name": "com.unity.transport",
       "displayName": "Unity Transport",
@@ -539,6 +469,36 @@
       "fingerprint": "9dd554c2c47e3d32c3133bb985962675f0696388",
       "editorCompatibility": "2022.3.0a1",
       "version": "2.5.1",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.nuget.mono-cecil@1.11.4": {
+      "name": "com.unity.nuget.mono-cecil",
+      "displayName": "Mono Cecil",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.nuget.mono-cecil@d6f9955a5d5f",
+      "fingerprint": "d6f9955a5d5f84d45442ff1ad0fb694cc6e2fd62",
+      "editorCompatibility": "2018.4.0a1",
+      "version": "1.11.4",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.services.multiplayer@1.1.0": {
+      "name": "com.unity.services.multiplayer",
+      "displayName": "Multiplayer Services",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.services.multiplayer@e7b9f7939c7c",
+      "fingerprint": "e7b9f7939c7c2aadbfe13da5e47dfbedb65795e3",
+      "editorCompatibility": "2022.3.0a1",
+      "version": "1.1.0",
+      "source": "registry",
+      "testable": false
+    },
+    "com.autodesk.fbx@5.1.1": {
+      "name": "com.autodesk.fbx",
+      "displayName": "Autodesk FBX SDK for Unity",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.autodesk.fbx@5797ff6b31c7",
+      "fingerprint": "5797ff6b31c7c66189bffe1adc9cbf0ad5a9cbbf",
+      "editorCompatibility": "2020.3.0a1",
+      "version": "5.1.1",
       "source": "registry",
       "testable": false
     },
@@ -562,13 +522,23 @@
       "source": "registry",
       "testable": false
     },
-    "com.unity.services.wire@1.4.0": {
+    "com.unity.services.core@1.14.0": {
+      "name": "com.unity.services.core",
+      "displayName": "Services Core",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.services.core@9e81a5e38245",
+      "fingerprint": "9e81a5e382457b799480b311ce51187be99abbbf",
+      "editorCompatibility": "2021.3.0a1",
+      "version": "1.14.0",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.services.wire@1.3.0": {
       "name": "com.unity.services.wire",
       "displayName": "Wire",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.services.wire@2d36cce58c62",
-      "fingerprint": "2d36cce58c62ac886c8bb03e9e262a35dcdc4752",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.services.wire@cc07372d5f37",
+      "fingerprint": "cc07372d5f37680cdc2e99d03f90a13ffc9093bf",
       "editorCompatibility": "2021.3.0a1",
-      "version": "1.4.0",
+      "version": "1.3.0",
       "source": "registry",
       "testable": false
     },
@@ -592,33 +562,13 @@
       "source": "registry",
       "testable": false
     },
-    "com.unity.nuget.mono-cecil@1.11.4": {
-      "name": "com.unity.nuget.mono-cecil",
-      "displayName": "Mono Cecil",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.nuget.mono-cecil@d6f9955a5d5f",
-      "fingerprint": "d6f9955a5d5f84d45442ff1ad0fb694cc6e2fd62",
-      "editorCompatibility": "2018.4.0a1",
-      "version": "1.11.4",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.profiling.core@1.0.2": {
-      "name": "com.unity.profiling.core",
-      "displayName": "Unity Profiling Core API",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.profiling.core@aac7b93912bc",
-      "fingerprint": "aac7b93912bc5df5fe06b04ff1b758493cdc2346",
-      "editorCompatibility": "2020.1.0a1",
-      "version": "1.0.2",
-      "source": "registry",
-      "testable": false
-    },
-    "com.autodesk.fbx@5.1.1": {
-      "name": "com.autodesk.fbx",
-      "displayName": "Autodesk FBX SDK for Unity",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.autodesk.fbx@5797ff6b31c7",
-      "fingerprint": "5797ff6b31c7c66189bffe1adc9cbf0ad5a9cbbf",
+    "com.unity.test-framework.performance@3.1.0": {
+      "name": "com.unity.test-framework.performance",
+      "displayName": "Performance testing API",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.test-framework.performance@92d1d09a72ed",
+      "fingerprint": "92d1d09a72ed696fa23fd76c675b29d211664b50",
       "editorCompatibility": "2020.3.0a1",
-      "version": "5.1.1",
+      "version": "3.1.0",
       "source": "registry",
       "testable": false
     },
@@ -629,16 +579,6 @@
       "fingerprint": "e87c554599f00a0c1cac936220969bb69ffb9a53",
       "editorCompatibility": "2021.3.0a1",
       "version": "1.0.0",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.test-framework.performance@3.1.0": {
-      "name": "com.unity.test-framework.performance",
-      "displayName": "Performance testing API",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.test-framework.performance@92d1d09a72ed",
-      "fingerprint": "92d1d09a72ed696fa23fd76c675b29d211664b50",
-      "editorCompatibility": "2020.3.0a1",
-      "version": "3.1.0",
       "source": "registry",
       "testable": false
     }

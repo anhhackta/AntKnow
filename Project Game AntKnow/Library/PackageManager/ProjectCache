@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638937623366585196
-    m_Hash: 1654403448
+      ticks: 638941332704961801
+    m_Hash: 667318649
   m_LockFileStatus:
     m_FilePath: D:/ProjectGame/AntKnow/Project Game AntKnow/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638937623366647466
-    m_Hash: 2303156977
+      ticks: 638941332704971807
+    m_Hash: 2748205117
 m_EmbeddedPackageManifests:
   m_ManifestsStatus:
     D:/ProjectGame/AntKnow/Project Game AntKnow/Packages/com.unity.nuget.newtonsoft-json/package.json:
@@ -23,21 +23,97 @@ m_EmbeddedPackageManifests:
       m_ContentTrackingEnabled: 1
       m_ModificationDate:
         serializedVersion: 2
-        ticks: 638874548690000000
-      m_Hash: 1812846801
+        ticks: 638941332704961801
+      m_Hash: 3316654971
     D:/ProjectGame/AntKnow/Project Game AntKnow/Packages/ai.meshy/package.json:
       m_FilePath: D:/ProjectGame/AntKnow/Project Game AntKnow/Packages/ai.meshy/package.json
       m_PathExists: 1
       m_ContentTrackingEnabled: 1
       m_ModificationDate:
         serializedVersion: 2
-        ticks: 638874548090000000
+        ticks: 638941332704782841
       m_Hash: 131481642
 m_LocalPackages:
   m_LocalFileStatus: []
 m_ProjectPath: D:/ProjectGame/AntKnow/Project Game AntKnow/Packages
 m_EditorVersion: 6000.0.48f1 (170d2541580d)
 m_ResolvedPackages:
+- packageId: com.boxqkrtm.ide.cursor@https://github.com/boxqkrtm/com.unity.ide.cursor.git
+  testable: 0
+  isDirectDependency: 1
+  version: 2.0.25
+  source: 5
+  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.boxqkrtm.ide.cursor@38fecf55e4fd
+  assetPath: Packages/com.boxqkrtm.ide.cursor
+  name: com.boxqkrtm.ide.cursor
+  displayName: Cursor Editor
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: 
+  description: Cursor editor integration for supporting Cursor as code editor for
+    unity. Adds support for generating csproj files for intellisense purposes, auto
+    discovery of installations, etc.
+  errors: []
+  versions:
+    all: []
+    compatible: []
+    recommended: 
+    deprecated: []
+  dependencies:
+  - name: com.unity.test-framework
+    version: 1.1.9
+  resolvedDependencies:
+  - name: com.unity.test-framework
+    version: 1.5.1
+  - name: com.unity.ext.nunit
+    version: 2.0.5
+  - name: com.unity.modules.imgui
+    version: 1.0.0
+  - name: com.unity.modules.jsonserialize
+    version: 1.0.0
+  keywords: []
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 0
+  isAssetStorePackage: 0
+  datePublishedTicks: 0
+  documentationUrl: 
+  hasRepository: 0
+  repository:
+    type: 
+    url: 
+    revision: 
+    path: 
+  unityLifecycle:
+    version: 
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 38fecf55e4fd94ccfe58a92ed8ad1a529ba1694e
+    revision: HEAD
+  upmReserved: '{"changelog":"Integration:\n\n- Add support for Cursor"}'
+  assetStore:
+    productId: 
+  fingerprint: 38fecf55e4fd94ccfe58a92ed8ad1a529ba1694e
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 
+    minimumUnityVersion: 2019.4.25f1
 - packageId: com.unity.ai.navigation@2.0.7
   testable: 0
   isDirectDependency: 1
@@ -528,11 +604,14 @@ m_ResolvedPackages:
     - 3.0.35
     - 3.0.36
     - 3.0.37
+    - 3.0.38
     compatible:
     - 3.0.36
     - 3.0.37
-    recommended: 3.0.37
-    deprecated: []
+    - 3.0.38
+    recommended: 3.0.38
+    deprecated:
+    - 3.0.37
   dependencies:
   - name: com.unity.ext.nunit
     version: 1.0.6
@@ -686,12 +765,12 @@ m_ResolvedPackages:
     compatibilityLevel: 0
     minimumPackageVersion: 2.0.23
     minimumUnityVersion: 2019.4.25f1
-- packageId: com.unity.ide.vscode@1.2.4
+- packageId: com.unity.ide.vscode@1.2.5
   testable: 0
   isDirectDependency: 1
-  version: 1.2.4
+  version: 1.2.5
   source: 1
-  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.ide.vscode@eb5de66d4c77
+  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.ide.vscode@82e68656b7bd
   assetPath: Packages/com.unity.ide.vscode
   name: com.unity.ide.vscode
   displayName: Visual Studio Code Editor
@@ -751,13 +830,13 @@ m_ResolvedPackages:
   entitlements:
     licensingModel: 1
   isAssetStorePackage: 0
-  datePublishedTicks: 637660806170000000
+  datePublishedTicks: 637800255360000000
   documentationUrl: 
   hasRepository: 1
   repository:
     type: git
-    url: git+https://github.com/Unity-Technologies/com.unity.ide.vscode.git
-    revision: 1f4f605d5c988cb610c372b5c5216c46cc8f5d30
+    url: https://github.com/Unity-Technologies/com.unity.ide.vscode.git
+    revision: b0740c80bfc2440527c317109f7c3d9100132722
     path: 
   unityLifecycle:
     version: 
@@ -774,465 +853,11 @@ m_ResolvedPackages:
   upmReserved: 
   assetStore:
     productId: 
-  fingerprint: eb5de66d4c77580302e328d62de70e3074f61721
+  fingerprint: 82e68656b7bdc5da8beb1fbaf1bb4ecf13456d51
   editorCompatibility:
     compatibilityLevel: 0
     minimumPackageVersion: 1.0.2
     minimumUnityVersion: 2019.2.0a12
-- packageId: com.unity.multiplayer.center@1.0.0
-  testable: 0
-  isDirectDependency: 1
-  version: 1.0.0
-  source: 2
-  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.multiplayer.center@f3fb577b3546
-  assetPath: Packages/com.unity.multiplayer.center
-  name: com.unity.multiplayer.center
-  displayName: Multiplayer Center
-  author:
-    name: 
-    email: 
-    url: 
-  category: 
-  type: 
-  description: The multiplayer center provides a starting point to create multiplayer
-    games. It will recommend specific packages and enable you to easily access integrations,
-    samples and documentation.
-  errors: []
-  versions:
-    all:
-    - 0.2.1
-    - 0.3.0
-    - 0.4.0
-    - 1.0.0-pre.1
-    - 1.0.0-pre.2
-    - 1.0.0-pre.3
-    - 1.0.0
-    compatible:
-    - 1.0.0
-    recommended: 1.0.0
-    deprecated: []
-  dependencies:
-  - name: com.unity.modules.uielements
-    version: 1.0.0
-  resolvedDependencies:
-  - name: com.unity.modules.uielements
-    version: 1.0.0
-  - name: com.unity.modules.ui
-    version: 1.0.0
-  - name: com.unity.modules.imgui
-    version: 1.0.0
-  - name: com.unity.modules.jsonserialize
-    version: 1.0.0
-  - name: com.unity.modules.hierarchycore
-    version: 1.0.0
-  keywords:
-  - Multiplayer
-  - Netcode
-  - Services
-  - Tools
-  registry:
-    id: main
-    name: 
-    url: https://packages.unity.com
-    scopes: []
-    isDefault: 1
-    capabilities: 7
-    configSource: 0
-  hideInEditor: 1
-  entitlements:
-    licensingModel: 0
-  isAssetStorePackage: 0
-  datePublishedTicks: 0
-  documentationUrl: 
-  hasRepository: 0
-  repository:
-    type: 
-    url: 
-    revision: 
-    path: 
-  unityLifecycle:
-    version: 1.0.0
-    nextVersion: 
-    recommendedVersion: 
-    isDeprecated: 0
-    deprecationMessage: 
-  isDeprecated: 0
-  deprecationMessage: 
-  git:
-    hash: 
-    revision: 
-  upmReserved: 
-  assetStore:
-    productId: 
-  fingerprint: f3fb577b3546594b97b8cc34307cd621f60f1c73
-  editorCompatibility:
-    compatibilityLevel: 0
-    minimumPackageVersion: 1.0.0
-    minimumUnityVersion: 6000.0.0a1
-- packageId: com.unity.multiplayer.center.quickstart@1.0.1
-  testable: 0
-  isDirectDependency: 1
-  version: 1.0.1
-  source: 1
-  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.multiplayer.center.quickstart@1fcc41c23ee5
-  assetPath: Packages/com.unity.multiplayer.center.quickstart
-  name: com.unity.multiplayer.center.quickstart
-  displayName: Multiplayer Center Quickstart Content
-  author:
-    name: 
-    email: 
-    url: 
-  category: 
-  type: 
-  description: This package populates the Quickstart tab of the Multiplayer Center.
-  errors: []
-  versions:
-    all:
-    - 0.2.1
-    - 0.3.0
-    - 0.4.0
-    - 1.0.0-pre.1
-    - 1.0.0-pre.2
-    - 1.0.0-pre.3
-    - 1.0.0
-    - 1.0.1
-    compatible:
-    - 0.2.1
-    - 0.3.0
-    - 0.4.0
-    - 1.0.0-pre.1
-    - 1.0.0-pre.2
-    - 1.0.0-pre.3
-    - 1.0.0
-    - 1.0.1
-    recommended: 
-    deprecated: []
-  dependencies:
-  - name: com.unity.modules.uielements
-    version: 1.0.0
-  - name: com.unity.multiplayer.center
-    version: 1.0.0
-  resolvedDependencies:
-  - name: com.unity.modules.uielements
-    version: 1.0.0
-  - name: com.unity.modules.ui
-    version: 1.0.0
-  - name: com.unity.modules.imgui
-    version: 1.0.0
-  - name: com.unity.modules.jsonserialize
-    version: 1.0.0
-  - name: com.unity.modules.hierarchycore
-    version: 1.0.0
-  - name: com.unity.multiplayer.center
-    version: 1.0.0
-  keywords: []
-  registry:
-    id: main
-    name: 
-    url: https://packages.unity.com
-    scopes: []
-    isDefault: 1
-    capabilities: 7
-    configSource: 0
-  hideInEditor: 1
-  entitlements:
-    licensingModel: 1
-  isAssetStorePackage: 0
-  datePublishedTicks: 638700362515730000
-  documentationUrl: https://docs.unity3d.com/Packages/com.unity.multiplayer.center.quickstart@1.0/manual/index.html
-  hasRepository: 1
-  repository:
-    type: git
-    url: https://github.cds.internal.unity3d.com/unity/com.unity.multiplayer.center.git
-    revision: 23433a99efbf46511691df6fde1ab9ca4c8fbd4b
-    path: 
-  unityLifecycle:
-    version: 
-    nextVersion: 
-    recommendedVersion: 
-    isDeprecated: 0
-    deprecationMessage: 
-  isDeprecated: 0
-  deprecationMessage: 
-  git:
-    hash: 
-    revision: 
-  upmReserved: '{"changelog":"### Changed\n- Migrated forum links in all Quickstart
-    sections\n- Improved Quickstart flow by opening MPPM with the sample scenes"}'
-  assetStore:
-    productId: 
-  fingerprint: 1fcc41c23ee54bd90f68bb85c9270ba3af0c22fb
-  editorCompatibility:
-    compatibilityLevel: 0
-    minimumPackageVersion: 0.2.1
-    minimumUnityVersion: 6000.0.19f1
-- packageId: com.unity.multiplayer.playmode@1.6.1
-  testable: 0
-  isDirectDependency: 1
-  version: 1.6.1
-  source: 1
-  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.multiplayer.playmode@3acaa705f0f9
-  assetPath: Packages/com.unity.multiplayer.playmode
-  name: com.unity.multiplayer.playmode
-  displayName: Multiplayer Play Mode
-  author:
-    name: 
-    email: 
-    url: 
-  category: 
-  type: 
-  description: Multiplayer Play Mode is a feature that enables multiple editor instances
-    to be opened simultaneously on the same development device.
-  errors: []
-  versions:
-    all:
-    - 0.1.0
-    - 0.1.1
-    - 0.2.0
-    - 0.3.0
-    - 0.4.0
-    - 0.5.0
-    - 0.6.0
-    - 1.0.0-pre.1
-    - 1.0.0-pre.2
-    - 1.0.0-pre.3
-    - 1.0.0-pre.4
-    - 1.0.0
-    - 1.1.0
-    - 1.2.0
-    - 1.2.1
-    - 1.2.2
-    - 1.3.0-exp.1
-    - 1.3.0-exp.2
-    - 1.3.0-exp.3
-    - 1.3.0-exp.4
-    - 1.3.0-pre.1
-    - 1.3.0-pre.2
-    - 1.3.0-pre.3
-    - 1.3.0
-    - 1.3.1
-    - 1.3.2
-    - 1.3.3
-    - 1.4.0-pre.1
-    - 1.4.0-pre.2
-    - 1.4.0-pre.3
-    - 1.4.0
-    - 1.4.1
-    - 1.4.2
-    - 1.4.3
-    - 1.5.0-exp.1
-    - 1.5.0-exp.2
-    - 1.5.0-exp.3
-    - 1.5.0-exp.4
-    - 1.5.0
-    - 1.6.0
-    - 1.6.1
-    - 2.0.0-pre.1
-    compatible:
-    - 1.3.3
-    - 1.4.0-pre.1
-    - 1.4.0-pre.2
-    - 1.5.0-exp.4
-    - 1.5.0
-    - 1.6.0
-    - 1.6.1
-    recommended: 1.3.3
-    deprecated: []
-  dependencies:
-  - name: com.unity.nuget.newtonsoft-json
-    version: 2.0.2
-  resolvedDependencies:
-  - name: com.unity.nuget.newtonsoft-json
-    version: 3.2.1
-  keywords: []
-  registry:
-    id: main
-    name: 
-    url: https://packages.unity.com
-    scopes: []
-    isDefault: 1
-    capabilities: 7
-    configSource: 0
-  hideInEditor: 1
-  entitlements:
-    licensingModel: 1
-  isAssetStorePackage: 0
-  datePublishedTicks: 638926817254090000
-  documentationUrl: https://docs.unity3d.com/Packages/com.unity.multiplayer.playmode@1.6/manual/index.html
-  hasRepository: 1
-  repository:
-    type: git
-    url: https://github.cds.internal.unity3d.com/unity/multiplayer-workflows.git
-    revision: d3d04631d26a390c05ab11bfbcbf4e2aae57fe84
-    path: 
-  unityLifecycle:
-    version: 1.3.3
-    nextVersion: 
-    recommendedVersion: 
-    isDeprecated: 0
-    deprecationMessage: 
-  isDeprecated: 0
-  deprecationMessage: 
-  git:
-    hash: 
-    revision: 
-  upmReserved: "{\"changelog\":\"### Added\\n- Added a Profiler panel option within
-    Clone Editors that users can toggle on/off during Edit and Play mode.\\n- Added
-    validation checks for remote instances to ensure the cloud project ID, environment,
-    and Multiplay are all properly set up before running a scenario\\n\\n### Fixed\\n-
-    Fixed an issue where the clone editor\u2019s audio toggle would reset every time
-    scripts were reloaded\\n- Fixed an issue where the Main Editor's build profile
-    fails to restore when building local and remote instances.\\n- Fixed the play
-    button not updating when entering play mode using keyboard shortcuts\\n- Fixed
-    an issue where the Play Mode status popup window failed to update during loading\\n-
-    Fixed an issue where removing an active Scenario Configuration fails to close
-    running instances.\\n- Fixed an issue where removing an Instance configuration
-    from within the Configure Play Mode Scenarios window results in a null reference
-    error.\\n- Fixed an issue where the Mute Player At Launch toggle not working
-    properly\"}"
-  assetStore:
-    productId: 
-  fingerprint: 3acaa705f0f994547817cc7e4e98b83a8596a677
-  editorCompatibility:
-    compatibilityLevel: 0
-    minimumPackageVersion: 1.3.3
-    minimumUnityVersion: 6000.0.48f1
-- packageId: com.unity.multiplayer.tools@2.2.6
-  testable: 0
-  isDirectDependency: 1
-  version: 2.2.6
-  source: 1
-  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.multiplayer.tools@8395f16a9a9a
-  assetPath: Packages/com.unity.multiplayer.tools
-  name: com.unity.multiplayer.tools
-  displayName: Multiplayer Tools
-  author:
-    name: 
-    email: 
-    url: 
-  category: 
-  type: 
-  description: Adds a suite of tools that improve workflows for multiplayer development
-  errors: []
-  versions:
-    all:
-    - 1.0.0-pre.2
-    - 1.0.0-pre.6
-    - 1.0.0-pre.7
-    - 1.0.0-pre.8
-    - 1.0.0
-    - 1.1.0
-    - 1.1.1
-    - 2.0.0-pre.2
-    - 2.0.0-pre.3
-    - 2.0.0-pre.5
-    - 2.1.0
-    - 2.2.0
-    - 2.2.1
-    - 2.2.2
-    - 2.2.3
-    - 2.2.4
-    - 2.2.5
-    - 2.2.6
-    compatible:
-    - 2.2.1
-    - 2.2.2
-    - 2.2.3
-    - 2.2.4
-    - 2.2.5
-    - 2.2.6
-    recommended: 2.2.6
-    deprecated: []
-  dependencies:
-  - name: com.unity.burst
-    version: 1.8.18
-  - name: com.unity.collections
-    version: 2.5.1
-  - name: com.unity.mathematics
-    version: 1.3.2
-  - name: com.unity.profiling.core
-    version: 1.0.2
-  - name: com.unity.nuget.mono-cecil
-    version: 1.11.4
-  - name: com.unity.modules.uielements
-    version: 1.0.0
-  - name: com.unity.nuget.newtonsoft-json
-    version: 3.2.1
-  resolvedDependencies:
-  - name: com.unity.burst
-    version: 1.8.21
-  - name: com.unity.mathematics
-    version: 1.3.2
-  - name: com.unity.modules.jsonserialize
-    version: 1.0.0
-  - name: com.unity.collections
-    version: 2.5.1
-  - name: com.unity.test-framework
-    version: 1.5.1
-  - name: com.unity.ext.nunit
-    version: 2.0.5
-  - name: com.unity.modules.imgui
-    version: 1.0.0
-  - name: com.unity.nuget.mono-cecil
-    version: 1.11.4
-  - name: com.unity.test-framework.performance
-    version: 3.1.0
-  - name: com.unity.profiling.core
-    version: 1.0.2
-  - name: com.unity.modules.uielements
-    version: 1.0.0
-  - name: com.unity.modules.ui
-    version: 1.0.0
-  - name: com.unity.modules.hierarchycore
-    version: 1.0.0
-  - name: com.unity.nuget.newtonsoft-json
-    version: 3.2.1
-  keywords:
-  - Multiplayer
-  - Netcode
-  - GameObjects
-  - Tools
-  registry:
-    id: main
-    name: 
-    url: https://packages.unity.com
-    scopes: []
-    isDefault: 1
-    capabilities: 7
-    configSource: 0
-  hideInEditor: 1
-  entitlements:
-    licensingModel: 1
-  isAssetStorePackage: 0
-  datePublishedTicks: 638895524257810000
-  documentationUrl: https://docs.unity3d.com/Packages/com.unity.multiplayer.tools@2.2/manual/index.html
-  hasRepository: 1
-  repository:
-    type: git
-    url: https://github.com/Unity-Technologies/com.unity.multiplayer.tools.git
-    revision: ab36460379fa30068f17b98cbc4de4464874ac76
-    path: 
-  unityLifecycle:
-    version: 2.2.1
-    nextVersion: 
-    recommendedVersion: 2.2.0
-    isDeprecated: 0
-    deprecationMessage: 
-  isDeprecated: 0
-  deprecationMessage: 
-  git:
-    hash: 
-    revision: 
-  upmReserved: '{"changelog":"#### *Network Scene Visualization*\n- Fixed settings
-    dropdown appearing at the wrong position in the scene view when close to an edge.\n-
-    Unified the settings overlay to only use foldout."}'
-  assetStore:
-    productId: 
-  fingerprint: 8395f16a9a9a77c66f48d3ef8dfd3a1bae8cfbf4
-  editorCompatibility:
-    compatibilityLevel: 0
-    minimumPackageVersion: 2.2.1
-    minimumUnityVersion: 6000.0.0a1
 - packageId: com.unity.multiplayer.widgets@1.0.1
   testable: 0
   isDirectDependency: 1
@@ -1274,7 +899,7 @@ m_ResolvedPackages:
     version: 1.0.0
   resolvedDependencies:
   - name: com.unity.services.multiplayer
-    version: 1.1.8
+    version: 1.1.0
   - name: com.unity.transport
     version: 2.5.1
   - name: com.unity.burst
@@ -1312,7 +937,7 @@ m_ResolvedPackages:
   - name: com.unity.modules.ui
     version: 1.0.0
   - name: com.unity.services.wire
-    version: 1.4.0
+    version: 1.3.0
   - name: com.unity.services.deployment
     version: 1.3.0
   - name: com.unity.services.deployment.api
@@ -1533,329 +1158,6 @@ m_ResolvedPackages:
     compatibilityLevel: 0
     minimumPackageVersion: 1.12.0
     minimumUnityVersion: 6000.0.0a1
-- packageId: com.unity.services.multiplayer@1.1.8
-  testable: 0
-  isDirectDependency: 1
-  version: 1.1.8
-  source: 1
-  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.services.multiplayer@34def56704ad
-  assetPath: Packages/com.unity.services.multiplayer
-  name: com.unity.services.multiplayer
-  displayName: Multiplayer Services
-  author:
-    name: 
-    email: 
-    url: 
-  category: 
-  type: 
-  description: The Multiplayer Services package is a one-stop solution for adding
-    multiplayer elements to a game developed in Unity. The Unity Gaming Services
-    (UGS) Multiplayer services powers these capabilities to define how groups of
-    players interact in your games.
-  errors: []
-  versions:
-    all:
-    - 0.0.5
-    - 0.0.6
-    - 0.0.7
-    - 0.2.0
-    - 0.3.0
-    - 0.4.0
-    - 0.4.2
-    - 0.5.0
-    - 0.5.1
-    - 0.6.0
-    - 1.0.0-pre.1
-    - 1.0.0
-    - 1.0.1
-    - 1.0.2
-    - 1.1.0
-    - 1.1.1
-    - 1.1.2
-    - 1.1.3
-    - 1.1.4
-    - 1.1.5
-    - 1.1.6
-    - 1.1.7
-    - 1.1.8
-    - 1.2.0-exp.1
-    - 1.2.0-exp.2
-    - 1.2.0-exp.3
-    - 1.2.0-exp.4
-    - 1.2.0-pre.1
-    compatible:
-    - 1.1.0
-    - 1.1.1
-    - 1.1.2
-    - 1.1.3
-    - 1.1.4
-    - 1.1.5
-    - 1.1.6
-    - 1.1.7
-    - 1.1.8
-    - 1.2.0-exp.1
-    - 1.2.0-exp.2
-    - 1.2.0-exp.3
-    - 1.2.0-exp.4
-    - 1.2.0-pre.1
-    recommended: 1.1.8
-    deprecated: []
-  dependencies:
-  - name: com.unity.transport
-    version: 2.5.0
-  - name: com.unity.collections
-    version: 2.2.1
-  - name: com.unity.services.qos
-    version: 1.3.0
-  - name: com.unity.services.core
-    version: 1.13.0
-  - name: com.unity.services.wire
-    version: 1.4.0
-  - name: com.unity.services.deployment
-    version: 1.3.0
-  - name: com.unity.nuget.newtonsoft-json
-    version: 3.2.1
-  - name: com.unity.modules.unitywebrequest
-    version: 1.0.0
-  - name: com.unity.services.authentication
-    version: 3.3.3
-  resolvedDependencies:
-  - name: com.unity.transport
-    version: 2.5.1
-  - name: com.unity.burst
-    version: 1.8.21
-  - name: com.unity.mathematics
-    version: 1.3.2
-  - name: com.unity.modules.jsonserialize
-    version: 1.0.0
-  - name: com.unity.collections
-    version: 2.5.1
-  - name: com.unity.test-framework
-    version: 1.5.1
-  - name: com.unity.ext.nunit
-    version: 2.0.5
-  - name: com.unity.modules.imgui
-    version: 1.0.0
-  - name: com.unity.nuget.mono-cecil
-    version: 1.11.4
-  - name: com.unity.test-framework.performance
-    version: 3.1.0
-  - name: com.unity.services.qos
-    version: 1.3.0
-  - name: com.unity.services.core
-    version: 1.14.0
-  - name: com.unity.modules.androidjni
-    version: 1.0.0
-  - name: com.unity.nuget.newtonsoft-json
-    version: 3.2.1
-  - name: com.unity.modules.unitywebrequest
-    version: 1.0.0
-  - name: com.unity.services.authentication
-    version: 3.4.1
-  - name: com.unity.ugui
-    version: 2.0.0
-  - name: com.unity.modules.ui
-    version: 1.0.0
-  - name: com.unity.services.wire
-    version: 1.4.0
-  - name: com.unity.services.deployment
-    version: 1.3.0
-  - name: com.unity.services.deployment.api
-    version: 1.0.0
-  keywords: []
-  registry:
-    id: main
-    name: 
-    url: https://packages.unity.com
-    scopes: []
-    isDefault: 1
-    capabilities: 7
-    configSource: 0
-  hideInEditor: 1
-  entitlements:
-    licensingModel: 1
-  isAssetStorePackage: 0
-  datePublishedTicks: 638931093210250000
-  documentationUrl: https://docs.unity3d.com/Packages/com.unity.services.multiplayer@1.1/manual/index.html
-  hasRepository: 1
-  repository:
-    type: git
-    url: https://github.cds.internal.unity3d.com/unity/operate-services-sdk.git
-    revision: 5deb7fe596ccbba2d65fda33bf2cc94ba1917d7b
-    path: 
-  unityLifecycle:
-    version: 1.1.0
-    nextVersion: 
-    recommendedVersion: 
-    isDeprecated: 0
-    deprecationMessage: 
-  isDeprecated: 0
-  deprecationMessage: 
-  git:
-    hash: 
-    revision: 
-  upmReserved: '{"changelog":"### Fixed\n- Resolved an issue where a rule without
-    a reference could not be deployed","gameService":{}}'
-  assetStore:
-    productId: 
-  fingerprint: 34def56704ad0a5fe3e7ec2c421f070f2a5bff1e
-  editorCompatibility:
-    compatibilityLevel: 0
-    minimumPackageVersion: 1.1.0
-    minimumUnityVersion: 2022.3.0a1
-- packageId: com.unity.services.vivox@16.7.0
-  testable: 0
-  isDirectDependency: 1
-  version: 16.7.0
-  source: 1
-  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.services.vivox@563fb2c43dc5
-  assetPath: Packages/com.unity.services.vivox
-  name: com.unity.services.vivox
-  displayName: Vivox
-  author:
-    name: 
-    email: 
-    url: 
-  category: 
-  type: 
-  description: Unity's voice and text chat service for multiplayer communication
-    offers voice chat and direct message text service with a managed hosted solution.
-    Plug into your game and configure your project settings to add communications
-    to your project immediately. Connect an unlimited number of users in 2D and 3D
-    channels. Monitor concurrency on your dashboard. Add a custom UI to allow players
-    to control voice volume, mute, and add audio effects to voice channels and manage
-    them. Place users in team chat and allow them to participate in multiple channels.
-  errors: []
-  versions:
-    all:
-    - 15.1.150000-pre.6
-    - 15.1.150002-pre.1
-    - 15.1.150002-pre.2
-    - 15.1.160000-pre.1
-    - 15.1.170000-pre.1
-    - 15.1.180000-pre.1
-    - 15.1.180001-pre.1
-    - 15.1.180001-pre.2
-    - 15.1.180001-pre.3
-    - 15.1.180001-pre.4
-    - 15.1.180001-pre.5
-    - 15.1.190000-pre.1
-    - 15.1.190200-pre.1
-    - 15.1.190200-pre.2
-    - 15.1.190400-pre.1
-    - 15.1.200000-pre.1
-    - 15.1.210000-pre.1
-    - 15.1.210100-pre.1
-    - 15.1.230000-pre.1
-    - 15.1.230100-pre.1
-    - 15.1.240000-pre.1
-    - 15.1.250000-pre.1
-    - 15.1.260000-pre.1
-    - 16.0.0-pre.1
-    - 16.0.1
-    - 16.2.0
-    - 16.3.0
-    - 16.4.0
-    - 16.5.0
-    - 16.5.2
-    - 16.5.3
-    - 16.5.4
-    - 16.6.0
-    - 16.6.2
-    - 16.7.0
-    compatible:
-    - 16.6.0
-    - 16.6.2
-    - 16.7.0
-    recommended: 16.7.0
-    deprecated:
-    - 15.1.150000-pre.6
-    - 15.1.150002-pre.1
-    - 15.1.150002-pre.2
-    - 15.1.160000-pre.1
-    - 15.1.170000-pre.1
-    - 15.1.180000-pre.1
-    - 15.1.180001-pre.1
-    - 15.1.180001-pre.2
-    - 15.1.180001-pre.3
-    - 15.1.180001-pre.4
-    - 15.1.180001-pre.5
-    - 15.1.190000-pre.1
-    - 15.1.190200-pre.1
-    - 15.1.190200-pre.2
-    - 15.1.190400-pre.1
-    - 15.1.200000-pre.1
-  dependencies:
-  - name: com.unity.modules.audio
-    version: 1.0.0
-  - name: com.unity.services.core
-    version: 1.14.0
-  - name: com.unity.settings-manager
-    version: 1.0.3
-  - name: com.unity.nuget.newtonsoft-json
-    version: 3.0.2
-  resolvedDependencies:
-  - name: com.unity.modules.audio
-    version: 1.0.0
-  - name: com.unity.services.core
-    version: 1.14.0
-  - name: com.unity.modules.androidjni
-    version: 1.0.0
-  - name: com.unity.nuget.newtonsoft-json
-    version: 3.2.1
-  - name: com.unity.modules.unitywebrequest
-    version: 1.0.0
-  - name: com.unity.settings-manager
-    version: 2.1.0
-  keywords: []
-  registry:
-    id: main
-    name: 
-    url: https://packages.unity.com
-    scopes: []
-    isDefault: 1
-    capabilities: 7
-    configSource: 0
-  hideInEditor: 1
-  entitlements:
-    licensingModel: 1
-  isAssetStorePackage: 0
-  datePublishedTicks: 638926247563490000
-  documentationUrl: https://docs.unity3d.com/Packages/com.unity.services.vivox@16.7/manual/index.html
-  hasRepository: 1
-  repository:
-    type: git
-    url: https://github.cds.internal.unity3d.com/unity/vivox-unity-sdk.git
-    revision: 68433ba647568d436e3c4cd89a1ee193dd8a71e2
-    path: 
-  unityLifecycle:
-    version: 16.6.0
-    nextVersion: 
-    recommendedVersion: 16.7.0
-    isDeprecated: 0
-    deprecationMessage: 
-  isDeprecated: 0
-  deprecationMessage: 
-  git:
-    hash: 
-    revision: 
-  upmReserved: '{"changelog":"### Fixed\n- Fixed memory leak caused by unbound event
-    handlers preventing `VivoxParticipant` objects from being cleaned up when the
-    local user left channels with remaining participants.\n\n### Added\n- `VivoxMessage.Metadata`
-    property for accessing channel or directed message metadata.\n- `MessageOptions.Metadata`
-    property for attaching metadata to outgoing messages.\n- Added automatic SDK
-    initialization and user sign-in when SDK actions are attempted without prior
-    setup.\n- Added support for multiple concurrent Vivox SDK instances via `IUnityServices.GetVivoxService()`.\n\n###
-    Removed\n- Removed Mint service integration and deprecated related public APIs.\n\n###
-    Changed\n- Updated minimum supported Editor version to 2021.3.\n- Updated Services
-    Core SDK dependency version.","gameService":{"groupName":"Multiplayer","groupIndex":2,"configurePath":"Project/Services/Vivox","genericDashboardUrl":"https://dashboard.unity3d.com/vivox","projectDashboardUrl":"https://dashboard.unity3d.com/organizations/{0}/projects/{1}/vivox/credentials","projectDashboardUrlType":"OrganizationKeyAndProjectGuid"}}'
-  assetStore:
-    productId: 
-  fingerprint: 563fb2c43dc5ef3aba89b7f55c945a06a2c1ba10
-  editorCompatibility:
-    compatibilityLevel: 0
-    minimumPackageVersion: 16.6.0
-    minimumUnityVersion: 2021.3.0a1
 - packageId: com.unity.test-framework@1.5.1
   testable: 0
   isDirectDependency: 1
@@ -4744,7 +4046,7 @@ m_ResolvedPackages:
     minimumUnityVersion: 2018.4.0a1
 - packageId: com.unity.mathematics@1.3.2
   testable: 0
-  isDirectDependency: 0
+  isDirectDependency: 1
   version: 1.3.2
   source: 1
   resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.mathematics@8017b507cc74
@@ -5412,203 +4714,6 @@ m_ResolvedPackages:
     compatibilityLevel: 0
     minimumPackageVersion: 2.0.5
     minimumUnityVersion: 2019.4.0a1
-- packageId: com.unity.services.core@1.14.0
-  testable: 0
-  isDirectDependency: 0
-  version: 1.14.0
-  source: 1
-  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.services.core@9e81a5e38245
-  assetPath: Packages/com.unity.services.core
-  name: com.unity.services.core
-  displayName: Services Core
-  author:
-    name: 
-    email: 
-    url: 
-  category: 
-  type: 
-  description: 'This package defines common components used by multiple Game Service
-    packages.
-
-    These are standardized and aim to unify the overall experience
-    of working with Game Services SDK.'
-  errors: []
-  versions:
-    all:
-    - 1.0.1
-    - 1.1.0-pre.7
-    - 1.1.0-pre.8
-    - 1.1.0-pre.9
-    - 1.1.0-pre.10
-    - 1.1.0-pre.11
-    - 1.1.0-pre.41
-    - 1.1.0-pre.69
-    - 1.2.0
-    - 1.3.1
-    - 1.3.2
-    - 1.4.0
-    - 1.4.1
-    - 1.4.2
-    - 1.4.3
-    - 1.5.2
-    - 1.6.0
-    - 1.7.0
-    - 1.7.1
-    - 1.8.1
-    - 1.8.2
-    - 1.9.0
-    - 1.10.1
-    - 1.11.0
-    - 1.12.0
-    - 1.12.1
-    - 1.12.2
-    - 1.12.4
-    - 1.12.5
-    - 1.13.0
-    - 1.14.0
-    - 1.15.1
-    compatible:
-    - 1.14.0
-    - 1.15.1
-    recommended: 1.15.1
-    deprecated: []
-  dependencies:
-  - name: com.unity.modules.androidjni
-    version: 1.0.0
-  - name: com.unity.nuget.newtonsoft-json
-    version: 3.2.1
-  - name: com.unity.modules.unitywebrequest
-    version: 1.0.0
-  resolvedDependencies:
-  - name: com.unity.modules.androidjni
-    version: 1.0.0
-  - name: com.unity.nuget.newtonsoft-json
-    version: 3.2.1
-  - name: com.unity.modules.unitywebrequest
-    version: 1.0.0
-  keywords: []
-  registry:
-    id: main
-    name: 
-    url: https://packages.unity.com
-    scopes: []
-    isDefault: 1
-    capabilities: 7
-    configSource: 0
-  hideInEditor: 1
-  entitlements:
-    licensingModel: 1
-  isAssetStorePackage: 0
-  datePublishedTicks: 638684041320270000
-  documentationUrl: https://docs.unity3d.com/Packages/com.unity.services.core@1.14/manual/index.html
-  hasRepository: 1
-  repository:
-    type: git
-    url: https://github.cds.internal.unity3d.com/unity/operate-services-sdk.git
-    revision: 64962022211031c9e26ceec024d3587ea8e05a17
-    path: 
-  unityLifecycle:
-    version: 1.14.0
-    nextVersion: 
-    recommendedVersion: 1.15.1
-    isDeprecated: 0
-    deprecationMessage: 
-  isDeprecated: 0
-  deprecationMessage: 
-  git:
-    hash: 
-    revision: 
-  upmReserved: '{"changelog":"### Added\n\n- Added `ServicesInitialization` monobehaviour
-    to manage services in the scene authoring.\n- Added `ServicesBehaviour` abstract
-    monobehaviour as a base for behaviours built on top of services.\n- Added unique
-    identifier for custom service registry creation (`UnityServices.CreateServices`).\n-
-    Added custom services registries dictionary in `UnityServices.Services`.\n- Added
-    `GetIdentifier()` method to `IUnityServices` interface with a default implementation.\n\n###
-    Changed\n\n- Updated the minimum supported Editor version to 2021.3."}'
-  assetStore:
-    productId: 
-  fingerprint: 9e81a5e382457b799480b311ce51187be99abbbf
-  editorCompatibility:
-    compatibilityLevel: 0
-    minimumPackageVersion: 1.14.0
-    minimumUnityVersion: 2021.3.0a1
-- packageId: com.unity.settings-manager@2.1.0
-  testable: 0
-  isDirectDependency: 0
-  version: 2.1.0
-  source: 1
-  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.settings-manager@41738c275190
-  assetPath: Packages/com.unity.settings-manager
-  name: com.unity.settings-manager
-  displayName: Settings Manager
-  author:
-    name: 
-    email: 
-    url: 
-  category: 
-  type: 
-  description: A framework for making any serializable field a setting, complete
-    with a pre-built settings interface.
-  errors: []
-  versions:
-    all:
-    - 0.1.0-preview.4
-    - 0.1.0-preview.8
-    - 1.0.0
-    - 1.0.1
-    - 1.0.2
-    - 1.0.3
-    - 2.0.0
-    - 2.0.1
-    - 2.1.0
-    compatible:
-    - 2.1.0
-    recommended: 2.1.0
-    deprecated: []
-  dependencies: []
-  resolvedDependencies: []
-  keywords: []
-  registry:
-    id: main
-    name: 
-    url: https://packages.unity.com
-    scopes: []
-    isDefault: 1
-    capabilities: 7
-    configSource: 0
-  hideInEditor: 1
-  entitlements:
-    licensingModel: 1
-  isAssetStorePackage: 0
-  datePublishedTicks: 638792046006940000
-  documentationUrl: https://docs.unity3d.com/Packages/com.unity.settings-manager@2.1/manual/index.html
-  hasRepository: 1
-  repository:
-    type: git
-    url: https://github.com/Unity-Technologies/com.unity.settings-manager.git
-    revision: 6eb5ed85eaf3276cc09f0cc4fc3311c72f0fc196
-    path: 
-  unityLifecycle:
-    version: 2.1.0
-    nextVersion: 
-    recommendedVersion: 
-    isDeprecated: 0
-    deprecationMessage: 
-  isDeprecated: 0
-  deprecationMessage: 
-  git:
-    hash: 
-    revision: 
-  upmReserved: '{"changelog":"### Changes\n\n- Enable Auto Reference on main assembly.\n\n###
-    Bug Fixes\n\n- [case: PBLD-56] Added tooltip to \"Options\" gear icon to specify
-    that context menu items are relevant only to the selected category."}'
-  assetStore:
-    productId: 
-  fingerprint: 41738c27519039c335849eb78949382f4d7a3544
-  editorCompatibility:
-    compatibilityLevel: 0
-    minimumPackageVersion: 2.1.0
-    minimumUnityVersion: 2022.3.0a1
 - packageId: com.unity.transport@2.5.1
   testable: 0
   isDirectDependency: 0
@@ -5762,6 +4867,372 @@ m_ResolvedPackages:
     compatibilityLevel: 0
     minimumPackageVersion: 2.5.1
     minimumUnityVersion: 2022.3.0a1
+- packageId: com.unity.nuget.mono-cecil@1.11.4
+  testable: 0
+  isDirectDependency: 0
+  version: 1.11.4
+  source: 1
+  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.nuget.mono-cecil@d6f9955a5d5f
+  assetPath: Packages/com.unity.nuget.mono-cecil
+  name: com.unity.nuget.mono-cecil
+  displayName: Mono Cecil
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: library
+  description: 'The mono cecil library from https://www.nuget.org/packages/Mono.Cecil/
+
+
+    This
+    package is intended for internal Unity use only. Most Unity users will be better
+    suite using the existing community tooling.
+
+    To avoid assembly clashes, please
+    use this package if you intend to use Mono.Cecil.'
+  errors: []
+  versions:
+    all:
+    - 0.1.6-preview.2
+    - 1.0.0-preview.1
+    - 1.10.0-preview.1
+    - 1.10.1-preview.1
+    - 1.10.1
+    - 1.10.2
+    - 1.11.4
+    - 1.11.5
+    compatible:
+    - 1.11.4
+    - 1.11.5
+    recommended: 1.11.5
+    deprecated: []
+  dependencies: []
+  resolvedDependencies: []
+  keywords: []
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 637852971930000000
+  documentationUrl: 
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.cds.internal.unity3d.com/unity/com.unity.nuget.mono-cecil.git
+    revision: d0133ce672d724694b56bfd20672acf6f8737fec
+    path: 
+  unityLifecycle:
+    version: 1.11.4
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
+  fingerprint: d6f9955a5d5f84d45442ff1ad0fb694cc6e2fd62
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.11.4
+    minimumUnityVersion: 2018.4.0a1
+- packageId: com.unity.services.multiplayer@1.1.0
+  testable: 0
+  isDirectDependency: 0
+  version: 1.1.0
+  source: 1
+  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.services.multiplayer@e7b9f7939c7c
+  assetPath: Packages/com.unity.services.multiplayer
+  name: com.unity.services.multiplayer
+  displayName: Multiplayer Services
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: 
+  description: The Multiplayer Services package is a one-stop solution for adding
+    multiplayer elements to a game developed in Unity. The Unity Gaming Services
+    (UGS) Multiplayer services powers these capabilities to define how groups of
+    players interact in your games.
+  errors: []
+  versions:
+    all:
+    - 0.0.5
+    - 0.0.6
+    - 0.0.7
+    - 0.2.0
+    - 0.3.0
+    - 0.4.0
+    - 0.4.2
+    - 0.5.0
+    - 0.5.1
+    - 0.6.0
+    - 1.0.0-pre.1
+    - 1.0.0
+    - 1.0.1
+    - 1.0.2
+    - 1.1.0
+    - 1.1.1
+    - 1.1.2
+    - 1.1.3
+    - 1.1.4
+    - 1.1.5
+    - 1.1.6
+    - 1.1.7
+    - 1.1.8
+    - 1.2.0-exp.1
+    - 1.2.0-exp.2
+    - 1.2.0-exp.3
+    - 1.2.0-exp.4
+    - 1.2.0-pre.1
+    compatible:
+    - 1.1.0
+    - 1.1.1
+    - 1.1.2
+    - 1.1.3
+    - 1.1.4
+    - 1.1.5
+    - 1.1.6
+    - 1.1.7
+    - 1.1.8
+    - 1.2.0-exp.1
+    - 1.2.0-exp.2
+    - 1.2.0-exp.3
+    - 1.2.0-exp.4
+    - 1.2.0-pre.1
+    recommended: 1.1.8
+    deprecated: []
+  dependencies:
+  - name: com.unity.transport
+    version: 2.2.1
+  - name: com.unity.collections
+    version: 2.2.1
+  - name: com.unity.services.qos
+    version: 1.3.0
+  - name: com.unity.services.core
+    version: 1.13.0
+  - name: com.unity.services.wire
+    version: 1.2.7
+  - name: com.unity.services.deployment
+    version: 1.3.0
+  - name: com.unity.nuget.newtonsoft-json
+    version: 3.2.1
+  - name: com.unity.modules.unitywebrequest
+    version: 1.0.0
+  - name: com.unity.services.authentication
+    version: 3.3.3
+  resolvedDependencies:
+  - name: com.unity.transport
+    version: 2.5.1
+  - name: com.unity.burst
+    version: 1.8.21
+  - name: com.unity.mathematics
+    version: 1.3.2
+  - name: com.unity.modules.jsonserialize
+    version: 1.0.0
+  - name: com.unity.collections
+    version: 2.5.1
+  - name: com.unity.test-framework
+    version: 1.5.1
+  - name: com.unity.ext.nunit
+    version: 2.0.5
+  - name: com.unity.modules.imgui
+    version: 1.0.0
+  - name: com.unity.nuget.mono-cecil
+    version: 1.11.4
+  - name: com.unity.test-framework.performance
+    version: 3.1.0
+  - name: com.unity.services.qos
+    version: 1.3.0
+  - name: com.unity.services.core
+    version: 1.14.0
+  - name: com.unity.modules.androidjni
+    version: 1.0.0
+  - name: com.unity.nuget.newtonsoft-json
+    version: 3.2.1
+  - name: com.unity.modules.unitywebrequest
+    version: 1.0.0
+  - name: com.unity.services.authentication
+    version: 3.4.1
+  - name: com.unity.ugui
+    version: 2.0.0
+  - name: com.unity.modules.ui
+    version: 1.0.0
+  - name: com.unity.services.wire
+    version: 1.3.0
+  - name: com.unity.services.deployment
+    version: 1.3.0
+  - name: com.unity.services.deployment.api
+    version: 1.0.0
+  keywords: []
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 638690229634850000
+  documentationUrl: https://docs.unity3d.com/Packages/com.unity.services.multiplayer@1.1/manual/index.html
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.cds.internal.unity3d.com/unity/operate-services-sdk.git
+    revision: ef70c7ba89129ec76b6811aab35a942e1f0942ef
+    path: 
+  unityLifecycle:
+    version: 1.1.0
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: '{"changelog":"### Added\n- Added more detail in `SessionException`
+    message for `MatchmakerAssignmentFailed` and `MatchmakerAssignmentTimeout`, and
+    exposed the Error property via `ToString()`.\n- Added 2 new events under ISession,
+    `ISession.PlayerLeaving` and `ISession.PlayerHasLeft`.\n\n### Changed\n- Marked
+    the `ISession.PlayerLeft` event as obsolete. It is getting replaced by the new
+    `ISession.PlayerLeaving` event.\n\n### Fixed\n- Fixed the `ISession` extension
+    method `GetMatchmakingResults` when used with MatchId Matchmaking and non-backfill
+    Multiplay Matchmaking.\n- Deprecated the `WithBackfillingConfiguration` method
+    and replaced it with the corrected method with the same name and the missing
+    `playerConnectionTimeout` parameter.\n- Fixed Lobby Vivox interoperability issues
+    around joining certain channel types or joining channels that didn''t match a
+    Lobby ID when trying only to use the Vivox SDK while the Lobby SDK was present
+    in the project.\n- Fixed the Lobby Vivox channel validation to allow for positional
+    3D channels.\n- Fixed the Server Query Protocol (SQP) responses from Multiplay
+    Hosting servers to include correct Version and Port.\n- Fixed potential issue
+    when querying for fleet status in the Deployment Window.\n- Increased timeout
+    when uploading files from a build.\n- Fixed Help URL links.","gameService":{}}'
+  assetStore:
+    productId: 
+  fingerprint: e7b9f7939c7c2aadbfe13da5e47dfbedb65795e3
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.1.0
+    minimumUnityVersion: 2022.3.0a1
+- packageId: com.autodesk.fbx@5.1.1
+  testable: 0
+  isDirectDependency: 0
+  version: 5.1.1
+  source: 1
+  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.autodesk.fbx@5797ff6b31c7
+  assetPath: Packages/com.autodesk.fbx
+  name: com.autodesk.fbx
+  displayName: Autodesk FBX SDK for Unity
+  author:
+    name: Unity
+    email: 
+    url: 
+  category: 
+  type: assets
+  description: "This package provides Unity C# bindings to the Autodesk\xAE FBX\xAE
+    SDK."
+  errors: []
+  versions:
+    all:
+    - 2.0.0-preview
+    - 2.0.0-preview.4
+    - 2.0.0-preview.5
+    - 2.0.0-preview.6
+    - 2.0.0-preview.7
+    - 2.0.1-preview.1
+    - 3.0.0-preview.1
+    - 3.0.1-preview.1
+    - 3.1.0-preview.1
+    - 3.1.0-preview.2
+    - 4.0.0-pre.1
+    - 4.0.0-pre.2
+    - 4.0.1
+    - 4.1.0-pre.1
+    - 4.1.0
+    - 4.1.1
+    - 4.1.2
+    - 4.2.0-pre.1
+    - 4.2.0
+    - 4.2.1
+    - 5.0.0-pre.1
+    - 5.0.0
+    - 5.1.0-pre.1
+    - 5.1.0
+    - 5.1.1
+    - 5.1.2
+    compatible:
+    - 5.1.1
+    - 5.1.2
+    recommended: 5.1.2
+    deprecated: []
+  dependencies: []
+  resolvedDependencies: []
+  keywords:
+  - fbx
+  - animation
+  - modeling
+  - maya
+  - max
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 638464332400000000
+  documentationUrl: https://docs.unity3d.com/Packages/com.autodesk.fbx@5.1/manual/index.html
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.com/Unity-Technologies/com.autodesk.fbx.git
+    revision: dccfc2a79ac7abfe7bd6f91f713f990f2fedd141
+    path: 
+  unityLifecycle:
+    version: 5.1.1
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: '{"changelog":"* Update FBX SDK to 2020.3.4.\n* Add support for Windows
+    ARM64."}'
+  assetStore:
+    productId: 
+  fingerprint: 5797ff6b31c7c66189bffe1adc9cbf0ad5a9cbbf
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 5.1.1
+    minimumUnityVersion: 2020.3.0a1
 - packageId: com.unity.collections@2.5.1
   testable: 0
   isDirectDependency: 0
@@ -6059,12 +5530,134 @@ m_ResolvedPackages:
     compatibilityLevel: 0
     minimumPackageVersion: 1.3.0
     minimumUnityVersion: 2020.3.0a1
-- packageId: com.unity.services.wire@1.4.0
+- packageId: com.unity.services.core@1.14.0
   testable: 0
   isDirectDependency: 0
-  version: 1.4.0
+  version: 1.14.0
   source: 1
-  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.services.wire@2d36cce58c62
+  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.services.core@9e81a5e38245
+  assetPath: Packages/com.unity.services.core
+  name: com.unity.services.core
+  displayName: Services Core
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: 
+  description: 'This package defines common components used by multiple Game Service
+    packages.
+
+    These are standardized and aim to unify the overall experience
+    of working with Game Services SDK.'
+  errors: []
+  versions:
+    all:
+    - 1.0.1
+    - 1.1.0-pre.7
+    - 1.1.0-pre.8
+    - 1.1.0-pre.9
+    - 1.1.0-pre.10
+    - 1.1.0-pre.11
+    - 1.1.0-pre.41
+    - 1.1.0-pre.69
+    - 1.2.0
+    - 1.3.1
+    - 1.3.2
+    - 1.4.0
+    - 1.4.1
+    - 1.4.2
+    - 1.4.3
+    - 1.5.2
+    - 1.6.0
+    - 1.7.0
+    - 1.7.1
+    - 1.8.1
+    - 1.8.2
+    - 1.9.0
+    - 1.10.1
+    - 1.11.0
+    - 1.12.0
+    - 1.12.1
+    - 1.12.2
+    - 1.12.4
+    - 1.12.5
+    - 1.13.0
+    - 1.14.0
+    - 1.15.1
+    - 1.15.2
+    compatible:
+    - 1.14.0
+    - 1.15.1
+    - 1.15.2
+    recommended: 1.15.2
+    deprecated: []
+  dependencies:
+  - name: com.unity.modules.androidjni
+    version: 1.0.0
+  - name: com.unity.nuget.newtonsoft-json
+    version: 3.2.1
+  - name: com.unity.modules.unitywebrequest
+    version: 1.0.0
+  resolvedDependencies:
+  - name: com.unity.modules.androidjni
+    version: 1.0.0
+  - name: com.unity.nuget.newtonsoft-json
+    version: 3.2.1
+  - name: com.unity.modules.unitywebrequest
+    version: 1.0.0
+  keywords: []
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 638684041320270000
+  documentationUrl: https://docs.unity3d.com/Packages/com.unity.services.core@1.14/manual/index.html
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.cds.internal.unity3d.com/unity/operate-services-sdk.git
+    revision: 64962022211031c9e26ceec024d3587ea8e05a17
+    path: 
+  unityLifecycle:
+    version: 1.14.0
+    nextVersion: 
+    recommendedVersion: 1.15.1
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: '{"changelog":"### Added\n\n- Added `ServicesInitialization` monobehaviour
+    to manage services in the scene authoring.\n- Added `ServicesBehaviour` abstract
+    monobehaviour as a base for behaviours built on top of services.\n- Added unique
+    identifier for custom service registry creation (`UnityServices.CreateServices`).\n-
+    Added custom services registries dictionary in `UnityServices.Services`.\n- Added
+    `GetIdentifier()` method to `IUnityServices` interface with a default implementation.\n\n###
+    Changed\n\n- Updated the minimum supported Editor version to 2021.3."}'
+  assetStore:
+    productId: 
+  fingerprint: 9e81a5e382457b799480b311ce51187be99abbbf
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.14.0
+    minimumUnityVersion: 2021.3.0a1
+- packageId: com.unity.services.wire@1.3.0
+  testable: 0
+  isDirectDependency: 0
+  version: 1.3.0
+  source: 1
+  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.services.wire@cc07372d5f37
   assetPath: Packages/com.unity.services.wire
   name: com.unity.services.wire
   displayName: Wire
@@ -6141,13 +5734,13 @@ m_ResolvedPackages:
   entitlements:
     licensingModel: 1
   isAssetStorePackage: 0
-  datePublishedTicks: 638852460331360000
-  documentationUrl: https://docs.unity3d.com/Packages/com.unity.services.wire@1.4/manual/index.html
+  datePublishedTicks: 638750626978750000
+  documentationUrl: https://docs.unity3d.com/Packages/com.unity.services.wire@1.3/manual/index.html
   hasRepository: 1
   repository:
     type: git
     url: https://github.cds.internal.unity3d.com/unity/operate-services-sdk.git
-    revision: b52cf66f16e79e8d96634389f2334b342668df40
+    revision: 0f0e867228934c25a4a72cdc5b182b484bf13303
     path: 
   unityLifecycle:
     version: 1.3.0
@@ -6160,14 +5753,14 @@ m_ResolvedPackages:
   git:
     hash: 
     revision: 
-  upmReserved: '{"changelog":"### Fixed\n\n- Fixed WebSocketInvalidStateException
-    raised when disconnecting, closing an already opened socket\n- Fixed Wire occasionally
-    using attempting to parse addresses as IPV6 on latfomrsm that do not support
-    IPV6\n- Fixed error getting thrown when application returns from sleep due to
-    unhandled server ping request. (Not applicable to WebGL.)"}'
+  upmReserved: '{"changelog":"### Fixed\n\n- Updated dyncall syntax\n- Websocket
+    jslib will no longer crash player loop on successive connections/disconnections\n-
+    Updated reconnection logic to check if internet is reachable, avoiding unnecessary
+    connection attempts\n\n### Changed\n\n- Updated the minimum supported Editor
+    version to 2021.3."}'
   assetStore:
     productId: 
-  fingerprint: 2d36cce58c62ac886c8bb03e9e262a35dcdc4752
+  fingerprint: cc07372d5f37680cdc2e99d03f90a13ffc9093bf
   editorCompatibility:
     compatibilityLevel: 0
     minimumPackageVersion: 1.3.0
@@ -6330,10 +5923,12 @@ m_ResolvedPackages:
     - 3.4.0
     - 3.4.1
     - 3.5.1
+    - 3.5.2
     compatible:
     - 3.4.1
     - 3.5.1
-    recommended: 3.5.1
+    - 3.5.2
+    recommended: 3.5.2
     deprecated: []
   dependencies:
   - name: com.unity.ugui
@@ -6400,331 +5995,6 @@ m_ResolvedPackages:
   editorCompatibility:
     compatibilityLevel: 0
     minimumPackageVersion: 3.4.1
-    minimumUnityVersion: 2021.3.0a1
-- packageId: com.unity.nuget.mono-cecil@1.11.4
-  testable: 0
-  isDirectDependency: 0
-  version: 1.11.4
-  source: 1
-  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.nuget.mono-cecil@d6f9955a5d5f
-  assetPath: Packages/com.unity.nuget.mono-cecil
-  name: com.unity.nuget.mono-cecil
-  displayName: Mono Cecil
-  author:
-    name: 
-    email: 
-    url: 
-  category: 
-  type: library
-  description: 'The mono cecil library from https://www.nuget.org/packages/Mono.Cecil/
-
-
-    This
-    package is intended for internal Unity use only. Most Unity users will be better
-    suite using the existing community tooling.
-
-    To avoid assembly clashes, please
-    use this package if you intend to use Mono.Cecil.'
-  errors: []
-  versions:
-    all:
-    - 0.1.6-preview.2
-    - 1.0.0-preview.1
-    - 1.10.0-preview.1
-    - 1.10.1-preview.1
-    - 1.10.1
-    - 1.10.2
-    - 1.11.4
-    - 1.11.5
-    compatible:
-    - 1.11.4
-    - 1.11.5
-    recommended: 1.11.5
-    deprecated: []
-  dependencies: []
-  resolvedDependencies: []
-  keywords: []
-  registry:
-    id: main
-    name: 
-    url: https://packages.unity.com
-    scopes: []
-    isDefault: 1
-    capabilities: 7
-    configSource: 0
-  hideInEditor: 1
-  entitlements:
-    licensingModel: 1
-  isAssetStorePackage: 0
-  datePublishedTicks: 637852971930000000
-  documentationUrl: 
-  hasRepository: 1
-  repository:
-    type: git
-    url: https://github.cds.internal.unity3d.com/unity/com.unity.nuget.mono-cecil.git
-    revision: d0133ce672d724694b56bfd20672acf6f8737fec
-    path: 
-  unityLifecycle:
-    version: 1.11.4
-    nextVersion: 
-    recommendedVersion: 
-    isDeprecated: 0
-    deprecationMessage: 
-  isDeprecated: 0
-  deprecationMessage: 
-  git:
-    hash: 
-    revision: 
-  upmReserved: 
-  assetStore:
-    productId: 
-  fingerprint: d6f9955a5d5f84d45442ff1ad0fb694cc6e2fd62
-  editorCompatibility:
-    compatibilityLevel: 0
-    minimumPackageVersion: 1.11.4
-    minimumUnityVersion: 2018.4.0a1
-- packageId: com.unity.profiling.core@1.0.2
-  testable: 0
-  isDirectDependency: 0
-  version: 1.0.2
-  source: 1
-  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.profiling.core@aac7b93912bc
-  assetPath: Packages/com.unity.profiling.core
-  name: com.unity.profiling.core
-  displayName: Unity Profiling Core API
-  author:
-    name: 
-    email: 
-    url: 
-  category: 
-  type: asset
-  description: The Unity Profiling Core package provides an API for code instrumentation
-    markup, and for profiling statistic collection.
-  errors: []
-  versions:
-    all:
-    - 0.1.0-preview.1
-    - 0.2.0-preview.1
-    - 0.2.1-preview.1
-    - 1.0.0-pre.1
-    - 1.0.0
-    - 1.0.2
-    compatible:
-    - 1.0.2
-    recommended: 1.0.2
-    deprecated: []
-  dependencies: []
-  resolvedDependencies: []
-  keywords:
-  - profiler
-  - profiling
-  - api
-  registry:
-    id: main
-    name: 
-    url: https://packages.unity.com
-    scopes: []
-    isDefault: 1
-    capabilities: 7
-    configSource: 0
-  hideInEditor: 1
-  entitlements:
-    licensingModel: 1
-  isAssetStorePackage: 0
-  datePublishedTicks: 637828752310000000
-  documentationUrl: 
-  hasRepository: 1
-  repository:
-    type: git
-    url: https://github.cds.internal.unity3d.com/unity/profiler.git
-    revision: 2189ba14439d76a4083f59fae87163b4bdfd49c2
-    path: 
-  unityLifecycle:
-    version: 1.0.2
-    nextVersion: 
-    recommendedVersion: 
-    isDeprecated: 0
-    deprecationMessage: 
-  isDeprecated: 0
-  deprecationMessage: 
-  git:
-    hash: 
-    revision: 
-  upmReserved: 
-  assetStore:
-    productId: 
-  fingerprint: aac7b93912bc5df5fe06b04ff1b758493cdc2346
-  editorCompatibility:
-    compatibilityLevel: 0
-    minimumPackageVersion: 1.0.2
-    minimumUnityVersion: 2020.1.0a1
-- packageId: com.autodesk.fbx@5.1.1
-  testable: 0
-  isDirectDependency: 0
-  version: 5.1.1
-  source: 1
-  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.autodesk.fbx@5797ff6b31c7
-  assetPath: Packages/com.autodesk.fbx
-  name: com.autodesk.fbx
-  displayName: Autodesk FBX SDK for Unity
-  author:
-    name: Unity
-    email: 
-    url: 
-  category: 
-  type: assets
-  description: "This package provides Unity C# bindings to the Autodesk\xAE FBX\xAE
-    SDK."
-  errors: []
-  versions:
-    all:
-    - 2.0.0-preview
-    - 2.0.0-preview.4
-    - 2.0.0-preview.5
-    - 2.0.0-preview.6
-    - 2.0.0-preview.7
-    - 2.0.1-preview.1
-    - 3.0.0-preview.1
-    - 3.0.1-preview.1
-    - 3.1.0-preview.1
-    - 3.1.0-preview.2
-    - 4.0.0-pre.1
-    - 4.0.0-pre.2
-    - 4.0.1
-    - 4.1.0-pre.1
-    - 4.1.0
-    - 4.1.1
-    - 4.1.2
-    - 4.2.0-pre.1
-    - 4.2.0
-    - 4.2.1
-    - 5.0.0-pre.1
-    - 5.0.0
-    - 5.1.0-pre.1
-    - 5.1.0
-    - 5.1.1
-    compatible:
-    - 5.1.1
-    recommended: 5.1.1
-    deprecated: []
-  dependencies: []
-  resolvedDependencies: []
-  keywords:
-  - fbx
-  - animation
-  - modeling
-  - maya
-  - max
-  registry:
-    id: main
-    name: 
-    url: https://packages.unity.com
-    scopes: []
-    isDefault: 1
-    capabilities: 7
-    configSource: 0
-  hideInEditor: 1
-  entitlements:
-    licensingModel: 1
-  isAssetStorePackage: 0
-  datePublishedTicks: 638464332400000000
-  documentationUrl: https://docs.unity3d.com/Packages/com.autodesk.fbx@5.1/manual/index.html
-  hasRepository: 1
-  repository:
-    type: git
-    url: https://github.com/Unity-Technologies/com.autodesk.fbx.git
-    revision: dccfc2a79ac7abfe7bd6f91f713f990f2fedd141
-    path: 
-  unityLifecycle:
-    version: 5.1.1
-    nextVersion: 
-    recommendedVersion: 
-    isDeprecated: 0
-    deprecationMessage: 
-  isDeprecated: 0
-  deprecationMessage: 
-  git:
-    hash: 
-    revision: 
-  upmReserved: '{"changelog":"* Update FBX SDK to 2020.3.4.\n* Add support for Windows
-    ARM64."}'
-  assetStore:
-    productId: 
-  fingerprint: 5797ff6b31c7c66189bffe1adc9cbf0ad5a9cbbf
-  editorCompatibility:
-    compatibilityLevel: 0
-    minimumPackageVersion: 5.1.1
-    minimumUnityVersion: 2020.3.0a1
-- packageId: com.unity.services.deployment.api@1.0.0
-  testable: 0
-  isDirectDependency: 0
-  version: 1.0.0
-  source: 1
-  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.services.deployment.api@e87c554599f0
-  assetPath: Packages/com.unity.services.deployment.api
-  name: com.unity.services.deployment.api
-  displayName: Deployment API
-  author:
-    name: 
-    email: 
-    url: 
-  category: 
-  type: asset
-  description: This package contains the API designed to allow for implementing Deployment
-    functionality.
-  errors: []
-  versions:
-    all:
-    - 1.0.0-pre.3
-    - 1.0.0-pre.5
-    - 1.0.0
-    - 1.1.2
-    compatible:
-    - 1.0.0
-    - 1.1.2
-    recommended: 1.1.2
-    deprecated: []
-  dependencies: []
-  resolvedDependencies: []
-  keywords: []
-  registry:
-    id: main
-    name: 
-    url: https://packages.unity.com
-    scopes: []
-    isDefault: 1
-    capabilities: 7
-    configSource: 0
-  hideInEditor: 1
-  entitlements:
-    licensingModel: 1
-  isAssetStorePackage: 0
-  datePublishedTicks: 638157741160000000
-  documentationUrl: https://docs.unity3d.com/Packages/com.unity.services.deployment.api@1.0/manual/index.html
-  hasRepository: 1
-  repository:
-    type: git
-    url: https://github.cds.internal.unity3d.com/unity/operate-services-sdk.git
-    revision: e4df831d5e80c5d0c29785d4140e031b0bbc0264
-    path: 
-  unityLifecycle:
-    version: 1.0.0
-    nextVersion: 
-    recommendedVersion: 1.1.2
-    isDeprecated: 0
-    deprecationMessage: 
-  isDeprecated: 0
-  deprecationMessage: 
-  git:
-    hash: 
-    revision: 
-  upmReserved: '{"changelog":"### Added\n- Make internal API public."}'
-  assetStore:
-    productId: 
-  fingerprint: e87c554599f00a0c1cac936220969bb69ffb9a53
-  editorCompatibility:
-    compatibilityLevel: 0
-    minimumPackageVersion: 1.0.0
     minimumUnityVersion: 2021.3.0a1
 - packageId: com.unity.test-framework.performance@3.1.0
   testable: 0
@@ -6863,4 +6133,77 @@ m_ResolvedPackages:
     compatibilityLevel: 0
     minimumPackageVersion: 3.1.0
     minimumUnityVersion: 2020.3.0a1
+- packageId: com.unity.services.deployment.api@1.0.0
+  testable: 0
+  isDirectDependency: 0
+  version: 1.0.0
+  source: 1
+  resolvedPath: D:\ProjectGame\AntKnow\Project Game AntKnow\Library\PackageCache\com.unity.services.deployment.api@e87c554599f0
+  assetPath: Packages/com.unity.services.deployment.api
+  name: com.unity.services.deployment.api
+  displayName: Deployment API
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: asset
+  description: This package contains the API designed to allow for implementing Deployment
+    functionality.
+  errors: []
+  versions:
+    all:
+    - 1.0.0-pre.3
+    - 1.0.0-pre.5
+    - 1.0.0
+    - 1.1.2
+    - 1.1.3
+    compatible:
+    - 1.0.0
+    - 1.1.2
+    - 1.1.3
+    recommended: 1.1.3
+    deprecated: []
+  dependencies: []
+  resolvedDependencies: []
+  keywords: []
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 638157741160000000
+  documentationUrl: https://docs.unity3d.com/Packages/com.unity.services.deployment.api@1.0/manual/index.html
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.cds.internal.unity3d.com/unity/operate-services-sdk.git
+    revision: e4df831d5e80c5d0c29785d4140e031b0bbc0264
+    path: 
+  unityLifecycle:
+    version: 1.0.0
+    nextVersion: 
+    recommendedVersion: 1.1.2
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: '{"changelog":"### Added\n- Make internal API public."}'
+  assetStore:
+    productId: 
+  fingerprint: e87c554599f00a0c1cac936220969bb69ffb9a53
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 2021.3.0a1
 m_BuiltInPackagesHash: a988967e9595aa7854d138a569db4a8d22c02460

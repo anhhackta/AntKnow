@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 0
+    path: Assets/NGO_Minimal_Setup/NGO_Setup.unity
+    guid: d9b435b7ccf7b534c96b400e8b9cf0c1
+  - enabled: 0
+    path: Assets/GameScene.unity
+    guid: 43795568f934947279e74f753742b73c
+  m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

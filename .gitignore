@@ -80,3 +80,5 @@ crashlytics-build.properties
 /Project Game AntKnow/Library
 /Project Game AntKnow/Temp
 /Project Game AntKnow/Logs
+/Project Game AntKnow Server/Library
+/Project Game AntKnow Server/Assets/Firebase/Plugins

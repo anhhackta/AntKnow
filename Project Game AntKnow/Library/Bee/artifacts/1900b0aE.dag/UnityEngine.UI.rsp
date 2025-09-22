@@ -395,7 +395,7 @@
 -r:"Library/PackageCache/com.unity.collections@56bff8827a7e/Unity.Collections.LowLevel.ILSupport/Unity.Collections.LowLevel.ILSupport.dll"
 -r:"Library/PackageCache/com.unity.ext.nunit@031a54704bff/net40/unity-custom/nunit.framework.dll"
 -r:"Library/PackageCache/com.unity.nuget.mono-cecil@d6f9955a5d5f/Mono.Cecil.dll"
--r:"Library/PackageCache/com.unity.services.wire@2d36cce58c62/Plugins/websocket-sharp.dll"
+-r:"Library/PackageCache/com.unity.services.wire@cc07372d5f37/Plugins/websocket-sharp.dll"
 -r:"Packages/com.unity.nuget.newtonsoft-json/Runtime/Newtonsoft.Json.dll"
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.0.48f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.0.48f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
