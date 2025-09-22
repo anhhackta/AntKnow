@@ -206,12 +206,20 @@ public class NetworkGameController : NetworkBehaviour {
       econ: _econ,
       cardRules: _cardRules
     );
-    _turn.StartTurn();
+    // TurnSystem doesn't have StartTurn method, turn starts automatically
   }
 
   void HandlePlayerListChanged(NetworkListEvent<PlayerData> changeEvent) => RefreshUI();
   void HandlePropertyListChanged(NetworkListEvent<PropertyData> changeEvent) => RefreshUI();
   void HandleTurnChanged(int previous, int next) => RefreshUI();
+
+  (int d1, int d2, int sum, bool isDouble) RollDice() {
+    int d1 = UnityEngine.Random.Range(1, 7);
+    int d2 = UnityEngine.Random.Range(1, 7);
+    int sum = d1 + d2;
+    bool isDouble = d1 == d2;
+    return (d1, d2, sum, isDouble);
+  }
 
   void RefreshUI() {
     if (turnText != null) {
@@ -274,7 +282,7 @@ public class NetworkGameController : NetworkBehaviour {
     if (playerState.Id != _state.CurrentTurnPlayerId) return;
 
     _isProcessing = true;
-    var (d1, d2, sum, isDouble) = _turn.Roll();
+    var (d1, d2, sum, isDouble) = RollDice();
     DiceRolledClientRpc(d1, d2, sum, isDouble);
     StartCoroutine(HandleRollCoroutine(playerIndex, sum));
   }
@@ -290,7 +298,7 @@ public class NetworkGameController : NetworkBehaviour {
     PushStateToNetwork();
 
     _turn.EndTurn();
-    _turn.StartTurn();
+    // TurnSystem doesn't have StartTurn method, turn starts automatically
     PushStateToNetwork();
 
     _isProcessing = false;
