@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: TileDef
   m_EditorClassIdentifier: 
   tileId: 0
-  displayName: 
-  type: 0
+  displayName: "B\u1EAFt \u0111\u1EA7u"
+  type: 1
   basePrice: 0
   amount: 0
   destNode: -1

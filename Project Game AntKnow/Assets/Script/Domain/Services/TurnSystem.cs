@@ -26,6 +26,12 @@ public sealed class TurnSystem {
     _cardRules = cardRules;
   }
 
+  public (int die1, int die2) Roll(Func<int, int, int> randomRange) {
+    if (randomRange == null) throw new ArgumentNullException(nameof(randomRange));
+    int die1 = randomRange(1, 7);
+    int die2 = randomRange(1, 7);
+    return (die1, die2);
+  }
   public void MoveAndResolve(int steps) {
     var p = _g.Players.Find(x=>x.Id==_g.CurrentTurnPlayerId);
     int prev = p.NodeIndex, next = (prev+steps)%_g.BoardLength;

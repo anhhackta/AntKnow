@@ -1,0 +1,700 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9001582741491988797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 21
+  displayName: Quiz
+  type: 6
+  basePrice: 220
+  amount: 0
+  destNode: -1
+--- !u!114 &-8662646506178419701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 14
+  displayName: -Tax
+  type: 2
+  basePrice: 180
+  amount: 100
+  destNode: -1
+--- !u!114 &-8525044034772982779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 28
+  displayName: Tile 28
+  type: 1
+  basePrice: 260
+  amount: 0
+  destNode: -1
+--- !u!114 &-5818292942832211109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 13
+  displayName: Tile 13
+  type: 1
+  basePrice: 140
+  amount: 0
+  destNode: -1
+--- !u!114 &-5405413171905572155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 4
+  displayName: Tile 4
+  type: 1
+  basePrice: 260
+  amount: 0
+  destNode: -1
+--- !u!114 &-4841202030550343838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 34
+  displayName: Tile 34
+  type: 1
+  basePrice: 260
+  amount: 0
+  destNode: -1
+--- !u!114 &-4414924780833073194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 15
+  displayName: Tile 15
+  type: 1
+  basePrice: 220
+  amount: 0
+  destNode: -1
+--- !u!114 &-4391605265576485028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 10
+  displayName: Tile 10
+  type: 1
+  basePrice: 260
+  amount: 0
+  destNode: -1
+--- !u!114 &-4111235988176231372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 27
+  displayName: Go To Jail
+  type: 9
+  basePrice: 220
+  amount: 0
+  destNode: 9
+--- !u!114 &-3672354933723795312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 7
+  displayName: Quiz
+  type: 6
+  basePrice: 140
+  amount: 0
+  destNode: -1
+--- !u!114 &-3600969116705615357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 33
+  displayName: Tile 33
+  type: 1
+  basePrice: 220
+  amount: 0
+  destNode: -1
+--- !u!114 &-3287069868306590843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 26
+  displayName: Tile 26
+  type: 1
+  basePrice: 180
+  amount: 0
+  destNode: -1
+--- !u!114 &-3120031492782211676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 1
+  displayName: Tile 1
+  type: 1
+  basePrice: 140
+  amount: 0
+  destNode: -1
+--- !u!114 &-2821088994966887866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 3
+  displayName: Tile 3
+  type: 1
+  basePrice: 220
+  amount: 0
+  destNode: -1
+--- !u!114 &-2819351548582184324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 11
+  displayName: Tile 11
+  type: 1
+  basePrice: 300
+  amount: 0
+  destNode: -1
+--- !u!114 &-2698674869793507251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 23
+  displayName: +Bonus
+  type: 3
+  basePrice: 300
+  amount: 100
+  destNode: -1
+--- !u!114 &-2298657597621054163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 22
+  displayName: Tile 22
+  type: 1
+  basePrice: 260
+  amount: 0
+  destNode: -1
+--- !u!114 &-1222432731498068860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 16
+  displayName: Tile 16
+  type: 1
+  basePrice: 260
+  amount: 0
+  destNode: -1
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea6bd4180ecf1f04da277768a975a89e, type: 3}
+  m_Name: BoardConfig_Map1_Sample36
+  m_EditorClassIdentifier: 
+  boardName: Map1_Sample36
+  tiles:
+  - {fileID: 5711355620596862814}
+  - {fileID: -3120031492782211676}
+  - {fileID: 2728766731791221928}
+  - {fileID: -2821088994966887866}
+  - {fileID: -5405413171905572155}
+  - {fileID: 6660489211925503165}
+  - {fileID: 7198760568562604143}
+  - {fileID: -3672354933723795312}
+  - {fileID: 5845129116350673179}
+  - {fileID: 5224742740588852597}
+  - {fileID: -4391605265576485028}
+  - {fileID: -2819351548582184324}
+  - {fileID: 4650009861411191826}
+  - {fileID: -5818292942832211109}
+  - {fileID: -8662646506178419701}
+  - {fileID: -4414924780833073194}
+  - {fileID: -1222432731498068860}
+  - {fileID: 6073169623192474169}
+  - {fileID: 7117998702767095868}
+  - {fileID: 4200630900949447802}
+  - {fileID: 258913994722797169}
+  - {fileID: -9001582741491988797}
+  - {fileID: -2298657597621054163}
+  - {fileID: -2698674869793507251}
+  - {fileID: 6700973129514451119}
+  - {fileID: 3869490500504571733}
+  - {fileID: -3287069868306590843}
+  - {fileID: -4111235988176231372}
+  - {fileID: -8525044034772982779}
+  - {fileID: 246368989993436222}
+  - {fileID: 669287977072300277}
+  - {fileID: 1079667868369499506}
+  - {fileID: 6737436192531115661}
+  - {fileID: -3600969116705615357}
+  - {fileID: -4841202030550343838}
+  - {fileID: 3325443941549113172}
+--- !u!114 &246368989993436222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 29
+  displayName: Tile 29
+  type: 1
+  basePrice: 300
+  amount: 0
+  destNode: -1
+--- !u!114 &258913994722797169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 20
+  displayName: Tile 20
+  type: 1
+  basePrice: 180
+  amount: 0
+  destNode: -1
+--- !u!114 &669287977072300277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 30
+  displayName: Tile 30
+  type: 1
+  basePrice: 100
+  amount: 0
+  destNode: -1
+--- !u!114 &1079667868369499506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 31
+  displayName: Tile 31
+  type: 1
+  basePrice: 140
+  amount: 0
+  destNode: -1
+--- !u!114 &2728766731791221928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 2
+  displayName: Tile 2
+  type: 1
+  basePrice: 180
+  amount: 0
+  destNode: -1
+--- !u!114 &3325443941549113172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 35
+  displayName: Tile 35
+  type: 1
+  basePrice: 300
+  amount: 0
+  destNode: -1
+--- !u!114 &3869490500504571733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 25
+  displayName: Tile 25
+  type: 1
+  basePrice: 140
+  amount: 0
+  destNode: -1
+--- !u!114 &4200630900949447802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 19
+  displayName: Tile 19
+  type: 1
+  basePrice: 140
+  amount: 0
+  destNode: -1
+--- !u!114 &4650009861411191826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 12
+  displayName: Tile 12
+  type: 1
+  basePrice: 100
+  amount: 0
+  destNode: -1
+--- !u!114 &5224742740588852597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 9
+  displayName: Jail (Visit)
+  type: 8
+  basePrice: 220
+  amount: 0
+  destNode: -1
+--- !u!114 &5711355620596862814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 0
+  displayName: Start
+  type: 0
+  basePrice: 100
+  amount: 0
+  destNode: -1
+--- !u!114 &5845129116350673179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 8
+  displayName: Tile 8
+  type: 1
+  basePrice: 180
+  amount: 0
+  destNode: -1
+--- !u!114 &6073169623192474169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 17
+  displayName: Tile 17
+  type: 1
+  basePrice: 300
+  amount: 0
+  destNode: -1
+--- !u!114 &6660489211925503165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 5
+  displayName: +Bonus
+  type: 3
+  basePrice: 300
+  amount: 100
+  destNode: -1
+--- !u!114 &6700973129514451119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 24
+  displayName: Tile 24
+  type: 1
+  basePrice: 100
+  amount: 0
+  destNode: -1
+--- !u!114 &6737436192531115661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 32
+  displayName: Tile 32
+  type: 1
+  basePrice: 180
+  amount: 0
+  destNode: -1
+--- !u!114 &7117998702767095868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 18
+  displayName: Free Parking
+  type: 10
+  basePrice: 100
+  amount: 0
+  destNode: -1
+--- !u!114 &7198760568562604143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47bcbe0a4cab4447a4874193118ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileId: 6
+  displayName: Tile 6
+  type: 1
+  basePrice: 100
+  amount: 0
+  destNode: -1
