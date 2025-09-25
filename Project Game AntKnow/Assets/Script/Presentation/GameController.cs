@@ -448,8 +448,9 @@ public class GameController : NetworkBehaviour {
     }
 
     EnsureRandomInitialized();
-    int d1 = _serverRandom.NextInt(1, 7);
-    int d2 = _serverRandom.NextInt(1, 7);
+    var (d1, d2) = _turnSystem != null
+      ? _turnSystem.Roll((min, max) => _serverRandom.NextInt(min, max))
+      : (_serverRandom.NextInt(1, 7), _serverRandom.NextInt(1, 7));
     var roll = new DiceRollData(d1, d2);
     _lastDiceRoll.Value = roll;
     StartCoroutine(ServerResolveTurn(currentPlayerId, roll));

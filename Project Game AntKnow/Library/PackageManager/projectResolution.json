@@ -51,6 +51,15 @@
       "source": "registry",
       "testable": false
     },
+    "com.unity.feature.2d@2.0.1": {
+      "name": "com.unity.feature.2d",
+      "displayName": "2D",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.feature.2d@dd1ea8910f12",
+      "fingerprint": "dd1ea8910f12f021c166e8d0d78de44f1390ff6b",
+      "version": "2.0.1",
+      "source": "builtin",
+      "testable": false
+    },
     "com.unity.ide.rider@3.0.36": {
       "name": "com.unity.ide.rider",
       "displayName": "JetBrains Rider Editor",
@@ -118,6 +127,16 @@
       "fingerprint": "c58b4ee65782ad38338e29f7ee67787cb6998f04",
       "editorCompatibility": "2019.3.0a1",
       "version": "1.8.7",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.toolchain.win-x86_64-linux-x86_64@2.0.10": {
+      "name": "com.unity.toolchain.win-x86_64-linux-x86_64",
+      "displayName": "Toolchain Win Linux x64",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.toolchain.win-x86_64-linux-x86_64@426618737602",
+      "fingerprint": "426618737602d0ff76e85db678b73b56aa2e891a",
+      "editorCompatibility": "2019.4.0a1",
+      "version": "2.0.10",
       "source": "registry",
       "testable": false
     },
@@ -452,6 +471,26 @@
       "source": "builtin",
       "testable": false
     },
+    "com.unity.sysroot@2.0.10": {
+      "name": "com.unity.sysroot",
+      "displayName": "Sysroot Base",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.sysroot@7bbbb9339c14",
+      "fingerprint": "7bbbb9339c143f6fbccaeb0a52c77b9217b35a71",
+      "editorCompatibility": "2019.4.0a1",
+      "version": "2.0.10",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.sysroot.linux-x86_64@2.0.9": {
+      "name": "com.unity.sysroot.linux-x86_64",
+      "displayName": "Sysroot Linux x64",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.sysroot.linux-x86_64@1998d1c7730e",
+      "fingerprint": "1998d1c7730e48fa49f28d983fececfc9cbd970b",
+      "editorCompatibility": "2019.4.0a1",
+      "version": "2.0.9",
+      "source": "registry",
+      "testable": false
+    },
     "com.unity.ext.nunit@2.0.5": {
       "name": "com.unity.ext.nunit",
       "displayName": "Custom NUnit",
@@ -489,6 +528,86 @@
       "fingerprint": "e7b9f7939c7c2aadbfe13da5e47dfbedb65795e3",
       "editorCompatibility": "2022.3.0a1",
       "version": "1.1.0",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.2d.animation@10.1.4": {
+      "name": "com.unity.2d.animation",
+      "displayName": "2D Animation",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.2d.animation@494a3b4e73a9",
+      "fingerprint": "494a3b4e73a9ae26677ef6e9fd6bff4ca643770a",
+      "editorCompatibility": "2023.1.0a1",
+      "version": "10.1.4",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.2d.pixel-perfect@5.0.3": {
+      "name": "com.unity.2d.pixel-perfect",
+      "displayName": "2D Pixel Perfect",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.2d.pixel-perfect@e3ae982b672d",
+      "fingerprint": "e3ae982b672dc7cca42a6303bdf53b84c69991da",
+      "editorCompatibility": "2021.1.0a1",
+      "version": "5.0.3",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.2d.psdimporter@9.0.3": {
+      "name": "com.unity.2d.psdimporter",
+      "displayName": "2D PSD Importer",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.2d.psdimporter@676bae148e11",
+      "fingerprint": "676bae148e11de9a02db5a3614b8c56e4f0f44ac",
+      "editorCompatibility": "2023.1.0a1",
+      "version": "9.0.3",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.2d.sprite@1.0.0": {
+      "name": "com.unity.2d.sprite",
+      "displayName": "2D Sprite",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.2d.sprite@ebec28036318",
+      "fingerprint": "ebec28036318a356b2b4e2b4bcf351add76cad57",
+      "editorCompatibility": "2019.2.0a1",
+      "version": "1.0.0",
+      "source": "builtin",
+      "testable": false
+    },
+    "com.unity.2d.spriteshape@10.0.7": {
+      "name": "com.unity.2d.spriteshape",
+      "displayName": "2D SpriteShape",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.2d.spriteshape@9e35352ae135",
+      "fingerprint": "9e35352ae135f602746220e7edc09eb95bbec530",
+      "editorCompatibility": "2023.1.0a1",
+      "version": "10.0.7",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.2d.tilemap@1.0.0": {
+      "name": "com.unity.2d.tilemap",
+      "displayName": "2D Tilemap Editor",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.2d.tilemap@2d9cf49b8049",
+      "fingerprint": "2d9cf49b804905756537405d744125fe6612ee52",
+      "editorCompatibility": "2019.2.0a1",
+      "version": "1.0.0",
+      "source": "builtin",
+      "testable": false
+    },
+    "com.unity.2d.tilemap.extras@4.1.0": {
+      "name": "com.unity.2d.tilemap.extras",
+      "displayName": "2D Tilemap Extras",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.2d.tilemap.extras@13634da7dbe0",
+      "fingerprint": "13634da7dbe06c39bac6bbe2d1a166cf91f58ad7",
+      "editorCompatibility": "6000.0.0a1",
+      "version": "4.1.0",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.2d.aseprite@1.1.10": {
+      "name": "com.unity.2d.aseprite",
+      "displayName": "2D Aseprite Importer",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.2d.aseprite@dba7c65ef731",
+      "fingerprint": "dba7c65ef731c2cd2715a1be4eb9353b39eb570c",
+      "editorCompatibility": "2021.3.15f1",
+      "version": "1.1.10",
       "source": "registry",
       "testable": false
     },
@@ -559,6 +678,16 @@
       "fingerprint": "868ebdf18f3f7551a12ea7e27ba1d3b03a92f269",
       "editorCompatibility": "2021.3.0a1",
       "version": "3.4.1",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.2d.common@9.0.7": {
+      "name": "com.unity.2d.common",
+      "displayName": "2D Common",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.2d.common@bb1fc9b3d81b",
+      "fingerprint": "bb1fc9b3d81b3bb452c6708e8c088fe4224a0369",
+      "editorCompatibility": "2023.1.0a1",
+      "version": "9.0.7",
       "source": "registry",
       "testable": false
     },

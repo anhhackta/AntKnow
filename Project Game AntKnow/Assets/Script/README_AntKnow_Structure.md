@@ -12,6 +12,7 @@ AntKnow Code Structure (Week 1)
 
 - Presentation (Unity Monobehaviours):
   - PlayerController.cs (unified movement by nodeIndex)
+  - WaypointPath.cs (shared Transform path provider; auto-populates from child order)
   - GameController.cs (bridge Domain ↔ UI; Roll → Move → Resolve → EndTurn)
   - DiceView.cs (dice animation placeholder)
   - BoardView.cs (optional; future: instantiate board from BoardConfig)
@@ -23,10 +24,11 @@ AntKnow Code Structure (Week 1)
 Scene wiring (quick):
 - Create a BoardConfig asset (Assets/Create/AntKnow/BoardConfig). Fill 32 tiles in order.
 - Add a GameObject with GameController; assign BoardConfig, PlayerController array, and optional TextMeshPro fields.
-- On each Player GameObject, add PlayerController and assign the waypoints array (path around the board).
+- Drop a GameObject (e.g. BoardPath) with WaypointPath; its children define the move loop order.
+- Add PlayerController to each player and leave autoAssignPath enabled to consume the shared WaypointPath (no more manual waypoint arrays).
 
 Notes:
-- Old demo scripts (BaseScript, Player1Script, Player2Script, Dice* scripts) are kept but should be replaced by the new flow.
+- Old demo scripts now live in Assets/Script/Legacy (BaseScript, Player1Script, Player2Script, Dice* scripts); keep them disabled in scenes.
 - Physical dice are deprecated in favor of DiceRng for deterministic networking later.
 
 Property & Hotel Rules (36 ô, nhà 1–5 + Khách sạn)
