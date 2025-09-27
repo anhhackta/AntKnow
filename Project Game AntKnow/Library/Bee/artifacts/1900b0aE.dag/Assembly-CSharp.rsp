@@ -455,6 +455,7 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.0.48f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.0.48f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.0.48f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.UIToolkit.SourceGenerator.dll"
+"Assets/Resources/PanelSliderManager.cs"
 "Assets/Samples/Lobby/1.2.2/Lobby Hello World/LobbyHelloWorld.cs"
 "Assets/Scenes/Login/AuthUIController.cs"
 "Assets/Scenes/Login/FirebaseAuthService.cs"
