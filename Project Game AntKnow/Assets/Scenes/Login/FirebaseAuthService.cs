@@ -139,33 +139,20 @@ namespace AntKnow.Auth
                 }
                 else
                 {
-                    // Look up username in Firestore to get email
-                    var usernameDoc = await firestore.Collection("usernames").Document(userOrEmail.ToLower()).GetSnapshotAsync();
-                    if (!usernameDoc.Exists)
+                    // Look up username in handles collection to get email
+                    var handleDoc = await firestore.Collection("handles").Document(userOrEmail.ToLower()).GetSnapshotAsync();
+                    if (!handleDoc.Exists)
                     {
                         return new AuthResult { IsSuccess = false, ErrorMessage = "Username not found" };
                     }
                     
-                    var usernameData = usernameDoc.ToDictionary();
-                    if (!usernameData.ContainsKey("uid"))
-                    {
-                        return new AuthResult { IsSuccess = false, ErrorMessage = "Invalid username data" };
-                    }
-                    
-                    // Get user document to find email
-                    var userDoc = await firestore.Collection("users").Document(usernameData["uid"].ToString()).GetSnapshotAsync();
-                    if (!userDoc.Exists)
-                    {
-                        return new AuthResult { IsSuccess = false, ErrorMessage = "User not found" };
-                    }
-                    
-                    var userData = userDoc.ToDictionary();
-                    if (!userData.ContainsKey("email"))
+                    var handleData = handleDoc.ToDictionary();
+                    if (!handleData.ContainsKey("email"))
                     {
                         return new AuthResult { IsSuccess = false, ErrorMessage = "Email not found for username" };
                     }
                     
-                    email = userData["email"].ToString();
+                    email = handleData["email"].ToString();
                 }
 
                 // Sign in with email and password
@@ -243,33 +230,27 @@ namespace AntKnow.Auth
                 }
 
                 // Create Firebase Auth user
+                Debug.Log($"Creating Firebase Auth user for email: {email}");
                 var credential = await auth.CreateUserWithEmailAndPasswordAsync(email, password);
                 var user = credential.User;
+                Debug.Log($"Firebase Auth user created successfully: {user.UserId}");
 
-                // Create user profile in Firestore
-                var userProfile = new UserProfile(user.UserId, username, email);
-                var userData = new Dictionary<string, object>
+                // Create user data with new structure
+                Debug.Log($"Creating user document in Firestore: {user.UserId}");
+                var userData = new UserData(user.UserId, username, email);
+                await firestore.Collection("users").Document(user.UserId).SetAsync(userData.ToFirestoreData());
+                Debug.Log($"User document created successfully in Firestore");
+
+                // Create username handle mapping
+                Debug.Log($"Creating handle mapping for username: {username}");
+                await firestore.Collection("handles").Document(username.ToLower()).SetAsync(new Dictionary<string, object>
                 {
-                    { "uid", userProfile.uid },
-                    { "username", userProfile.username },
-                    { "email", userProfile.email },
-                    { "rankEligible", userProfile.rankEligible },
-                    { "elo", userProfile.elo },
-                    { "level", userProfile.level },
-                    { "exp", userProfile.exp },
-                    { "powerScore", userProfile.powerScore },
-                    { "createdAt", Timestamp.GetCurrentTimestamp() },
-                    { "lastLoginAt", Timestamp.GetCurrentTimestamp() }
-                };
-
-                await firestore.Collection("users").Document(user.UserId).SetAsync(userData);
-
-                // Create username mapping for quick lookup
-                await firestore.Collection("usernames").Document(username.ToLower()).SetAsync(new Dictionary<string, object>
-                {
-                    { "uid", user.UserId }
+                    { "uid", user.UserId },
+                    { "email", email }
                 });
+                Debug.Log($"Handle mapping created successfully");
 
+                Debug.Log($"Registration completed successfully for user: {username}");
                 return new AuthResult { IsSuccess = true, User = user };
             }
             catch (FirebaseException e)
@@ -314,7 +295,8 @@ namespace AntKnow.Auth
                     return false;
                 }
                 
-                var doc = await firestore.Collection("usernames").Document(username.ToLower()).GetSnapshotAsync();
+                // Check in handles collection
+                var doc = await firestore.Collection("handles").Document(username.ToLower()).GetSnapshotAsync();
                 return doc.Exists;
             }
             catch (FirebaseException e)
@@ -363,8 +345,7 @@ namespace AntKnow.Auth
                     return false;
                 }
                 
-                // Sử dụng phương thức khác để kiểm tra email
-                // Tìm kiếm trong Firestore thay vì dùng FetchSignInMethodsForEmailAsync
+                // Check in users collection
                 var query = await firestore.Collection("users").WhereEqualTo("email", email).GetSnapshotAsync();
                 return query.Count > 0;
             }
@@ -377,11 +358,6 @@ namespace AntKnow.Auth
                     return false; // Coi như email chưa tồn tại để cho phép đăng ký
                 }
                 Debug.LogError($"Firebase error checking email: {e.Message}");
-                return false;
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Error checking email: {e.Message}");
                 return false;
             }
         }
@@ -419,6 +395,122 @@ namespace AntKnow.Auth
             catch (Exception e)
             {
                 Debug.LogError($"Error updating last login time: {e.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Get user data from Firestore
+        /// </summary>
+        public async Task<UserData> GetUserDataAsync(string uid)
+        {
+            try
+            {
+                if (!IsFirebaseReady() || firestore == null)
+                {
+                    Debug.LogError("Firebase not ready for GetUserDataAsync");
+                    return null;
+                }
+
+                var doc = await firestore.Collection("users").Document(uid).GetSnapshotAsync();
+                if (!doc.Exists)
+                {
+                    Debug.LogError($"User document not found: {uid}");
+                    return null;
+                }
+
+                var data = doc.ToDictionary();
+                return UserData.FromFirestoreData(uid, data);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error getting user data: {e.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Update user's ingame name
+        /// </summary>
+        public async Task<bool> UpdateIngameNameAsync(string uid, string ingameName)
+        {
+            try
+            {
+                if (!IsFirebaseReady() || firestore == null)
+                {
+                    Debug.LogError("Firebase not ready for UpdateIngameNameAsync");
+                    return false;
+                }
+
+                // Check if ingame name is already taken
+                if (await IsIngameNameTakenAsync(ingameName))
+                {
+                    Debug.LogWarning($"Ingame name '{ingameName}' is already taken");
+                    return false;
+                }
+
+                // Update user document
+                await firestore.Collection("users").Document(uid).UpdateAsync("ingameName", ingameName);
+
+                // Create ingame name mapping
+                await firestore.Collection("ingame_names").Document(ingameName.ToLower()).SetAsync(new Dictionary<string, object>
+                {
+                    { "uid", uid }
+                });
+
+                Debug.Log($"Ingame name updated successfully: {ingameName}");
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error updating ingame name: {e.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Check if ingame name is already taken
+        /// </summary>
+        public async Task<bool> IsIngameNameTakenAsync(string ingameName)
+        {
+            try
+            {
+                if (!IsFirebaseReady() || firestore == null)
+                {
+                    Debug.LogError("Firebase not ready for IsIngameNameTakenAsync");
+                    return false;
+                }
+
+                var doc = await firestore.Collection("ingame_names").Document(ingameName.ToLower()).GetSnapshotAsync();
+                return doc.Exists;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error checking ingame name: {e.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Update user data in Firestore
+        /// </summary>
+        public async Task<bool> UpdateUserDataAsync(UserData userData)
+        {
+            try
+            {
+                if (!IsFirebaseReady() || firestore == null)
+                {
+                    Debug.LogError("Firebase not ready for UpdateUserDataAsync");
+                    return false;
+                }
+
+                await firestore.Collection("users").Document(userData.uid).SetAsync(userData.ToFirestoreData());
+                Debug.Log($"User data updated successfully: {userData.username}");
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error updating user data: {e.Message}");
+                return false;
             }
         }
 
