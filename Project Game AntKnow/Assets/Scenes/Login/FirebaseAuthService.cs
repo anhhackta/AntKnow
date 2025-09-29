@@ -235,7 +235,7 @@ namespace AntKnow.Auth
                 var user = credential.User;
                 Debug.Log($"Firebase Auth user created successfully: {user.UserId}");
 
-                // Create user data with new structure
+                // Create user data with new structure (chỉ basic info, không có inventory/loadout)
                 Debug.Log($"Creating user document in Firestore: {user.UserId}");
                 var userData = new UserData(user.UserId, username, email);
                 await firestore.Collection("users").Document(user.UserId).SetAsync(userData.ToFirestoreData());
@@ -510,6 +510,142 @@ namespace AntKnow.Auth
             catch (Exception e)
             {
                 Debug.LogError($"Error updating user data: {e.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Create initial inventory and loadout for user (gọi từ MenuScene)
+        /// </summary>
+        public async Task<bool> CreateInitialInventoryAndLoadoutAsync(string uid)
+        {
+            try
+            {
+                if (!IsFirebaseReady() || firestore == null)
+                {
+                    Debug.LogError("Firebase not ready for CreateInitialInventoryAndLoadoutAsync");
+                    return false;
+                }
+
+                Debug.Log($"Creating initial inventory and loadout for user: {uid}");
+                
+                var inventoryRef = firestore.Collection("users").Document(uid).Collection("inventory");
+                var loadoutRef = firestore.Collection("users").Document(uid).Collection("loadouts");
+
+                // Create initial skill cards (4 cards theo DBview.md)
+                var skillCards = new[]
+                {
+                    new { itemId = "skill.lan-tron", level = 1, stars = 0 },
+                    new { itemId = "skill.sieu-sale", level = 1, stars = 0 },
+                    new { itemId = "skill.bao-ke", level = 1, stars = 0 },
+                    new { itemId = "skill.cham-chi", level = 1, stars = 0 }
+                };
+
+                var cardInstanceIds = new List<string>();
+
+                foreach (var card in skillCards)
+                {
+                    var docRef = inventoryRef.Document();
+                    cardInstanceIds.Add(docRef.Id);
+                    
+                    await docRef.SetAsync(new Dictionary<string, object>
+                    {
+                        { "type", "skill_card" },
+                        { "itemId", card.itemId },
+                        { "level", card.level },
+                        { "stars", card.stars },
+                        { "createdAt", Timestamp.GetCurrentTimestamp() },
+                        { "updatedAt", Timestamp.GetCurrentTimestamp() }
+                    });
+                }
+
+                // Create initial equipment (5 items theo DBview.md)
+                var equipment = new[]
+                {
+                    new { itemId = "equip.hat.basic" },
+                    new { itemId = "equip.shirt.basic" },
+                    new { itemId = "equip.wings.basic" },
+                    new { itemId = "equip.shoes.basic" },
+                    new { itemId = "equip.mask.basic" }
+                };
+
+                var equipmentInstanceIds = new List<string>();
+
+                foreach (var equip in equipment)
+                {
+                    var docRef = inventoryRef.Document();
+                    equipmentInstanceIds.Add(docRef.Id);
+                    
+                    await docRef.SetAsync(new Dictionary<string, object>
+                    {
+                        { "type", "equipment" },
+                        { "itemId", equip.itemId },
+                        { "createdAt", Timestamp.GetCurrentTimestamp() },
+                        { "updatedAt", Timestamp.GetCurrentTimestamp() }
+                    });
+                }
+
+                // Create initial EXP cards
+                await inventoryRef.Document("exp.small").SetAsync(new Dictionary<string, object>
+                {
+                    { "type", "exp_card" },
+                    { "itemId", "exp.small" },
+                    { "qty", 5 }, // 5 EXP cards nhỏ ban đầu
+                    { "updatedAt", Timestamp.GetCurrentTimestamp() }
+                });
+
+                // Create initial loadout (slot1) với 2 skill cards đầu tiên và 5 equipment
+                await loadoutRef.Document("slot1").SetAsync(new Dictionary<string, object>
+                {
+                    { "active", true },
+                    { "skillCardIds", new[] { cardInstanceIds[0], cardInstanceIds[1] } }, // 2 skill cards đầu tiên
+                    { "equipmentSet", new Dictionary<string, object>
+                        {
+                            { "hatId", equipmentInstanceIds[0] },
+                            { "shirtId", equipmentInstanceIds[1] },
+                            { "wingsId", equipmentInstanceIds[2] },
+                            { "shoesId", equipmentInstanceIds[3] },
+                            { "maskId", equipmentInstanceIds[4] }
+                        }
+                    },
+                    { "updatedAt", Timestamp.GetCurrentTimestamp() }
+                });
+
+                Debug.Log($"Initial inventory and loadout created successfully for user: {uid}");
+                Debug.Log($"- Created {skillCards.Length} skill cards");
+                Debug.Log($"- Created {equipment.Length} equipment items");
+                Debug.Log($"- Created 1 EXP card stack");
+                Debug.Log($"- Created 1 loadout slot");
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error creating initial inventory and loadout: {e.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Check if user has inventory
+        /// </summary>
+        public async Task<bool> HasInventoryAsync(string uid)
+        {
+            try
+            {
+                if (!IsFirebaseReady() || firestore == null)
+                {
+                    Debug.LogError("Firebase not ready for HasInventoryAsync");
+                    return false;
+                }
+
+                var inventoryRef = firestore.Collection("users").Document(uid).Collection("inventory");
+                var snapshot = await inventoryRef.Limit(1).GetSnapshotAsync();
+                return snapshot.Count > 0;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error checking inventory: {e.Message}");
                 return false;
             }
         }

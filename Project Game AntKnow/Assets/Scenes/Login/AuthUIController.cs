@@ -494,7 +494,20 @@ namespace AntKnow.Auth
 
         private void OnStartButtonClicked()
         {
-            SceneManager.LoadScene("MenuScene");
+            // Set user data in GameDataManager before switching scenes
+            if (currentUserData != null)
+            {
+                GameDataManager.Instance.SetUserData(
+                    currentUserData.uid,
+                    currentUserData.username,
+                    currentUserData.email,
+                    currentUserData.ingameName
+                );
+                Debug.Log($"AuthUIController: User data set for scene transition - {currentUserData.username}");
+            }
+            
+            // Load LoadingScene instead of directly to MenuScene
+            SceneManager.LoadScene("LoadingScene");
         }
 
 
