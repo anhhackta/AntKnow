@@ -1,13 +1,13 @@
 # FIRESTORE SECURITY RULES CHO LOGIN SCENE
 
-## 🔐 Rules được khuyến nghị
+## 🔐 Rules được khuyến nghị (Cấu trúc mới)
 
 ```javascript
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
-    // ===== LOGIN SCENE RULES =====
+    // ===== LOGIN SCENE RULES (CẤU TRÚC MỚI) =====
     
     // Users collection - chỉ cho phép user đã đăng nhập
     match /users/{userId} {
@@ -15,12 +15,20 @@ service cloud.firestore {
       allow create: if request.auth != null && request.auth.uid == userId;
     }
     
-    // Usernames collection - chỉ cho phép đọc và tạo username mapping
-    match /usernames/{username} {
-      allow read: if request.auth != null;
+    // Handles collection - cho phép đọc để kiểm tra username
+    match /handles/{usernameLower} {
+      allow read: if true; // ✅ Cho phép đọc để kiểm tra username
       allow create: if request.auth != null && 
                        request.resource.data.uid == request.auth.uid;
-      allow update, delete: if false; // Không cho phép update/delete username
+      allow update, delete: if false; // Không cho phép thay đổi username
+    }
+    
+    // Ingame names collection - cho phép đọc để kiểm tra ingame name
+    match /ingame_names/{ingameNameLower} {
+      allow read: if true; // ✅ Cho phép đọc để kiểm tra ingame name
+      allow create: if request.auth != null && 
+                       request.resource.data.uid == request.auth.uid;
+      allow update, delete: if false; // Không cho phép thay đổi ingame name
     }
     
     // ===== QUIZ RULES (GIỮ NGUYÊN) =====
@@ -34,20 +42,28 @@ service cloud.firestore {
 }
 ```
 
-## 🛡️ Giải thích Rules
+## 🛡️ Giải thích Rules (Cấu trúc mới)
 
 ### **Users Collection:**
 - `allow read, write: if request.auth != null && request.auth.uid == userId`
   - Chỉ cho phép user đã đăng nhập
   - Chỉ được đọc/ghi profile của chính mình
 
-### **Usernames Collection:**
-- `allow read: if request.auth != null`
-  - Cho phép đọc để kiểm tra username đã tồn tại chưa
+### **Handles Collection (thay thế usernames):**
+- `allow read: if true`
+  - Cho phép đọc để kiểm tra username đã tồn tại chưa (không cần đăng nhập)
 - `allow create: if request.auth != null && request.resource.data.uid == request.auth.uid`
   - Chỉ cho phép tạo username mapping cho chính mình
 - `allow update, delete: if false`
   - Không cho phép thay đổi/xóa username (bảo mật)
+
+### **Ingame Names Collection (mới):**
+- `allow read: if true`
+  - Cho phép đọc để kiểm tra ingame name đã tồn tại chưa
+- `allow create: if request.auth != null && request.resource.data.uid == request.auth.uid`
+  - Chỉ cho phép tạo ingame name mapping cho chính mình
+- `allow update, delete: if false`
+  - Không cho phép thay đổi/xóa ingame name (bảo mật)
 
 ## 🚀 Rules cho Production (Khi có nhiều user)
 

@@ -52,11 +52,15 @@ namespace AntKnow.Auth
         [Header("Services")]
         [SerializeField] private FirebaseAuthService firebaseAuthService;
 
+        [Header("Avatar Panel")]
+        [SerializeField] private AvatarPanel avatarPanel;
+
         [Header("Notification")]
         [SerializeField] private TMP_Text textNotification;
 
         private bool isProcessing = false;
         private Coroutine notificationCoroutine;
+        private UserData currentUserData;
 
         private void Start()
         {
@@ -128,6 +132,7 @@ namespace AntKnow.Auth
                 firebaseAuthService.OnUserSignedOut += OnUserSignedOut;
                 firebaseAuthService.OnAuthError += OnAuthError;
             }
+
         }
 
         private void SwitchToLoginPanel()
@@ -178,8 +183,8 @@ namespace AntKnow.Auth
                         ClearSavedCredentials();
                     }
 
-                    // Hide panel and show main UI
-                    OnLoginSuccess();
+                    // Load user data and show avatar panel
+                    await LoadUserDataAndShowAvatar(result.User.UserId);
                 }
                 else
                 {
@@ -227,7 +232,9 @@ namespace AntKnow.Auth
                 if (result.IsSuccess)
                 {
                     ShowNotification("Tạo tài khoản thành công!", false);
-                    OnLoginSuccess();
+                    
+                    // Load user data and show avatar panel
+                    await LoadUserDataAndShowAvatar(result.User.UserId);
                 }
                 else
                 {
@@ -490,13 +497,6 @@ namespace AntKnow.Auth
             SceneManager.LoadScene("MenuScene");
         }
 
-        private void OnLoginSuccess()
-        {
-            panelLog.SetActive(false);
-            logButton.SetActive(true);
-            buttonStart.SetActive(true);
-            UpdateLogButtonSprite();
-        }
 
         private void OnUserSignedIn(FirebaseUser user)
         {
@@ -508,6 +508,14 @@ namespace AntKnow.Auth
         {
             Debug.Log("User signed out");
             buttonStart.SetActive(false);
+            currentUserData = null;
+            
+            // Hide avatar panel
+            if (avatarPanel != null)
+            {
+                avatarPanel.HidePanel();
+            }
+            
             UpdateLogButtonSprite();
         }
 
@@ -611,10 +619,50 @@ namespace AntKnow.Auth
             {
                 if (firebaseAuthService.Auth.CurrentUser != null)
                 {
-                    OnLoginSuccess();
+                    await LoadUserDataAndShowAvatar(firebaseAuthService.Auth.CurrentUser.UserId);
                 }
             }
         }
+
+        /// <summary>
+        /// Load user data and show avatar panel
+        /// </summary>
+        private async System.Threading.Tasks.Task LoadUserDataAndShowAvatar(string uid)
+        {
+            try
+            {
+                // Load user data from Firestore
+                currentUserData = await firebaseAuthService.GetUserDataAsync(uid);
+                
+                if (currentUserData != null)
+                {
+                    // Hide login panel and show avatar panel
+                    panelLog.SetActive(false);
+                    logButton.SetActive(true);
+                    buttonStart.SetActive(true);
+                    
+                    // Show avatar panel with user data
+                    if (avatarPanel != null)
+                    {
+                        avatarPanel.ShowPanel(currentUserData);
+                    }
+                    
+                    UpdateLogButtonSprite();
+                    Debug.Log($"User data loaded and avatar panel shown: {currentUserData.username}");
+                }
+                else
+                {
+                    Debug.LogError("Failed to load user data");
+                    ShowNotification("Lỗi tải dữ liệu người dùng", true);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error loading user data: {e.Message}");
+                ShowNotification("Lỗi tải dữ liệu người dùng", true);
+            }
+        }
+
 
         private void OnDestroy()
         {
@@ -624,6 +672,7 @@ namespace AntKnow.Auth
                 firebaseAuthService.OnUserSignedOut -= OnUserSignedOut;
                 firebaseAuthService.OnAuthError -= OnAuthError;
             }
+
         }
     }
 }
