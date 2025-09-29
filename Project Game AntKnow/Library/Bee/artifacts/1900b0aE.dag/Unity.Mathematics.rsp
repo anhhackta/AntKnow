@@ -137,6 +137,7 @@
 -r:"Assets/Firebase/Plugins/Firebase.App.dll"
 -r:"Assets/Firebase/Plugins/Firebase.Auth.dll"
 -r:"Assets/Firebase/Plugins/Firebase.Firestore.dll"
+-r:"Assets/Firebase/Plugins/Firebase.Functions.dll"
 -r:"Assets/Firebase/Plugins/Firebase.Platform.dll"
 -r:"Assets/Firebase/Plugins/Firebase.TaskExtension.dll"
 -r:"Assets/Firebase/Plugins/Google.MiniJson.dll"
