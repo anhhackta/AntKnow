@@ -62,6 +62,10 @@ namespace AntKnow.Auth
         private Coroutine notificationCoroutine;
         private UserData currentUserData;
 
+        // Debounce coroutines để tránh spam Firestore queries
+        private Coroutine usernameCheckCoroutine;
+        private Coroutine emailCheckCoroutine;
+
         private void Start()
         {
             InitializeUI();
@@ -251,8 +255,14 @@ namespace AntKnow.Auth
             }
         }
 
-        private async void OnUsernameChanged(string value)
+        private void OnUsernameChanged(string value)
         {
+            // Cancel coroutine cũ để tránh spam queries
+            if (usernameCheckCoroutine != null)
+            {
+                StopCoroutine(usernameCheckCoroutine);
+            }
+
             if (string.IsNullOrEmpty(value))
             {
                 textCheckUsername.gameObject.SetActive(false);
@@ -277,14 +287,27 @@ namespace AntKnow.Auth
                 return;
             }
 
+            // Start debounced check (đợi 0.5s sau khi user ngừng gõ)
+            usernameCheckCoroutine = StartCoroutine(CheckUsernameDebounced(value));
+        }
+
+        private IEnumerator CheckUsernameDebounced(string username)
+        {
+            // Đợi 0.5 giây
+            yield return new WaitForSeconds(0.5f);
+
             textCheckUsername.gameObject.SetActive(true);
             textCheckUsername.text = "Đang kiểm tra...";
             textCheckUsername.color = Color.yellow;
 
+            // Gọi async method trong coroutine
+            var checkTask = firebaseAuthService.IsUsernameTakenAsync(username);
+            yield return new WaitUntil(() => checkTask.IsCompleted);
+
             try
             {
-                bool isTaken = await firebaseAuthService.IsUsernameTakenAsync(value);
-                
+                bool isTaken = checkTask.Result;
+
                 if (isTaken)
                 {
                     textCheckUsername.text = "Username đã được sử dụng";
@@ -315,8 +338,14 @@ namespace AntKnow.Auth
             ValidateRegisterForm();
         }
 
-        private async void OnEmailChanged(string value)
+        private void OnEmailChanged(string value)
         {
+            // Cancel coroutine cũ để tránh spam queries
+            if (emailCheckCoroutine != null)
+            {
+                StopCoroutine(emailCheckCoroutine);
+            }
+
             if (string.IsNullOrEmpty(value) || !value.Contains("@"))
             {
                 textCheckEmail.gameObject.SetActive(false);
@@ -341,13 +370,26 @@ namespace AntKnow.Auth
                 return;
             }
 
+            // Start debounced check (đợi 0.5s sau khi user ngừng gõ)
+            emailCheckCoroutine = StartCoroutine(CheckEmailDebounced(value));
+        }
+
+        private IEnumerator CheckEmailDebounced(string email)
+        {
+            // Đợi 0.5 giây
+            yield return new WaitForSeconds(0.5f);
+
             textCheckEmail.gameObject.SetActive(true);
             textCheckEmail.text = "Đang kiểm tra...";
             textCheckEmail.color = Color.yellow;
 
+            // Gọi async method trong coroutine
+            var checkTask = firebaseAuthService.IsEmailTakenAsync(email);
+            yield return new WaitUntil(() => checkTask.IsCompleted);
+
             try
             {
-                bool isTaken = await firebaseAuthService.IsEmailTakenAsync(value);
+                bool isTaken = checkTask.Result;
                 
                 if (isTaken)
                 {

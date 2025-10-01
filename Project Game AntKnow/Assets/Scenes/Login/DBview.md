@@ -18,13 +18,13 @@
   * `cards` (map):
 
     * `maxEquipped` (map) → `{ total: 2, allowDuplicates: false }`
-    * `upgrade` (map) → `{ feedSlots: 5, attributePerLevel: 2 }` *(mỗi **level** +2 vào **primaryStat**)*
+    * `upgrade` (map) → `{ feedSlots: 5, attributePerLevel: 1 }` *(mỗi **level** +2 vào **primaryStat**)*
     * `evolution` (map) →
 
       * `levelThresholds` (array<number>) → `[10,20,30,40,50]`
-      * `cooldownReductionByStar` (array<number>) → `[0,1,2,3,4,5]` *(stars=0..5)*
+      * `cooldownReductionByStar` (array<number>) → `[0,1,1,2,3]` *(stars=0..5)*
       * `maxStars` (number) → `5`
-      * `baseRateByNextStar` (array<number>) → `[1,0.8,0.6,0.4,0.2]`
+      * `baseRateByNextStar` (array<number>) → `[1,0.8,0.5,0.3,0.1]`
   * `equipment` (map) → `{ slots: { hat:true, shirt:true, wings:true, shoes:true, mask:true } }`
   * `match` (map) → `{ minDurationSec:90, rewardAntCoin:{p1:500,p2:300,p3:200,p4:100}, rewardXp:{p1:300,p2:200,p3:150,p4:100} }`
   * `updatedAt` (timestamp, server)

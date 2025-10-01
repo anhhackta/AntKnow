@@ -34,9 +34,33 @@ namespace AntKnow.Auth
                    firestore != null;
         }
 
+        private static FirebaseAuthService _instance;
+        public static FirebaseAuthService Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = FindObjectOfType<FirebaseAuthService>();
+                }
+                return _instance;
+            }
+        }
+
         private void Awake()
         {
-            DontDestroyOnLoad(gameObject);
+            // Singleton pattern
+            if (_instance == null)
+            {
+                _instance = this;
+                DontDestroyOnLoad(gameObject);
+                Debug.Log("[FirebaseAuth] Instance created and set to DontDestroyOnLoad");
+            }
+            else if (_instance != this)
+            {
+                Debug.LogWarning("[FirebaseAuth] Duplicate instance detected! Destroying...");
+                Destroy(gameObject);
+            }
         }
 
         /// <summary>
@@ -93,13 +117,31 @@ namespace AntKnow.Auth
 
         private void OnAuthStateChanged(object sender, System.EventArgs eventArgs)
         {
-            if (auth.CurrentUser != null)
+            try
             {
-                OnUserSignedIn?.Invoke(auth.CurrentUser);
+                if (auth == null)
+                {
+                    Debug.LogError("[FirebaseAuth] Auth is null in OnAuthStateChanged!");
+                    return;
+                }
+
+                if (auth.CurrentUser != null)
+                {
+                    Debug.Log($"[FirebaseAuth] Auth state changed: User signed in");
+                    Debug.Log($"[FirebaseAuth] User ID: {auth.CurrentUser.UserId}");
+                    Debug.Log($"[FirebaseAuth] Email: {auth.CurrentUser.Email}");
+                    OnUserSignedIn?.Invoke(auth.CurrentUser);
+                }
+                else
+                {
+                    Debug.LogWarning($"[FirebaseAuth] Auth state changed: User signed out!");
+                    OnUserSignedOut?.Invoke();
+                }
             }
-            else
+            catch (Exception e)
             {
-                OnUserSignedOut?.Invoke();
+                Debug.LogError($"[FirebaseAuth] Exception in OnAuthStateChanged: {e.Message}");
+                Debug.LogError($"[FirebaseAuth] Stack trace: {e.StackTrace}");
             }
         }
 
@@ -156,11 +198,17 @@ namespace AntKnow.Auth
                 }
 
                 // Sign in with email and password
+                Debug.Log($"[FirebaseAuth] Attempting to sign in with email: {email}");
                 var credential = await auth.SignInWithEmailAndPasswordAsync(email, password);
-                
+
+                Debug.Log($"[FirebaseAuth] ✅ Sign in successful!");
+                Debug.Log($"[FirebaseAuth] User ID: {credential.User.UserId}");
+                Debug.Log($"[FirebaseAuth] Email: {credential.User.Email}");
+                Debug.Log($"[FirebaseAuth] Display Name: {credential.User.DisplayName}");
+
                 // Update last login time
                 await UpdateLastLoginTimeAsync(credential.User.UserId);
-                
+
                 return new AuthResult { IsSuccess = true, User = credential.User };
             }
             catch (FirebaseException e)

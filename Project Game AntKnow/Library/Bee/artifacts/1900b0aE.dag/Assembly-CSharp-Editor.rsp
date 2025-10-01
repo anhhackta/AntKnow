@@ -402,6 +402,7 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/Autodesk.Fbx.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Autodesk.Fbx.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/MeshyAssembly.ref.dll"
+-r:"Library/Bee/artifacts/1900b0aE.dag/ParrelSync.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/PsdPlugin.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.2D.Animation.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.2D.Animation.Runtime.ref.dll"
