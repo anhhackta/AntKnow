@@ -107,6 +107,7 @@ Fields:
   `ingameName`(string|null),
   `createdAt`(timestamp), `lastLoginAt`(timestamp),
   `level`(number=1), `xp`(number=0),
+  `gender`(string),
   `currencies` ( map ) : `antCoin`(number=0), `dCoin`(number=0),
   `stats`(map:{matchesPlayed:number=0, wins:number=0}),
   `status`(string="active")

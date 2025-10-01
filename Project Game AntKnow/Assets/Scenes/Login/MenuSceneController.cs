@@ -8,8 +8,9 @@ using AntKnow.Auth;
 namespace AntKnow.Auth
 {
     /// <summary>
-    /// Controller cho MenuScene - xử lý ingame name và tạo inventory/loadout
+    /// Controller cho MenuScene - LEGACY - Sử dụng MenuSceneManager thay thế
     /// </summary>
+    [System.Obsolete("Use MenuSceneManager instead")]
     public class MenuSceneController : MonoBehaviour
     {
         [Header("UI Panels")]
@@ -62,25 +63,20 @@ namespace AntKnow.Auth
             // Setup UI event listeners
             SetupEventListeners();
 
-            // Check if user needs ingame name setup
+            // User should already have ingame name from SelectCharacterScene
             if (gameDataManager.NeedsIngameNameSetup())
             {
-                ShowIngameNameSetup();
+                Debug.LogError("MenuScene: User missing ingame name, redirecting to SelectCharacterScene");
+                SceneManager.LoadScene("SelectCharacterScene");
+                return;
             }
-            else
-            {
-                ShowMainMenu();
-                await LoadUserDataAndInventory();
-            }
+
+            ShowMainMenu();
+            await LoadUserDataAndInventory();
         }
 
         private void SetupEventListeners()
         {
-            if (buttonSetIngameName != null)
-            {
-                buttonSetIngameName.onClick.AddListener(OnSetIngameNameClicked);
-            }
-
             if (buttonLogout != null)
             {
                 buttonLogout.onClick.AddListener(OnLogoutClicked);
@@ -97,22 +93,9 @@ namespace AntKnow.Auth
             }
         }
 
-        private void ShowIngameNameSetup()
-        {
-            if (ingameNamePanel != null)
-                ingameNamePanel.SetActive(true);
-            
-            if (mainMenuPanel != null)
-                mainMenuPanel.SetActive(false);
-
-            Debug.Log("MenuScene: Showing ingame name setup");
-        }
 
         private void ShowMainMenu()
         {
-            if (ingameNamePanel != null)
-                ingameNamePanel.SetActive(false);
-            
             if (mainMenuPanel != null)
                 mainMenuPanel.SetActive(true);
 
@@ -163,93 +146,6 @@ namespace AntKnow.Auth
             }
         }
 
-        private async void OnSetIngameNameClicked()
-        {
-            if (isProcessing) return;
-
-            string ingameName = inputIngameName?.text?.Trim();
-            
-            // Validate ingame name
-            if (!ValidateIngameName(ingameName))
-                return;
-
-            SetProcessing(true);
-            ClearError();
-
-            try
-            {
-                // Check if ingame name is already taken
-                bool isTaken = await firebaseAuthService.IsIngameNameTakenAsync(ingameName);
-                
-                if (isTaken)
-                {
-                    ShowError("Tên game này đã được sử dụng");
-                    SetProcessing(false);
-                    return;
-                }
-
-                // Update ingame name
-                bool success = await firebaseAuthService.UpdateIngameNameAsync(gameDataManager.currentUserId, ingameName);
-                
-                if (success)
-                {
-                    // Update GameDataManager
-                    gameDataManager.UpdateIngameName(ingameName);
-                    
-                    Debug.Log($"MenuScene: Ingame name set successfully: {ingameName}");
-                    
-                    // Hide ingame name setup and show main menu
-                    ShowMainMenu();
-                    await LoadUserDataAndInventory();
-                }
-                else
-                {
-                    ShowError("Không thể đặt tên game, vui lòng thử lại");
-                }
-            }
-            catch (Exception e)
-            {
-                ShowError($"Lỗi đặt tên game: {e.Message}");
-                Debug.LogError($"MenuScene: Error setting ingame name: {e.Message}");
-            }
-            finally
-            {
-                SetProcessing(false);
-            }
-        }
-
-        private bool ValidateIngameName(string ingameName)
-        {
-            if (string.IsNullOrEmpty(ingameName))
-            {
-                ShowError("Vui lòng nhập tên game");
-                return false;
-            }
-
-            if (ingameName.Length > 20)
-            {
-                ShowError("Tên game không được quá 20 ký tự");
-                return false;
-            }
-
-            if (ingameName.Length < 2)
-            {
-                ShowError("Tên game phải có ít nhất 2 ký tự");
-                return false;
-            }
-
-            // Check for special characters (chỉ cho phép chữ cái, số, và khoảng trắng)
-            foreach (char c in ingameName)
-            {
-                if (!char.IsLetterOrDigit(c) && !char.IsWhiteSpace(c))
-                {
-                    ShowError("Tên game chỉ được chứa chữ cái, số và khoảng trắng");
-                    return false;
-                }
-            }
-
-            return true;
-        }
 
         private void OnLogoutClicked()
         {
@@ -282,38 +178,10 @@ namespace AntKnow.Auth
             // SceneManager.LoadScene("InventoryScene");
         }
 
-        private void ShowError(string message)
-        {
-            if (textError != null)
-            {
-                textError.text = message;
-                textError.gameObject.SetActive(true);
-            }
-        }
-
-        private void ClearError()
-        {
-            if (textError != null)
-            {
-                textError.text = "";
-                textError.gameObject.SetActive(false);
-            }
-        }
-
-        private void SetProcessing(bool processing)
-        {
-            isProcessing = processing;
-            
-            if (buttonSetIngameName != null)
-                buttonSetIngameName.interactable = !processing;
-        }
 
         private void OnDestroy()
         {
             // Clean up event listeners
-            if (buttonSetIngameName != null)
-                buttonSetIngameName.onClick.RemoveListener(OnSetIngameNameClicked);
-            
             if (buttonLogout != null)
                 buttonLogout.onClick.RemoveListener(OnLogoutClicked);
             

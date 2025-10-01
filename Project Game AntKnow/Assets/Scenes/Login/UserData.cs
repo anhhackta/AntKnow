@@ -14,6 +14,7 @@ namespace AntKnow.Auth
         public string email;
         public bool emailVerified;
         public string ingameName;
+        public string gender;
         
         [Header("Timestamps")]
         public DateTime createdAt;
@@ -64,6 +65,7 @@ namespace AntKnow.Auth
                 { "email", email },
                 { "emailVerified", emailVerified },
                 { "ingameName", ingameName ?? null },
+                { "gender", gender ?? null },
                 { "createdAt", Timestamp.GetCurrentTimestamp() },
                 { "lastLoginAt", Timestamp.GetCurrentTimestamp() },
                 { "level", level },
@@ -100,6 +102,8 @@ namespace AntKnow.Auth
                 userData.emailVerified = (bool)data["emailVerified"];
             if (data.ContainsKey("ingameName"))
                 userData.ingameName = data["ingameName"]?.ToString();
+            if (data.ContainsKey("gender"))
+                userData.gender = data["gender"]?.ToString();
             
             if (data.ContainsKey("level"))
                 userData.level = Convert.ToInt32(data["level"]);
