@@ -20,5 +20,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameScene.unity
     guid: 43795568f934947279e74f753742b73c
+  - enabled: 1
+    path: Assets/NGO_Minimal_Setup/NGO_Setup.unity
+    guid: d9b435b7ccf7b534c96b400e8b9cf0c1
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
