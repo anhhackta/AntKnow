@@ -228,7 +228,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 408, y: -132}
   m_SizeDelta: {x: 1000, y: 860}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &65913624
@@ -279,10 +279,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -2463,8 +2463,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 260317654}
   m_HandleRect: {fileID: 260317653}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4805,7 +4805,6 @@ MonoBehaviour:
     NetworkTopology: 0
     UseCMBService: 0
     AutoSpawnPlayerPrefabClientSide: 1
-    NetworkMessageMetrics: 1
     NetworkProfilingMetrics: 1
     OldPrefabList: []
   RunInBackground: 1
@@ -6936,8 +6935,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 25.75, y: -70}
-  m_SizeDelta: {x: 51.5, y: 40}
+  m_AnchoredPosition: {x: 56.5, y: -70}
+  m_SizeDelta: {x: 113, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &497340846886496070
 MonoBehaviour:
@@ -7220,8 +7219,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 25.75, y: -20}
-  m_SizeDelta: {x: 51.5, y: 40}
+  m_AnchoredPosition: {x: 56.5, y: -20}
+  m_SizeDelta: {x: 113, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &3496830213152430927
 RectTransform:
@@ -7346,8 +7345,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59fb0945f3d4046d383e99d25802608f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_StartHostButton: {fileID: 1685628766763190196}
-  m_StartClientButton: {fileID: 2415600389521842084}
 --- !u!224 &5425775018313645862
 RectTransform:
   m_ObjectHideFlags: 0
