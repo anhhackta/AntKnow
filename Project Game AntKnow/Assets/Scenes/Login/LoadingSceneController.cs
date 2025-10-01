@@ -144,9 +144,9 @@ namespace AntKnow.Auth
             // Wait a bit before loading MenuScene
             yield return new WaitForSeconds(0.5f);
             
-            // Load MenuScene
-            Debug.Log("LoadingScene: Loading MenuScene");
-            SceneManager.LoadScene("MenuScene");
+            // Load SelectCharacterScene
+            Debug.Log("LoadingScene: Loading SelectCharacterScene");
+            SceneManager.LoadScene("SelectCharacterScene");
         }
 
         private async Task<bool> PerformRealLoading()
@@ -252,7 +252,7 @@ namespace AntKnow.Auth
         public void SkipLoading()
         {
             StopAllCoroutines();
-            SceneManager.LoadScene("MenuScene");
+            SceneManager.LoadScene("SelectCharacterScene");
         }
 
         /// <summary>

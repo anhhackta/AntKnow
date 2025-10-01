@@ -28,6 +28,11 @@ namespace AntKnow.Auth
         public string currentUsername;
         public string currentEmail;
         public string currentIngameName;
+        public string currentGender;
+        public int currentLevel = 1;
+        public int currentXp = 0;
+        public int currentAntCoin = 0;
+        public int currentDCoin = 0;
 
         [Header("Game State")]
         public bool isUserLoggedIn = false;
@@ -50,15 +55,20 @@ namespace AntKnow.Auth
         /// <summary>
         /// Set user data sau khi login thành công
         /// </summary>
-        public void SetUserData(string userId, string username, string email, string ingameName = null)
+        public void SetUserData(string userId, string username, string email, string ingameName = null, string gender = null, int level = 1, int xp = 0, int antCoin = 0, int dCoin = 0)
         {
             currentUserId = userId;
             currentUsername = username;
             currentEmail = email;
             currentIngameName = ingameName;
+            currentGender = gender;
+            currentLevel = level;
+            currentXp = xp;
+            currentAntCoin = antCoin;
+            currentDCoin = dCoin;
             isUserLoggedIn = true;
             
-            Debug.Log($"GameDataManager: User data set - {username} ({userId})");
+            Debug.Log($"GameDataManager: User data set - {username} ({userId}) - Level: {level}, AntCoin: {antCoin}, DCoin: {dCoin}");
         }
 
         /// <summary>
@@ -70,6 +80,11 @@ namespace AntKnow.Auth
             currentUsername = null;
             currentEmail = null;
             currentIngameName = null;
+            currentGender = null;
+            currentLevel = 1;
+            currentXp = 0;
+            currentAntCoin = 0;
+            currentDCoin = 0;
             isUserLoggedIn = false;
             hasInventory = false;
             hasLoadout = false;
@@ -84,6 +99,15 @@ namespace AntKnow.Auth
         {
             currentIngameName = ingameName;
             Debug.Log($"GameDataManager: Ingame name updated to {ingameName}");
+        }
+
+        /// <summary>
+        /// Update gender
+        /// </summary>
+        public void UpdateGender(string gender)
+        {
+            currentGender = gender;
+            Debug.Log($"GameDataManager: Gender updated to {gender}");
         }
 
         /// <summary>
