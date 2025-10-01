@@ -62,11 +62,30 @@ namespace AntKnow.Services
 
         private void Start()
         {
-            // Get Unity Transport component
+            // Get Unity Transport component (chỉ có trong GameScene, không có trong MenuScene)
             transport = FindObjectOfType<UnityTransport>();
             if (transport == null)
             {
-                DebugLogError("UnityTransport component not found! Please add it to NetworkManager.");
+                DebugLog("UnityTransport not found (normal in MenuScene). Will be initialized when needed in GameScene.");
+            }
+            else
+            {
+                DebugLog("UnityTransport found and ready.");
+            }
+        }
+
+        /// <summary>
+        /// Tìm và cache UnityTransport (gọi khi cần)
+        /// </summary>
+        private void EnsureTransport()
+        {
+            if (transport == null)
+            {
+                transport = FindObjectOfType<UnityTransport>();
+                if (transport == null)
+                {
+                    DebugLogError("UnityTransport component not found! Please add it to NetworkManager in GameScene.");
+                }
             }
         }
 
@@ -96,7 +115,8 @@ namespace AntKnow.Services
                 IsHost = true;
                 IsConnected = true;
 
-                // Configure transport
+                // Configure transport (chỉ khi có - trong GameScene)
+                EnsureTransport();
                 if (transport != null)
                 {
                     transport.SetRelayServerData(
@@ -106,12 +126,12 @@ namespace AntKnow.Services
                         allocation.Key,
                         allocation.ConnectionData
                     );
-                    
+
                     DebugLog("Transport configured for host");
                 }
                 else
                 {
-                    DebugLogError("UnityTransport not found!");
+                    DebugLog("Transport not available yet (will be configured in GameScene)");
                 }
 
                 DebugLog($"Relay created successfully. Join code: {joinCode}");
@@ -163,7 +183,8 @@ namespace AntKnow.Services
                 IsHost = false;
                 IsConnected = true;
 
-                // Configure transport
+                // Configure transport (chỉ khi có - trong GameScene)
+                EnsureTransport();
                 if (transport != null)
                 {
                     transport.SetRelayServerData(
@@ -174,12 +195,12 @@ namespace AntKnow.Services
                         allocation.ConnectionData,
                         allocation.HostConnectionData
                     );
-                    
+
                     DebugLog("Transport configured for client");
                 }
                 else
                 {
-                    DebugLogError("UnityTransport not found!");
+                    DebugLog("Transport not available yet (will be configured in GameScene)");
                 }
 
                 DebugLog($"Joined Relay successfully with code: {joinCode}");

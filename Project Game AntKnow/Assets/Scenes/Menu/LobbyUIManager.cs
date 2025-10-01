@@ -254,25 +254,51 @@ namespace AntKnow.Auth
         private async System.Threading.Tasks.Task RefreshRoomList()
         {
             DebugLog("Refreshing room list...");
-            
+
+            // Debug check
+            if (roomListContainer == null)
+            {
+                DebugLogError("roomListContainer is NULL! Please assign ScrollView/Viewport/Content to roomListContainer in Inspector!");
+                return;
+            }
+
+            if (roomItemPrefab == null)
+            {
+                DebugLogError("roomItemPrefab is NULL! Please assign RoomItemPrefabs.prefab to roomItemPrefab in Inspector!");
+                return;
+            }
+
+            DebugLog($"roomListContainer: {roomListContainer.name}");
+            DebugLog($"roomItemPrefab: {roomItemPrefab.name}");
+
             // Clear old list
             foreach (var item in roomListItems)
             {
                 if (item != null) Destroy(item);
             }
             roomListItems.Clear();
-            
+
             // Query lobbies
             var lobbies = await CustomLobbyService.Instance.QueryLobbiesAsync();
-            
+
             if (lobbies != null && roomListContainer != null && roomItemPrefab != null)
             {
                 DebugLog($"Found {lobbies.Count} lobbies");
-                
+
                 foreach (var lobby in lobbies)
                 {
                     GameObject item = Instantiate(roomItemPrefab, roomListContainer);
                     roomListItems.Add(item);
+
+                    // Fix RectTransform để hiện trong ScrollView
+                    var rectTransform = item.GetComponent<RectTransform>();
+                    if (rectTransform != null)
+                    {
+                        rectTransform.localScale = Vector3.one;
+                        rectTransform.localPosition = Vector3.zero;
+                    }
+
+                    DebugLog($"Spawned room item: {lobby.Name} at parent: {roomListContainer.name}");
 
                     // Setup item: RoomItemPrefab có 2 text con
                     // Hỗ trợ cả Text và TextMeshProUGUI
@@ -340,17 +366,29 @@ namespace AntKnow.Auth
             string roomName = inputRoomName != null ? inputRoomName.text : "";
             if (string.IsNullOrEmpty(roomName))
                 roomName = $"Room_{UnityEngine.Random.Range(1000, 9999)}";
-            
+
             DebugLog($"Creating room: {roomName}");
-            
+
+            // Check if already in lobby
+            if (CustomLobbyService.Instance.IsInLobby)
+            {
+                DebugLogError("Already in a lobby! Leaving current lobby first...");
+                await CustomLobbyService.Instance.LeaveLobbyAsync();
+                await System.Threading.Tasks.Task.Delay(500); // Wait for cleanup
+            }
+
             // Create lobby
             bool created = await CustomLobbyService.Instance.CreateLobbyAsync(roomName, isPrivate: false);
-            
+
             if (created)
             {
                 // Event OnLobbyCreated sẽ xử lý việc chuyển panel
                 if (panelCreateRoom != null)
                     panelCreateRoom.SetActive(false);
+            }
+            else
+            {
+                DebugLogError("Failed to create lobby");
             }
         }
 
@@ -410,12 +448,27 @@ namespace AntKnow.Auth
 
         private void UpdatePlayerList(List<Player> players)
         {
+            // Debug check
+            if (playerListContainer == null)
+            {
+                DebugLogError("playerListContainer is NULL! Please assign ScrollView/Viewport/Content to playerListContainer in Inspector!");
+                return;
+            }
+
+            if (playerItemPrefab == null)
+            {
+                DebugLogError("playerItemPrefab is NULL! Please assign PlayerItemPrefabs.prefab to playerItemPrefab in Inspector!");
+                return;
+            }
+
             // Clear old list
             foreach (var item in playerListItems)
             {
                 if (item != null) Destroy(item);
             }
             playerListItems.Clear();
+
+            DebugLog($"Updating player list: {players.Count} players");
 
             // Create new list
             if (playerListContainer != null && playerItemPrefab != null)
@@ -424,6 +477,14 @@ namespace AntKnow.Auth
                 {
                     GameObject item = Instantiate(playerItemPrefab, playerListContainer);
                     playerListItems.Add(item);
+
+                    // Fix RectTransform để hiện trong ScrollView
+                    var rectTransform = item.GetComponent<RectTransform>();
+                    if (rectTransform != null)
+                    {
+                        rectTransform.localScale = Vector3.one;
+                        rectTransform.localPosition = Vector3.zero;
+                    }
 
                     // PlayerItemPrefab: Button với 1 text con (tên người chơi)
                     // Hỗ trợ cả Text và TextMeshProUGUI
