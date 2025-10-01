@@ -18,6 +18,7 @@ namespace AntKnow.Auth
         [SerializeField] private GameObject mainPanel;
         [SerializeField] private PanelSliderManager panelSliderManager;
         [SerializeField] private GameObject settingsPanel;
+        [SerializeField] private GameObject panelRoom; // Panel Room for matchmaking and lobby
 
         [Header("Top Bar Components")]
         [SerializeField] private PanelAvatar panelAvatar;
@@ -99,6 +100,9 @@ namespace AntKnow.Auth
         {
             // Initialize settings panel
             if (settingsPanel != null) settingsPanel.SetActive(false);
+
+            // Initialize panel room (hidden by default)
+            if (panelRoom != null) panelRoom.SetActive(false);
 
             // Initialize top bar components
             if (panelAvatar != null)

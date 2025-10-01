@@ -17,7 +17,16 @@ namespace AntKnow.Auth
         [SerializeField] private Sprite maleCharacterSprite;
         [SerializeField] private Sprite femaleCharacterSprite;
 
-        // Loại bỏ xúc xắc để đơn giản hóa
+        [Header("Action Buttons")]
+        [SerializeField] private Button buttonFindMatch; // Button "Tìm trận"
+        [SerializeField] private Button buttonCustomRoom; // Button "Tạo phòng"
+
+        [Header("Matchmaking UI")]
+        [SerializeField] private Button buttonWaitGame; // Button hiện khi đang tìm trận
+        [SerializeField] private Text textWaitTimer; // Text countdown
+
+        [Header("References")]
+        [SerializeField] private LobbyUIManager lobbyUIManager; // Reference to Lobby UI Manager
 
         private GameDataManager gameDataManager;
 
@@ -30,7 +39,12 @@ namespace AntKnow.Auth
         {
             gameDataManager = GameDataManager.Instance;
             SetupEventListeners();
-            
+            SubscribeToMatchmaker();
+
+            // Hide wait button initially
+            if (buttonWaitGame != null)
+                buttonWaitGame.gameObject.SetActive(false);
+
             // Không cập nhật sprite ngay lập tức vì data chưa load
             // Sẽ được gọi từ MenuSceneManager sau khi load data
             Debug.Log("PanelHome: Initialized, waiting for data...");
@@ -38,8 +52,95 @@ namespace AntKnow.Auth
 
         private void SetupEventListeners()
         {
-            // Action buttons sẽ được xử lý trong panel con khác
-            // Không cần setup event listeners ở đây
+            // Setup buttons
+            if (buttonFindMatch != null)
+            {
+                buttonFindMatch.onClick.AddListener(OnFindMatchClicked);
+            }
+
+            if (buttonCustomRoom != null)
+            {
+                buttonCustomRoom.onClick.AddListener(OnCustomRoomClicked);
+            }
+
+            if (buttonWaitGame != null)
+            {
+                buttonWaitGame.onClick.AddListener(OnCancelMatchmaking);
+            }
+        }
+
+        private void SubscribeToMatchmaker()
+        {
+            AntKnow.Services.MatchmakerService.OnSearchTimeUpdated += OnSearchTimeUpdated;
+            AntKnow.Services.MatchmakerService.OnMatchmakingCancelled += OnMatchmakingCancelled;
+            AntKnow.Services.MatchmakerService.OnMatchFound += OnMatchFound;
+        }
+
+        private async void OnFindMatchClicked()
+        {
+            Debug.Log("PanelHome: Find Match button clicked");
+
+            // Sign in to UGS if needed
+            if (!AntKnow.Services.UGSAuthService.IsSignedIn)
+            {
+                bool signedIn = await AntKnow.Services.UGSAuthService.Instance.AutoSignInFromFirebaseAsync();
+                if (!signedIn)
+                {
+                    Debug.LogError("PanelHome: Failed to sign in to UGS");
+                    return;
+                }
+            }
+
+            // Start matchmaking
+            bool started = await AntKnow.Services.MatchmakerService.Instance.StartMatchmakingAsync();
+            if (started)
+            {
+                // Show wait button
+                if (buttonWaitGame != null)
+                    buttonWaitGame.gameObject.SetActive(true);
+            }
+        }
+
+        private void OnCustomRoomClicked()
+        {
+            Debug.Log("PanelHome: Custom Room button clicked");
+
+            if (lobbyUIManager != null)
+            {
+                lobbyUIManager.OpenCustomRoomPanel();
+            }
+            else
+            {
+                Debug.LogError("PanelHome: LobbyUIManager reference is null!");
+            }
+        }
+
+        private void OnCancelMatchmaking()
+        {
+            Debug.Log("PanelHome: Cancel matchmaking");
+            AntKnow.Services.MatchmakerService.Instance.CancelMatchmaking();
+        }
+
+        private void OnSearchTimeUpdated(float remainingTime)
+        {
+            if (textWaitTimer != null)
+            {
+                int seconds = Mathf.CeilToInt(remainingTime);
+                textWaitTimer.text = $"Đang tìm... {seconds}s";
+            }
+        }
+
+        private void OnMatchmakingCancelled()
+        {
+            if (buttonWaitGame != null)
+                buttonWaitGame.gameObject.SetActive(false);
+        }
+
+        private void OnMatchFound(Unity.Services.Lobbies.Models.Lobby lobby)
+        {
+            Debug.Log($"PanelHome: Match found - {lobby.Name}");
+            if (buttonWaitGame != null)
+                buttonWaitGame.gameObject.SetActive(false);
         }
 
         public void UpdateCharacterDisplay()
@@ -143,7 +244,26 @@ namespace AntKnow.Auth
 
         private void OnDestroy()
         {
-            // Không cần clean up event listeners vì không có action buttons ở đây
+            // Clean up event listeners
+            if (buttonFindMatch != null)
+            {
+                buttonFindMatch.onClick.RemoveListener(OnFindMatchClicked);
+            }
+
+            if (buttonCustomRoom != null)
+            {
+                buttonCustomRoom.onClick.RemoveListener(OnCustomRoomClicked);
+            }
+
+            if (buttonWaitGame != null)
+            {
+                buttonWaitGame.onClick.RemoveListener(OnCancelMatchmaking);
+            }
+
+            // Unsubscribe from matchmaker
+            AntKnow.Services.MatchmakerService.OnSearchTimeUpdated -= OnSearchTimeUpdated;
+            AntKnow.Services.MatchmakerService.OnMatchmakingCancelled -= OnMatchmakingCancelled;
+            AntKnow.Services.MatchmakerService.OnMatchFound -= OnMatchFound;
         }
     }
 }
