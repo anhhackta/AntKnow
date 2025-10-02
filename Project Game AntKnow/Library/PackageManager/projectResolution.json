@@ -7,7 +7,6 @@
     "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Packages\\manifest.json",
     "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Packages\\packages-lock.json",
     "C:\\Program Files\\Unity\\Hub\\Editor\\6000.0.48f1\\Editor\\Data\\Resources\\PackageManager\\BuiltInPackages\\BuiltInPackagesCombined.sha1",
-    "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Packages\\ai.meshy\\package.json",
     "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Packages\\com.unity.nuget.newtonsoft-json\\package.json"
   ],
   "outputs": {
@@ -406,15 +405,6 @@
       "source": "builtin",
       "testable": false
     },
-    "ai.meshy@file:D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Packages\\ai.meshy": {
-      "name": "ai.meshy",
-      "displayName": "Meshy",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Packages\\ai.meshy",
-      "editorCompatibility": "2021.3.0a1",
-      "version": "0.1.3",
-      "source": "embedded",
-      "testable": true
-    },
     "com.unity.nuget.newtonsoft-json@file:D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Packages\\com.unity.nuget.newtonsoft-json": {
       "name": "com.unity.nuget.newtonsoft-json",
       "displayName": "Newtonsoft Json",
@@ -424,36 +414,6 @@
       "version": "3.2.1",
       "source": "embedded",
       "testable": true
-    },
-    "com.unity.mathematics@1.3.2": {
-      "name": "com.unity.mathematics",
-      "displayName": "Mathematics",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.mathematics@8017b507cc74",
-      "fingerprint": "8017b507cc74bf0a1dd14b18aa860569f807314d",
-      "editorCompatibility": "2021.3.0a1",
-      "version": "1.3.2",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.burst@1.8.21": {
-      "name": "com.unity.burst",
-      "displayName": "Burst",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.burst@59eb6f11d242",
-      "fingerprint": "59eb6f11d2422f95682320d9daa3e79fdb076744",
-      "editorCompatibility": "2020.3.0a1",
-      "version": "1.8.21",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.formats.fbx@5.1.1": {
-      "name": "com.unity.formats.fbx",
-      "displayName": "FBX Exporter",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.formats.fbx@4ad3eb16b616",
-      "fingerprint": "4ad3eb16b6169d696abf31e81f575752527d445e",
-      "editorCompatibility": "2020.3.0a1",
-      "version": "5.1.1",
-      "source": "registry",
-      "testable": false
     },
     "com.unity.modules.subsystems@1.0.0": {
       "name": "com.unity.modules.subsystems",
@@ -611,13 +571,13 @@
       "source": "registry",
       "testable": false
     },
-    "com.autodesk.fbx@5.1.1": {
-      "name": "com.autodesk.fbx",
-      "displayName": "Autodesk FBX SDK for Unity",
-      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.autodesk.fbx@5797ff6b31c7",
-      "fingerprint": "5797ff6b31c7c66189bffe1adc9cbf0ad5a9cbbf",
+    "com.unity.burst@1.8.21": {
+      "name": "com.unity.burst",
+      "displayName": "Burst",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.burst@59eb6f11d242",
+      "fingerprint": "59eb6f11d2422f95682320d9daa3e79fdb076744",
       "editorCompatibility": "2020.3.0a1",
-      "version": "5.1.1",
+      "version": "1.8.21",
       "source": "registry",
       "testable": false
     },
@@ -628,6 +588,16 @@
       "fingerprint": "56bff8827a7ef6d44fcee4f36e558a74da89c1a0",
       "editorCompatibility": "2022.3.11f1",
       "version": "2.5.1",
+      "source": "registry",
+      "testable": false
+    },
+    "com.unity.mathematics@1.3.2": {
+      "name": "com.unity.mathematics",
+      "displayName": "Mathematics",
+      "resolvedPath": "D:\\ProjectGame\\AntKnow\\Project Game AntKnow\\Library\\PackageCache\\com.unity.mathematics@8017b507cc74",
+      "fingerprint": "8017b507cc74bf0a1dd14b18aa860569f807314d",
+      "editorCompatibility": "2021.3.0a1",
+      "version": "1.3.2",
       "source": "registry",
       "testable": false
     },
