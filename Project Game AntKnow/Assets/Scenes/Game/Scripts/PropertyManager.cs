@@ -13,15 +13,32 @@ namespace AntKnow.Game
         [SerializeField] private int[] rentPct = new int[] { 10, 25, 50, 75, 100, 250 }; // Level 0-5
         [SerializeField] private int hotelUpgradePct = 400;
         [SerializeField] private int hotelRentPct = 250;
-        
+
+        [Header("Visual")]
+        [SerializeField] private PropertyVisual propertyVisual;
+        [SerializeField] private BoardManager boardManager;
+
         // Property ownership: tileId -> owner player index
         private Dictionary<int, int> propertyOwners = new Dictionary<int, int>();
-        
+
         // Property levels: tileId -> level (0-5, 5 = hotel)
         private Dictionary<int, int> propertyLevels = new Dictionary<int, int>();
-        
+
         // Property rent multipliers: tileId -> multiplier (1 or 2 from Agility)
         private Dictionary<int, float> propertyRentMultipliers = new Dictionary<int, float>();
+
+        private void Awake()
+        {
+            if (propertyVisual == null)
+            {
+                propertyVisual = GetComponent<PropertyVisual>();
+            }
+
+            if (boardManager == null)
+            {
+                boardManager = FindObjectOfType<BoardManager>();
+            }
+        }
         
         /// <summary>
         /// Check if property is owned
@@ -79,14 +96,17 @@ namespace AntKnow.Game
             propertyOwners[tileId] = playerIndex;
             propertyLevels[tileId] = 0; // Level 0 = đất trống
             propertyRentMultipliers[tileId] = 1f;
-            
+
             // Check Agility: Nhân đôi tiền thuê
             if (StatsCalculator.CheckAgilityForDoubleRent(player.Agility))
             {
                 propertyRentMultipliers[tileId] = 2f;
                 Debug.Log($"[PropertyManager] AGILITY! Rent x2 for property {tileId}");
             }
-            
+
+            // Update visual (level 0 = no visual)
+            UpdatePropertyVisual(tileId);
+
             Debug.Log($"[PropertyManager] Player {playerIndex} bought property {tileId} for {basePrice}");
             return true;
         }
@@ -119,14 +139,17 @@ namespace AntKnow.Game
             // Upgrade
             player.SubtractMoney(totalCost);
             propertyLevels[tileId] = targetLevel;
-            
+
             // Check Agility: Nhân đôi tiền thuê
             if (StatsCalculator.CheckAgilityForDoubleRent(player.Agility))
             {
                 propertyRentMultipliers[tileId] = 2f;
                 Debug.Log($"[PropertyManager] AGILITY! Rent x2 for property {tileId}");
             }
-            
+
+            // Update visual
+            UpdatePropertyVisual(tileId);
+
             Debug.Log($"[PropertyManager] Property {tileId} upgraded to level {targetLevel} for {totalCost}");
             return true;
         }
@@ -236,8 +259,25 @@ namespace AntKnow.Game
             int finalRent = StatsCalculator.CalculateFinalRent(rent, multiplier);
             
             string levelText = level == 5 ? "Hotel" : level == 0 ? "Đất trống" : $"House {level}";
-            
+
             return $"{levelText}\nThuê: {finalRent}";
+        }
+
+        /// <summary>
+        /// Update property visual
+        /// </summary>
+        private void UpdatePropertyVisual(int tileId)
+        {
+            if (propertyVisual == null || boardManager == null)
+            {
+                return;
+            }
+
+            int level = GetPropertyLevel(tileId);
+            int ownerIndex = GetPropertyOwner(tileId);
+            Vector3 tilePosition = boardManager.GetWaypointPosition(tileId);
+
+            propertyVisual.UpdatePropertyVisual(tileId, level, ownerIndex, tilePosition);
         }
     }
 }

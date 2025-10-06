@@ -3117,27 +3117,6 @@ Transform:
   - {fileID: 2028469665}
   m_Father: {fileID: 1626044624}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &267960736 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4898397665287000999, guid: 2e74635a0323461429b86cd3be245611, type: 3}
-  m_PrefabInstance: {fileID: 1250691447}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &267960737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 267960736}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c9c6ed78534d1943897dd200bea4afe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waypointPath: {fileID: 1539957328}
-  autoAssignPath: 1
-  fallbackWaypoints: []
-  moveSpeed: 3
 --- !u!1 &281139280
 GameObject:
   m_ObjectHideFlags: 0
@@ -3940,6 +3919,7 @@ GameObject:
   - component: {fileID: 339861223}
   - component: {fileID: 339861222}
   - component: {fileID: 339861221}
+  - component: {fileID: 339861225}
   m_Layer: 0
   m_Name: China_tile
   m_TagString: Untagged
@@ -4039,6 +4019,23 @@ Transform:
   - {fileID: 1196351903}
   m_Father: {fileID: 1626044624}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &339861225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 339861219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67cea329822d11740aed09e6ad293c6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  platform: {fileID: 667014876}
+  textName: {fileID: 0}
+  textPrice: {fileID: 0}
+  autoFindChildren: 1
+  tileIndex: -1
 --- !u!1 &355552991
 GameObject:
   m_ObjectHideFlags: 0
@@ -9824,6 +9821,7 @@ GameObject:
   - component: {fileID: 735305776}
   - component: {fileID: 735305775}
   - component: {fileID: 735305774}
+  - component: {fileID: 735305778}
   m_Layer: 0
   m_Name: Japan_tile
   m_TagString: Untagged
@@ -9923,6 +9921,23 @@ Transform:
   - {fileID: 313594141}
   m_Father: {fileID: 1626044624}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &735305778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 735305772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67cea329822d11740aed09e6ad293c6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  platform: {fileID: 806900544}
+  textName: {fileID: 0}
+  textPrice: {fileID: 0}
+  autoFindChildren: 1
+  tileIndex: -1
 --- !u!1 &735362777
 GameObject:
   m_ObjectHideFlags: 0
@@ -12502,7 +12517,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &895946246
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16191,7 +16206,18 @@ MonoBehaviour:
   waypointPath: {fileID: 1539957328}
   autoAssignPath: 1
   fallbackWaypoints: []
-  moveSpeed: 3
+  moveSpeed: 2
+--- !u!114 &1215404041 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5905109622554016792, guid: 2e74635a0323461429b86cd3be245611, type: 3}
+  m_PrefabInstance: {fileID: 1953717764}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1215404035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2181e7e9dd3327439d3151b107af2b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1227345317
 GameObject:
   m_ObjectHideFlags: 0
@@ -16822,70 +16848,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1246850564}
   m_CullTransparentMesh: 1
---- !u!1001 &1250691447
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4898397665287000999, guid: 2e74635a0323461429b86cd3be245611, type: 3}
-      propertyPath: m_Name
-      value: Girl (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4898397665287000999, guid: 2e74635a0323461429b86cd3be245611, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238049299198675229, guid: 2e74635a0323461429b86cd3be245611, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.12886369
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238049299198675229, guid: 2e74635a0323461429b86cd3be245611, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.15168428
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238049299198675229, guid: 2e74635a0323461429b86cd3be245611, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.2387312
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238049299198675229, guid: 2e74635a0323461429b86cd3be245611, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238049299198675229, guid: 2e74635a0323461429b86cd3be245611, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238049299198675229, guid: 2e74635a0323461429b86cd3be245611, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238049299198675229, guid: 2e74635a0323461429b86cd3be245611, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238049299198675229, guid: 2e74635a0323461429b86cd3be245611, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238049299198675229, guid: 2e74635a0323461429b86cd3be245611, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5238049299198675229, guid: 2e74635a0323461429b86cd3be245611, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4898397665287000999, guid: 2e74635a0323461429b86cd3be245611, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 267960737}
-  m_SourcePrefab: {fileID: 100100000, guid: 2e74635a0323461429b86cd3be245611, type: 3}
 --- !u!1 &1251843990
 GameObject:
   m_ObjectHideFlags: 0
@@ -17007,8 +16969,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1266733764}
   - component: {fileID: 1266733763}
-  - component: {fileID: 1266733762}
   - component: {fileID: 1266733761}
+  - component: {fileID: 1266733762}
+  - component: {fileID: 1266733765}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -17054,17 +17017,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  boardManager: {fileID: 0}
-  diceController: {fileID: 0}
-  propertyManager: {fileID: 0}
-  players: []
-  playerPrefab: {fileID: 0}
-  rollButton: {fileID: 0}
-  turnText: {fileID: 0}
-  currentPlayerText: {fileID: 0}
-  timeText: {fileID: 0}
+  boardManager: {fileID: 1074293753}
+  diceController: {fileID: 1423150613}
+  propertyManager: {fileID: 1266733763}
+  players:
+  - {fileID: 1215404041}
+  playerPrefab: {fileID: 1215404035}
+  rollButton: {fileID: 1227345319}
+  turnText: {fileID: 609551908}
+  currentPlayerText: {fileID: 40288163}
+  timeText: {fileID: 1874067515}
+  panelBuy: {fileID: 1875278046}
+  panelQuiz: {fileID: 1379265948}
+  panelEvent: {fileID: 1445494392}
+  panelHouseSell: {fileID: 1161345789}
+  panelResult: {fileID: 895946247}
+  panelCard: {fileID: 1336266765}
   maxTurns: 25
-  demoMode: 0
+  demoMode: 1
   firebaseAuthService: {fileID: 0}
 --- !u!114 &1266733763
 MonoBehaviour:
@@ -17082,6 +17052,8 @@ MonoBehaviour:
   rentPct: 0a00000019000000320000004b00000064000000fa000000
   hotelUpgradePct: 400
   hotelRentPct: 250
+  propertyVisual: {fileID: 1266733765}
+  boardManager: {fileID: 1074293753}
 --- !u!4 &1266733764
 Transform:
   m_ObjectHideFlags: 0
@@ -17097,6 +17069,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1266733765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1266733760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8c3df5cb0a3611449eebce61b357add, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  housePrefab: {fileID: 7334055856671939928, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
+  hotelPrefab: {fileID: 4213319449500419844, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
+  roofMaterialName: hotelMaterial
+  playerColors:
+  - {r: 1, g: 0.2, b: 0.2, a: 1}
+  - {r: 0.2, g: 0.5, b: 1, a: 1}
+  - {r: 0.2, g: 1, b: 0.2, a: 1}
+  - {r: 1, g: 1, b: 0.2, a: 1}
+  tileSetup: {fileID: 1626044625}
 --- !u!1 &1273584398
 GameObject:
   m_ObjectHideFlags: 0
@@ -18765,6 +18758,7 @@ GameObject:
   - component: {fileID: 1405456479}
   - component: {fileID: 1405456478}
   - component: {fileID: 1405456477}
+  - component: {fileID: 1405456481}
   m_Layer: 0
   m_Name: India_tile
   m_TagString: Untagged
@@ -18864,6 +18858,23 @@ Transform:
   - {fileID: 1694670945}
   m_Father: {fileID: 1626044624}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &1405456481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1405456475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67cea329822d11740aed09e6ad293c6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  platform: {fileID: 491989661}
+  textName: {fileID: 0}
+  textPrice: {fileID: 0}
+  autoFindChildren: 1
+  tileIndex: -1
 --- !u!1 &1414875319
 GameObject:
   m_ObjectHideFlags: 0
@@ -19021,6 +19032,7 @@ GameObject:
   - component: {fileID: 1423150610}
   - component: {fileID: 1423150612}
   - component: {fileID: 1423150611}
+  - component: {fileID: 1423150613}
   m_Layer: 5
   m_Name: PanelRoll
   m_TagString: Untagged
@@ -19089,6 +19101,30 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1423150609}
   m_CullTransparentMesh: 1
+--- !u!114 &1423150613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423150609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073dd7766fc3ee749952a876b65ad000, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  diceSprites:
+  - {fileID: 21300000, guid: 56947ea56e5ac414fa1f996d5b6fa16a, type: 3}
+  - {fileID: 21300000, guid: fbb15bfde1503a24ba64ac61237b6cf2, type: 3}
+  - {fileID: 21300000, guid: b2ef2e963057e04498d63b2105eafb53, type: 3}
+  - {fileID: 21300000, guid: ba840160625f865448a587d15bfb7536, type: 3}
+  - {fileID: 21300000, guid: 7dafbc0170080d64ab0c471d489c4ab8, type: 3}
+  - {fileID: 21300000, guid: 8b088f70b4971814f9ed189727eb2dea, type: 3}
+  dice1Image: {fileID: 209560710}
+  dice2Image: {fileID: 1981837152}
+  rollDuration: 1
+  frameInterval: 0.1
+  resultText: {fileID: 378706206}
 --- !u!1 &1444534136
 GameObject:
   m_ObjectHideFlags: 0
@@ -21621,6 +21657,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1626044624}
+  - component: {fileID: 1626044625}
   m_Layer: 0
   m_Name: Tiles
   m_TagString: Untagged
@@ -21680,6 +21717,22 @@ Transform:
   - {fileID: 909667621}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1626044625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626044623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ab2d5d1438b8774a9e50d923d0e4bcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoSetupOnAwake: 1
+  addTileVisualComponent: 1
+  totalTiles: 0
+  showDebug: 1
 --- !u!1 &1630488848
 GameObject:
   m_ObjectHideFlags: 0
@@ -22545,7 +22598,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1698958502
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23128,6 +23181,7 @@ GameObject:
   - component: {fileID: 1789464056}
   - component: {fileID: 1789464055}
   - component: {fileID: 1789464054}
+  - component: {fileID: 1789464058}
   m_Layer: 0
   m_Name: Canada_tile
   m_TagString: Untagged
@@ -23227,6 +23281,23 @@ Transform:
   - {fileID: 795806146}
   m_Father: {fileID: 1626044624}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &1789464058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1789464052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67cea329822d11740aed09e6ad293c6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  platform: {fileID: 1575648651}
+  textName: {fileID: 0}
+  textPrice: {fileID: 0}
+  autoFindChildren: 1
+  tileIndex: -1
 --- !u!1 &1811621020
 GameObject:
   m_ObjectHideFlags: 0
@@ -24991,6 +25062,7 @@ GameObject:
   - component: {fileID: 1910784943}
   - component: {fileID: 1910784942}
   - component: {fileID: 1910784941}
+  - component: {fileID: 1910784944}
   m_Layer: 0
   m_Name: India_tile (1)
   m_TagString: Untagged
@@ -25090,6 +25162,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1910784939}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1910784944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1910784939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67cea329822d11740aed09e6ad293c6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  platform: {fileID: 1692330486}
+  textName: {fileID: 0}
+  textPrice: {fileID: 0}
+  autoFindChildren: 1
+  tileIndex: -1
 --- !u!1 &1919612208
 GameObject:
   m_ObjectHideFlags: 0
@@ -25372,6 +25461,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1056464822869747156, guid: 2e74635a0323461429b86cd3be245611, type: 3}
+      propertyPath: pingObject
+      value: 
+      objectReference: {fileID: 2219825264340011979, guid: 82b49152e3ea75a4083294cffe31cfeb, type: 3}
     - target: {fileID: 4898397665287000999, guid: 2e74635a0323461429b86cd3be245611, type: 3}
       propertyPath: m_Name
       value: Girl
@@ -25420,6 +25513,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5905109622554016792, guid: 2e74635a0323461429b86cd3be245611, type: 3}
+      propertyPath: boardManager
+      value: 
+      objectReference: {fileID: 1074293753}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -29826,6 +29923,5 @@ SceneRoots:
   - {fileID: 1211401723}
   - {fileID: 1539957329}
   - {fileID: 1953717764}
-  - {fileID: 1250691447}
   - {fileID: 1266733764}
   - {fileID: 1074293754}

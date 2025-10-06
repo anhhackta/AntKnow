@@ -28,6 +28,14 @@ namespace AntKnow.Game
         [SerializeField] private TMPro.TextMeshProUGUI currentPlayerText;
         [SerializeField] private TMPro.TextMeshProUGUI timeText;
 
+        [Header("UI Panels")]
+        [SerializeField] private PanelBuy panelBuy;
+        [SerializeField] private PanelQuiz panelQuiz;
+        [SerializeField] private PanelEvent panelEvent;
+        [SerializeField] private PanelHouseSell panelHouseSell;
+        [SerializeField] private PanelResult panelResult;
+        [SerializeField] private PanelCard panelCard;
+
         [Header("Game Settings")]
         [SerializeField] private int maxTurns = 25;
         [SerializeField] private bool demoMode = false; // True = spawn test players, False = load from lobby
@@ -409,19 +417,7 @@ namespace AntKnow.Game
                 // Property chưa có chủ - Show buy panel
                 Debug.Log($"[GameManager] Property {tileName} available for purchase: {basePrice}");
 
-                // For demo: Auto buy if enough money
-                if (player.Money >= basePrice)
-                {
-                    bool success = propertyManager.BuyProperty(tileIndex, playerIndex, basePrice, player);
-                    if (success)
-                    {
-                        Debug.Log($"[GameManager] {player.PlayerName} bought {tileName} for {basePrice}");
-                    }
-                }
-                else
-                {
-                    Debug.Log($"[GameManager] {player.PlayerName} cannot afford {tileName}");
-                }
+                ShowBuyPanel(player, tileIndex, tileName, basePrice);
             }
             else
             {
@@ -432,7 +428,7 @@ namespace AntKnow.Game
                 {
                     // Chủ nhà đứng trên nhà của mình - Show upgrade panel
                     Debug.Log($"[GameManager] {player.PlayerName} landed on own property {tileName}");
-                    // TODO: Show upgrade panel
+                    ShowUpgradePanel(player, tileIndex, tileName, basePrice);
                 }
                 else
                 {
@@ -446,10 +442,103 @@ namespace AntKnow.Game
                     if (player.IsBankrupt())
                     {
                         Debug.Log($"[GameManager] {player.PlayerName} is bankrupt!");
-                        // TODO: Show sell properties panel
+                        ShowSellPanel(player);
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Show buy panel
+        /// </summary>
+        private void ShowBuyPanel(PlayerGameController player, int tileIndex, string tileName, int basePrice)
+        {
+            int playerIdx = players.IndexOf(player);
+
+            if (panelBuy == null)
+            {
+                // Auto buy for demo
+                if (player.Money >= basePrice)
+                {
+                    propertyManager.BuyProperty(tileIndex, playerIdx, basePrice, player);
+                }
+                return;
+            }
+
+            panelBuy.ShowBuy(tileName, basePrice, player.Money, (selectedLevel) =>
+            {
+                if (selectedLevel > 0)
+                {
+                    // Buy with selected level
+                    propertyManager.BuyProperty(tileIndex, playerIdx, basePrice, player);
+
+                    if (selectedLevel > 0)
+                    {
+                        propertyManager.UpgradeProperty(tileIndex, selectedLevel, basePrice, player);
+                    }
+                }
+
+                // Continue game
+                StartCoroutine(ContinueAfterPanel());
+            },
+            () =>
+            {
+                // Skip
+                StartCoroutine(ContinueAfterPanel());
+            });
+        }
+
+        /// <summary>
+        /// Show upgrade panel
+        /// </summary>
+        private void ShowUpgradePanel(PlayerGameController player, int tileIndex, string tileName, int basePrice)
+        {
+            if (panelBuy == null)
+            {
+                return;
+            }
+
+            int currentLevel = propertyManager.GetPropertyLevel(tileIndex);
+
+            panelBuy.ShowUpgrade(tileName, basePrice, currentLevel, player.Money, (selectedLevel) =>
+            {
+                if (selectedLevel > currentLevel)
+                {
+                    propertyManager.UpgradeProperty(tileIndex, selectedLevel, basePrice, player);
+                }
+
+                // Continue game
+                StartCoroutine(ContinueAfterPanel());
+            },
+            () =>
+            {
+                // Skip
+                StartCoroutine(ContinueAfterPanel());
+            });
+        }
+
+        /// <summary>
+        /// Show sell panel (bankruptcy)
+        /// </summary>
+        private void ShowSellPanel(PlayerGameController player)
+        {
+            if (panelHouseSell == null)
+            {
+                Debug.LogWarning("[GameManager] PanelHouseSell not assigned!");
+                return;
+            }
+
+            // TODO: Get owned properties and show sell panel
+            Debug.Log("[GameManager] TODO: Show sell panel");
+        }
+
+        /// <summary>
+        /// Continue game after panel closes
+        /// </summary>
+        private IEnumerator ContinueAfterPanel()
+        {
+            yield return new WaitForSeconds(0.5f);
+            // Game continues automatically
         }
         
         /// <summary>
