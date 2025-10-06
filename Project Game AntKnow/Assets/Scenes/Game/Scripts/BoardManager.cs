@@ -98,7 +98,7 @@ namespace AntKnow.Game
         public string GetTileName(int index)
         {
             TileType type = GetTileType(index);
-            
+
             switch (type)
             {
                 case TileType.Start:
@@ -117,7 +117,24 @@ namespace AntKnow.Game
                     return $"Ô {index}";
             }
         }
-        
+
+        /// <summary>
+        /// Get tile base price (for property tiles)
+        /// </summary>
+        public int GetTilePrice(int index)
+        {
+            TileType type = GetTileType(index);
+
+            if (type == TileType.Property)
+            {
+                // Demo: All properties cost 500
+                // TODO: Load from BoardConfig
+                return 500;
+            }
+
+            return 0;
+        }
+
         private void OnDrawGizmos()
         {
             if (!showDebugInfo || waypoints == null || waypoints.Length == 0)

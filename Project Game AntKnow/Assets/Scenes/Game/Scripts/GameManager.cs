@@ -16,6 +16,7 @@ namespace AntKnow.Game
         [Header("Managers")]
         [SerializeField] private BoardManager boardManager;
         [SerializeField] private DiceController diceController;
+        [SerializeField] private PropertyManager propertyManager;
 
         [Header("Players")]
         [SerializeField] private List<PlayerGameController> players = new List<PlayerGameController>();
@@ -241,27 +242,30 @@ namespace AntKnow.Game
         private void StartTurn()
         {
             if (!isGameActive) return;
-            
+
             PlayerGameController player = CurrentPlayer;
             if (player == null) return;
-            
+
             Debug.Log($"[GameManager] Turn {currentTurn} - {player.PlayerName}'s turn");
-            
+
             // Update UI
             UpdateTurnDisplay();
-            
+
+            // Update turn indicators
+            UpdateTurnIndicators();
+
             // Check jail
             if (player.JailCounter > 0)
             {
                 Debug.Log($"[GameManager] {player.PlayerName} is in jail for {player.JailCounter} more turns");
                 player.DecreaseJailCounter();
-                
+
                 // TODO: Show jail UI option (roll for double or wait)
                 // For now, just end turn
                 EndTurn();
                 return;
             }
-            
+
             // Check skip turn
             if (player.SkipNextTurn)
             {
@@ -270,11 +274,32 @@ namespace AntKnow.Game
                 EndTurn();
                 return;
             }
-            
+
             // Enable roll button
             if (rollButton != null)
             {
                 rollButton.interactable = true;
+            }
+        }
+
+        /// <summary>
+        /// Update turn indicators (ping trên đầu player)
+        /// </summary>
+        private void UpdateTurnIndicators()
+        {
+            for (int i = 0; i < players.Count; i++)
+            {
+                if (players[i] != null)
+                {
+                    if (i == currentPlayerIndex)
+                    {
+                        players[i].ShowTurnIndicator();
+                    }
+                    else
+                    {
+                        players[i].HideTurnIndicator();
+                    }
+                }
             }
         }
         
@@ -329,39 +354,101 @@ namespace AntKnow.Game
             int tileIndex = player.CurrentTile;
             TileType tileType = boardManager.GetTileType(tileIndex);
             string tileName = boardManager.GetTileName(tileIndex);
-            
+            int basePrice = boardManager.GetTilePrice(tileIndex);
+
             Debug.Log($"[GameManager] {player.PlayerName} landed on {tileName} (Type: {tileType})");
-            
+
             switch (tileType)
             {
                 case TileType.Start:
                     // Already handled in MoveBySteps
                     break;
-                    
+
                 case TileType.Property:
-                    // TODO: Show property panel
-                    Debug.Log($"[GameManager] Property tile - TODO: Show buy/rent panel");
+                    ResolvePropertyTile(player, tileIndex, tileName, basePrice);
                     break;
-                    
+
                 case TileType.Event:
                     // TODO: Draw event card
                     Debug.Log($"[GameManager] Event tile - TODO: Draw event card");
                     break;
-                    
+
                 case TileType.Quiz:
                     // TODO: Show quiz panel
                     Debug.Log($"[GameManager] Quiz tile - TODO: Show quiz");
                     break;
-                    
+
                 case TileType.Jail:
-                    player.SetJailCounter(3);
-                    Debug.Log($"[GameManager] Jail tile - {player.PlayerName} in jail for 3 turns");
+                    player.SetJailCounter(2); // 2 turns in jail
+                    Debug.Log($"[GameManager] Jail tile - {player.PlayerName} in jail for 2 turns");
                     break;
-                    
+
                 case TileType.Travel:
                     player.SubtractMoney(100);
                     Debug.Log($"[GameManager] Travel tile - {player.PlayerName} pays 100");
                     break;
+            }
+        }
+
+        /// <summary>
+        /// Resolve property tile
+        /// </summary>
+        private void ResolvePropertyTile(PlayerGameController player, int tileIndex, string tileName, int basePrice)
+        {
+            if (propertyManager == null)
+            {
+                Debug.LogWarning("[GameManager] PropertyManager not assigned!");
+                return;
+            }
+
+            int playerIndex = players.IndexOf(player);
+
+            // Check if property is owned
+            if (!propertyManager.IsPropertyOwned(tileIndex))
+            {
+                // Property chưa có chủ - Show buy panel
+                Debug.Log($"[GameManager] Property {tileName} available for purchase: {basePrice}");
+
+                // For demo: Auto buy if enough money
+                if (player.Money >= basePrice)
+                {
+                    bool success = propertyManager.BuyProperty(tileIndex, playerIndex, basePrice, player);
+                    if (success)
+                    {
+                        Debug.Log($"[GameManager] {player.PlayerName} bought {tileName} for {basePrice}");
+                    }
+                }
+                else
+                {
+                    Debug.Log($"[GameManager] {player.PlayerName} cannot afford {tileName}");
+                }
+            }
+            else
+            {
+                // Property đã có chủ
+                int ownerIndex = propertyManager.GetPropertyOwner(tileIndex);
+
+                if (ownerIndex == playerIndex)
+                {
+                    // Chủ nhà đứng trên nhà của mình - Show upgrade panel
+                    Debug.Log($"[GameManager] {player.PlayerName} landed on own property {tileName}");
+                    // TODO: Show upgrade panel
+                }
+                else
+                {
+                    // Thuê nhà người khác
+                    PlayerGameController owner = players[ownerIndex];
+                    Debug.Log($"[GameManager] {player.PlayerName} must pay rent to {owner.PlayerName}");
+
+                    propertyManager.PayRent(tileIndex, basePrice, player, owner);
+
+                    // Check bankruptcy
+                    if (player.IsBankrupt())
+                    {
+                        Debug.Log($"[GameManager] {player.PlayerName} is bankrupt!");
+                        // TODO: Show sell properties panel
+                    }
+                }
             }
         }
         

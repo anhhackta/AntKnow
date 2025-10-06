@@ -29,14 +29,21 @@ namespace AntKnow.Game
         
         [Header("Movement")]
         [SerializeField] private float moveSpeed = 5f;
+        [SerializeField] private float bounceHeight = 0.5f; // Độ cao nhảy lên
+        [SerializeField] private float bounceDuration = 0.3f; // Thời gian nhảy
         [SerializeField] private BoardManager boardManager;
-        
+        [SerializeField] private Vector3 boardCenter = Vector3.zero; // Tâm bàn cờ
+
         [Header("Animation")]
         [SerializeField] private Animator animator;
-        
+
+        [Header("Turn Indicator")]
+        [SerializeField] private TurnIndicator turnIndicator;
+
         // Properties
         public string PlayerName => playerName;
         public string PlayerId => playerId;
+        public bool IsMale => isMale;
         public int CurrentTile => currentTile;
         public int Money => money;
         public int JailCounter => jailCounter;
@@ -57,10 +64,23 @@ namespace AntKnow.Game
             {
                 boardManager = FindObjectOfType<BoardManager>();
             }
-            
+
             if (animator == null)
             {
                 animator = GetComponentInChildren<Animator>();
+            }
+
+            if (turnIndicator == null)
+            {
+                turnIndicator = GetComponentInChildren<TurnIndicator>();
+                if (turnIndicator == null)
+                {
+                    // Create turn indicator if not exists
+                    GameObject indicatorObj = new GameObject("TurnIndicator");
+                    indicatorObj.transform.SetParent(transform);
+                    indicatorObj.transform.localPosition = Vector3.zero;
+                    turnIndicator = indicatorObj.AddComponent<TurnIndicator>();
+                }
             }
         }
         
@@ -86,7 +106,7 @@ namespace AntKnow.Game
         }
         
         /// <summary>
-        /// Move player by steps
+        /// Move player by steps với bounce effect và look at center
         /// </summary>
         public IEnumerator MoveBySteps(int steps)
         {
@@ -95,41 +115,87 @@ namespace AntKnow.Game
                 Debug.LogWarning($"[PlayerGameController] {playerName} is already moving!");
                 yield break;
             }
-            
+
             isMoving = true;
             SetAnimation(true);
-            
+
             int startTile = currentTile;
             int targetTile = (currentTile + steps) % boardManager.TotalTiles;
-            
+
             Debug.Log($"[PlayerGameController] {playerName} moving from tile {startTile} to {targetTile} ({steps} steps)");
-            
+
             // Move step by step
             for (int i = 0; i < steps; i++)
             {
                 currentTile = (currentTile + 1) % boardManager.TotalTiles;
                 Vector3 targetPos = boardManager.GetWaypointPosition(currentTile);
-                
-                // Move to waypoint
-                while (Vector3.Distance(transform.position, targetPos) > 0.1f)
-                {
-                    transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
-                    yield return null;
-                }
-                
-                transform.position = targetPos;
-                
+
+                // Look at center trước khi di chuyển
+                LookAtCenter(targetPos);
+
+                // Move to waypoint với bounce effect
+                yield return StartCoroutine(MoveToWaypointWithBounce(targetPos));
+
                 // Check if passed Start (tile 0)
                 if (currentTile == 0 && i > 0)
                 {
                     OnPassStart();
                 }
             }
-            
+
             SetAnimation(false);
             isMoving = false;
-            
+
             Debug.Log($"[PlayerGameController] {playerName} reached tile {currentTile}");
+        }
+
+        /// <summary>
+        /// Move to waypoint với bounce effect
+        /// </summary>
+        private IEnumerator MoveToWaypointWithBounce(Vector3 targetPos)
+        {
+            Vector3 startPos = transform.position;
+            float distance = Vector3.Distance(startPos, targetPos);
+            float duration = distance / moveSpeed;
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
+
+                // Linear movement
+                Vector3 currentPos = Vector3.Lerp(startPos, targetPos, t);
+
+                // Add bounce (parabola)
+                // y = -4h * (t - 0.5)^2 + h
+                // Đỉnh ở giữa (t = 0.5), độ cao = bounceHeight
+                float bounceOffset = -4f * bounceHeight * Mathf.Pow(t - 0.5f, 2f) + bounceHeight;
+                currentPos.y += bounceOffset;
+
+                transform.position = currentPos;
+
+                yield return null;
+            }
+
+            // Ensure final position
+            transform.position = targetPos;
+        }
+
+        /// <summary>
+        /// Quay mặt về phía tâm bàn cờ
+        /// </summary>
+        private void LookAtCenter(Vector3 currentWaypointPos)
+        {
+            // Calculate direction từ waypoint về center
+            Vector3 directionToCenter = boardCenter - currentWaypointPos;
+            directionToCenter.y = 0; // Chỉ xoay theo trục Y
+
+            if (directionToCenter.sqrMagnitude > 0.001f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(directionToCenter);
+                transform.rotation = targetRotation;
+            }
         }
         
         /// <summary>
@@ -211,6 +277,28 @@ namespace AntKnow.Game
         public bool IsBankrupt()
         {
             return money < 0;
+        }
+
+        /// <summary>
+        /// Show turn indicator
+        /// </summary>
+        public void ShowTurnIndicator()
+        {
+            if (turnIndicator != null)
+            {
+                turnIndicator.Show();
+            }
+        }
+
+        /// <summary>
+        /// Hide turn indicator
+        /// </summary>
+        public void HideTurnIndicator()
+        {
+            if (turnIndicator != null)
+            {
+                turnIndicator.Hide();
+            }
         }
     }
 }

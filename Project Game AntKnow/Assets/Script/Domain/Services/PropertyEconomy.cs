@@ -32,17 +32,45 @@ public sealed class PropertyEconomy {
 
   public int HotelCost(int basePrice) => basePrice * _hotelUpgradePct / 100;
 
+  /// <summary>
+  /// Tính tiền thuê (TẤT CẢ level đều có tiền thuê, kể cả Level 0)
+  /// </summary>
   public int Rent(int basePrice, int level, bool hotel) {
     if (hotel) return basePrice * _hotelRentPct / 100;
     int idx = Math.Clamp(level, 0, _rentPctByLevel.Length-1);
     return basePrice * _rentPctByLevel[idx] / 100;
   }
 
+  /// <summary>
+  /// Tính giá mua lại = Tổng chi phí * 120%
+  /// </summary>
   public int TakeoverCost(int basePrice, int level, bool hotel) {
-    if (hotel && !TakeoverAllowedOnHotel) return int.MaxValue; // treat as infinite
-    if (hotel) return basePrice * _hotelRentPct / 100; // or define separate hotel takeover pct
-    int idx = Math.Clamp(level, 0, _takeoverPctByLevel.Length-1);
-    return basePrice * _takeoverPctByLevel[idx] / 100;
+    int totalCost = CalculateTotalPurchaseCost(basePrice, level, hotel);
+    return totalCost * 120 / 100; // 120%
+  }
+
+  /// <summary>
+  /// Tính giá bán = Tổng chi phí * 60%
+  /// </summary>
+  public int SellPrice(int basePrice, int level, bool hotel) {
+    int totalCost = CalculateTotalPurchaseCost(basePrice, level, hotel);
+    return totalCost * 60 / 100; // 60%
+  }
+
+  /// <summary>
+  /// Tính tổng chi phí đã bỏ ra để mua/nâng cấp nhà
+  /// </summary>
+  private int CalculateTotalPurchaseCost(int basePrice, int level, bool hotel) {
+    int total = basePrice; // Đất trống (Level 0)
+
+    // Add upgrade costs
+    if (level >= 1) total += UpgradeCost(basePrice, 1); // House 1
+    if (level >= 2) total += UpgradeCost(basePrice, 2); // House 2
+    if (level >= 3) total += UpgradeCost(basePrice, 3); // House 3
+    if (level >= 4) total += UpgradeCost(basePrice, 4); // House 4
+    if (hotel)      total += HotelCost(basePrice);       // Hotel
+
+    return total;
   }
 }
 
