@@ -1,14 +1,23 @@
 using System;
 
 public static class BoardRules {
+  /// <summary>
+  /// Qua ô Start: Nhận lương + bonus từ Health
+  /// Formula: 10 điểm = 1%
+  /// </summary>
   public static void OnPassStart(PlayerState p, int baseSalary) {
-    int bonusPct = p.Health / 300; // 300 pts = +1%
-    p.Money += baseSalary + baseSalary * bonusPct / 100;
+    int bonusPct = p.Health / 10; // 10 pts = 1%
+    int bonus = baseSalary * bonusPct / 100;
+    p.Money += baseSalary + bonus;
   }
 
+  /// <summary>
+  /// Trả thuế (không dùng nữa, giữ lại cho tương lai)
+  /// </summary>
   public static void OnTax(PlayerState p, int amount) {
-    int reducePct = p.Resistance / 100; // 100 pts = -1%
-    int pay = Math.Max(0, amount - amount * reducePct / 100);
+    int reducePct = p.Resistance / 10; // 10 pts = 1%
+    int reduction = amount * reducePct / 100;
+    int pay = Math.Max(0, amount - reduction);
     p.Money -= pay;
   }
 
@@ -37,18 +46,34 @@ public static class BoardRules {
     pr.Level = Math.Min(5, pr.Level + 1);
   }
 
+  /// <summary>
+  /// Check có thể nâng cấp lên Hotel không
+  /// Yêu cầu: Level 4 (4 houses) → Hotel
+  /// </summary>
   public static bool CanUpgradeHotel(PlayerState p, PropertyState pr, PropertyEconomy econ) {
     if (pr.Owner != (Owner)p.Id) return false;
     if (pr.HasHotel) return false;
-    if (pr.Level != 5) return false;
+    if (pr.Level != 4) return false; // Changed from 5 to 4
     int cost = econ.HotelCost(pr.BasePrice);
     return p.Money >= cost;
   }
 
+  /// <summary>
+  /// Nâng cấp lên Hotel
+  /// Check Agility: Có nhân đôi tiền thuê không?
+  /// </summary>
   public static void UpgradeHotel(PlayerState p, PropertyState pr, PropertyEconomy econ) {
     int cost = econ.HotelCost(pr.BasePrice);
     p.Money -= cost;
     pr.HasHotel = true;
+    pr.Level = 5; // Set level to 5 for hotel
+
+    // Check Agility: Nhân đôi tiền thuê
+    int agilityPct = p.Agility / 10; // 10 pts = 1%
+    float doubleChance = agilityPct / 100f;
+    if (UnityEngine.Random.value < doubleChance) {
+      pr.RentMultiplier = 2f;
+    }
   }
 
   public static bool CanTakeover(PlayerState buyer, PropertyState pr, PropertyEconomy econ) {

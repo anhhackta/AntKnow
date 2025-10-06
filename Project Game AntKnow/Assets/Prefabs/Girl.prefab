@@ -79,6 +79,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c8ca4039080dab4d99abd3a781554df, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5905109622554016792}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c8ca4039080dab4d99abd3a781554df, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1056464822869747156}
   m_SourcePrefab: {fileID: 100100000, guid: 2c8ca4039080dab4d99abd3a781554df, type: 3}
 --- !u!95 &2184640274838672231 stripped
 Animator:
@@ -115,5 +118,25 @@ MonoBehaviour:
   luck: 0
   resistance: 0
   moveSpeed: 5
+  bounceHeight: 0.5
+  bounceDuration: 0.3
   boardManager: {fileID: 0}
+  boardCenter: {x: 0, y: 0, z: 0}
   animator: {fileID: 2184640274838672231}
+  turnIndicator: {fileID: 1056464822869747156}
+--- !u!114 &1056464822869747156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4898397665287000999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41ce38d58627d2d478df0c3a05e126cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pingObject: {fileID: 4724728609282228090, guid: 55d7993435daf4706b9af98b6ec432d0, type: 3}
+  bobSpeed: 2
+  bobHeight: 0.3
+  offset: {x: 0, y: 2.5, z: 0}
