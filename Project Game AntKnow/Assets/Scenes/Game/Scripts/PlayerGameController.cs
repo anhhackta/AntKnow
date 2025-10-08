@@ -16,7 +16,7 @@ namespace AntKnow.Game
         
         [Header("Game State")]
         [SerializeField] private int currentTile = 0;
-        [SerializeField] private int money = 1000;
+        [SerializeField] private int money = 5000; // Tăng lên 5000
         [SerializeField] private int jailCounter = 0;
         [SerializeField] private bool skipNextTurn = false;
         

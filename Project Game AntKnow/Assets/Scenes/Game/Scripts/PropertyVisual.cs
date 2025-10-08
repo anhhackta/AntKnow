@@ -57,9 +57,9 @@ namespace AntKnow.Game
         }
         
         /// <summary>
-        /// Update property visual (spawn/remove houses)
+        /// Update property visual (houses + platform color + price)
         /// </summary>
-        public void UpdatePropertyVisual(int tileId, int level, int ownerIndex, Vector3 tilePosition)
+        public void UpdatePropertyVisual(int tileId, int level, int ownerIndex, int rentPrice)
         {
             TileVisual tile = GetTile(tileId);
             if (tile == null)
@@ -71,13 +71,21 @@ namespace AntKnow.Game
             // Clear old houses
             tile.ClearHouses();
 
+            Color playerColor = GetPlayerColor(ownerIndex);
+
             if (level == 0)
             {
-                // Level 0 = empty land, no visual
+                // Level 0 = empty land, no houses, but platform has color
+                tile.SetPlatformColor(playerColor);
+                tile.UpdatePrice(rentPrice); // Show rent price
                 return;
             }
 
-            Color playerColor = GetPlayerColor(ownerIndex);
+            // Set platform color
+            tile.SetPlatformColor(playerColor);
+
+            // Update price to rent
+            tile.UpdatePrice(rentPrice);
 
             if (level >= 1 && level <= 4)
             {
@@ -89,6 +97,27 @@ namespace AntKnow.Game
                 // Spawn hotel
                 tile.SpawnHotel(hotelPrefab, playerColor, roofMaterialName);
             }
+        }
+
+        /// <summary>
+        /// Reset property visual (when sold or not owned)
+        /// </summary>
+        public void ResetPropertyVisual(int tileId, int buyPrice)
+        {
+            TileVisual tile = GetTile(tileId);
+            if (tile == null)
+            {
+                return;
+            }
+
+            // Clear houses
+            tile.ClearHouses();
+
+            // Reset platform color
+            tile.ResetPlatformColor();
+
+            // Reset price to buy price
+            tile.UpdatePrice(buyPrice);
         }
         
         /// <summary>

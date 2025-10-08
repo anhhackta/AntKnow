@@ -8,12 +8,6 @@ namespace AntKnow.Game
     /// </summary>
     public class PropertyManager : MonoBehaviour
     {
-        [Header("Configuration")]
-        [SerializeField] private int[] upgradeCostPct = new int[] { 100, 150, 200, 250 }; // Level 1-4
-        [SerializeField] private int[] rentPct = new int[] { 10, 25, 50, 75, 100, 250 }; // Level 0-5
-        [SerializeField] private int hotelUpgradePct = 400;
-        [SerializeField] private int hotelRentPct = 250;
-
         [Header("Visual")]
         [SerializeField] private PropertyVisual propertyVisual;
         [SerializeField] private BoardManager boardManager;
@@ -182,65 +176,64 @@ namespace AntKnow.Game
         }
         
         /// <summary>
-        /// Calculate rent
+        /// Calculate rent from tile data
         /// </summary>
         private int CalculateRent(int basePrice, int level)
         {
-            if (level < 0 || level >= rentPct.Length)
+            SimpleTileData tileData = GetTileData(basePrice);
+            if (tileData == null)
             {
                 return 0;
             }
-            
-            return basePrice * rentPct[level] / 100;
+
+            return tileData.GetRent(level);
         }
-        
+
         /// <summary>
-        /// Calculate upgrade cost
+        /// Calculate upgrade cost from tile data
         /// </summary>
         private int CalculateUpgradeCost(int basePrice, int currentLevel, int targetLevel)
         {
-            int total = 0;
-            
-            // Giá đất (nếu mua lần đầu)
-            if (currentLevel == 0 && targetLevel > 0)
-            {
-                total += basePrice;
-            }
-            
-            // Giá houses
-            for (int i = currentLevel + 1; i <= targetLevel && i <= 4; i++)
-            {
-                total += GetHousePrice(basePrice, i);
-            }
-            
-            // Giá hotel
-            if (targetLevel == 5)
-            {
-                total += GetHotelPrice(basePrice);
-            }
-            
-            return total;
-        }
-        
-        /// <summary>
-        /// Get house price by level
-        /// </summary>
-        private int GetHousePrice(int basePrice, int level)
-        {
-            if (level < 1 || level > upgradeCostPct.Length)
+            SimpleTileData tileData = GetTileData(basePrice);
+            if (tileData == null)
             {
                 return 0;
             }
-            
-            return basePrice * upgradeCostPct[level - 1] / 100;
+
+            return tileData.GetUpgradeCost(currentLevel, targetLevel);
         }
-        
+
         /// <summary>
-        /// Get hotel price
+        /// Get tile data by base price (temporary solution)
         /// </summary>
-        private int GetHotelPrice(int basePrice)
+        private SimpleTileData GetTileData(int basePrice)
         {
-            return basePrice * hotelUpgradePct / 100;
+            SimpleTileData[] allTiles = SimpleBoardConfig.GetTiles();
+
+            foreach (var tile in allTiles)
+            {
+                if (tile.basePrice == basePrice)
+                {
+                    return tile;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Get tile data by tile ID (better solution)
+        /// </summary>
+        private SimpleTileData GetTileDataById(int tileId)
+        {
+            SimpleTileData[] allTiles = SimpleBoardConfig.GetTiles();
+
+            if (tileId >= 0 && tileId < allTiles.Length)
+            {
+                return allTiles[tileId];
+            }
+
+            return null;
         }
         
         /// <summary>
@@ -275,9 +268,14 @@ namespace AntKnow.Game
 
             int level = GetPropertyLevel(tileId);
             int ownerIndex = GetPropertyOwner(tileId);
-            Vector3 tilePosition = boardManager.GetWaypointPosition(tileId);
 
-            propertyVisual.UpdatePropertyVisual(tileId, level, ownerIndex, tilePosition);
+            // Get rent price for display
+            int basePrice = boardManager.GetTilePrice(tileId);
+            int rent = CalculateRent(basePrice, level);
+            float multiplier = propertyRentMultipliers.ContainsKey(tileId) ? propertyRentMultipliers[tileId] : 1f;
+            int finalRent = StatsCalculator.CalculateFinalRent(rent, multiplier);
+
+            propertyVisual.UpdatePropertyVisual(tileId, level, ownerIndex, finalRent);
         }
     }
 }
