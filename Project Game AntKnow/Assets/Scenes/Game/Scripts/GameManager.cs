@@ -117,9 +117,9 @@ namespace AntKnow.Game
             // Spawn players
             if (demoMode)
             {
-                // Demo: Spawn test players
+                // Demo: Spawn ONLY 1 test player
                 SpawnTestPlayer("Player 1", "test_player_1", true, 10, 10, 10, 10, 10);
-                SpawnTestPlayer("Player 2", "test_player_2", false, 5, 15, 10, 20, 5);
+                Debug.Log("[GameManager] Demo Mode: Spawned 1 player only");
             }
             else
             {

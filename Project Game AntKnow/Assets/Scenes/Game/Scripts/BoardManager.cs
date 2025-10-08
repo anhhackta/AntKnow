@@ -16,12 +16,39 @@ namespace AntKnow.Game
         [SerializeField] private bool showDebugInfo = true;
 
         private Transform[] waypoints;
+        private SimpleTileData[] tileData;
 
         public int TotalTiles => waypoints?.Length ?? 0;
 
         private void Awake()
         {
             InitializeWaypoints();
+            InitializeTileData();
+        }
+
+        /// <summary>
+        /// Load tile data from SimpleBoardConfig
+        /// </summary>
+        private void InitializeTileData()
+        {
+            tileData = SimpleBoardConfig.GetTiles();
+            Debug.Log($"[BoardManager] Loaded {tileData.Length} tile data (Tile ID 1-36)");
+        }
+
+        /// <summary>
+        /// Convert waypoint index (0-35) to tile ID (1-36)
+        /// </summary>
+        private int WaypointIndexToTileId(int waypointIndex)
+        {
+            return waypointIndex + 1;
+        }
+
+        /// <summary>
+        /// Convert tile ID (1-36) to waypoint index (0-35)
+        /// </summary>
+        private int TileIdToWaypointIndex(int tileId)
+        {
+            return tileId - 1;
         }
 
         /// <summary>
@@ -78,61 +105,48 @@ namespace AntKnow.Game
         }
         
         /// <summary>
-        /// Get tile type by index (simplified for demo)
+        /// Get tile type by waypoint index (0-35)
         /// </summary>
-        public TileType GetTileType(int index)
+        public TileType GetTileType(int waypointIndex)
         {
-            // Hardcoded for demo
-            if (index == 0) return TileType.Start;
-            if (index == 10) return TileType.Jail;
-            if (index == 19) return TileType.Quiz;
-            if (index == 28) return TileType.Travel;
-            if (index == 7 || index == 16 || index == 25 || index == 33) return TileType.Event;
-            
-            return TileType.Property;
+            int tileId = WaypointIndexToTileId(waypointIndex);
+
+            if (tileData == null || tileId < 1 || tileId > tileData.Length)
+            {
+                return TileType.Property;
+            }
+
+            return tileData[tileId - 1].type; // Array index = tileId - 1
         }
         
         /// <summary>
-        /// Get tile name by index (simplified for demo)
+        /// Get tile name by waypoint index (0-35)
         /// </summary>
-        public string GetTileName(int index)
+        public string GetTileName(int waypointIndex)
         {
-            TileType type = GetTileType(index);
+            int tileId = WaypointIndexToTileId(waypointIndex);
 
-            switch (type)
+            if (tileData == null || tileId < 1 || tileId > tileData.Length)
             {
-                case TileType.Start:
-                    return "Ô Bắt Đầu";
-                case TileType.Jail:
-                    return "Tại Nạn";
-                case TileType.Quiz:
-                    return "Tra Khảo";
-                case TileType.Travel:
-                    return "Du Lịch";
-                case TileType.Event:
-                    return "Sự Kiện";
-                case TileType.Property:
-                    return $"Đất Số {index}";
-                default:
-                    return $"Ô {index}";
+                return $"Tile {tileId}";
             }
+
+            return tileData[tileId - 1].name; // Array index = tileId - 1
         }
 
         /// <summary>
-        /// Get tile base price (for property tiles)
+        /// Get tile base price (for property tiles) by waypoint index (0-35)
         /// </summary>
-        public int GetTilePrice(int index)
+        public int GetTilePrice(int waypointIndex)
         {
-            TileType type = GetTileType(index);
+            int tileId = WaypointIndexToTileId(waypointIndex);
 
-            if (type == TileType.Property)
+            if (tileData == null || tileId < 1 || tileId > tileData.Length)
             {
-                // Demo: All properties cost 500
-                // TODO: Load from BoardConfig
-                return 500;
+                return 0;
             }
 
-            return 0;
+            return tileData[tileId - 1].basePrice; // Array index = tileId - 1
         }
 
         private void OnDrawGizmos()

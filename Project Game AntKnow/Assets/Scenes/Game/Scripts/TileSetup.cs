@@ -33,12 +33,15 @@ namespace AntKnow.Game
         public void SetupAllTiles()
         {
             totalTiles = 0;
-            
+
+            // Load tile data
+            SimpleTileData[] tileData = SimpleBoardConfig.GetTiles();
+
             // Lấy tất cả children
             for (int i = 0; i < transform.childCount; i++)
             {
                 Transform child = transform.GetChild(i);
-                
+
                 // Add TileVisual component nếu chưa có
                 TileVisual tileVisual = child.GetComponent<TileVisual>();
                 if (tileVisual == null && addTileVisualComponent)
@@ -46,18 +49,29 @@ namespace AntKnow.Game
                     tileVisual = child.gameObject.AddComponent<TileVisual>();
                     if (showDebug) Debug.Log($"[TileSetup] Added TileVisual to {child.name}");
                 }
-                
-                // Set tile index
+
+                // Set tile index (waypoint index 0-35)
                 if (tileVisual != null)
                 {
                     tileVisual.tileIndex = i;
-                    
-                    if (showDebug) Debug.Log($"[TileSetup] Setup tile {i}: {child.name}");
+
+                    // Load tile info from data
+                    if (i < tileData.Length)
+                    {
+                        SimpleTileData data = tileData[i];
+                        tileVisual.SetTileInfo(i, data.name, data.basePrice);
+
+                        if (showDebug) Debug.Log($"[TileSetup] Tile {i}: {data.name} - ${data.basePrice}");
+                    }
+                    else
+                    {
+                        if (showDebug) Debug.Log($"[TileSetup] Setup tile {i}: {child.name}");
+                    }
                 }
-                
+
                 totalTiles++;
             }
-            
+
             Debug.Log($"[TileSetup] Setup complete! Total tiles: {totalTiles}");
         }
         

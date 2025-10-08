@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &5709424583510454006
+--- !u!1001 &1740189238281602838
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -78,38 +78,33 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c8ca4039080dab4d99abd3a781554df, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5905109622554016792}
+      addedObject: {fileID: 6956721216573182747}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c8ca4039080dab4d99abd3a781554df, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1056464822869747156}
+      addedObject: {fileID: 7010430644530338274}
   m_SourcePrefab: {fileID: 100100000, guid: 2c8ca4039080dab4d99abd3a781554df, type: 3}
---- !u!95 &2184640274838672231 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 2c8ca4039080dab4d99abd3a781554df, type: 3}
-  m_PrefabInstance: {fileID: 5709424583510454006}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4898397665287000999 stripped
+--- !u!1 &1506187123973601863 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c8ca4039080dab4d99abd3a781554df, type: 3}
-  m_PrefabInstance: {fileID: 5709424583510454006}
+  m_PrefabInstance: {fileID: 1740189238281602838}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5905109622554016792
+--- !u!114 &6956721216573182747
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4898397665287000999}
+  m_GameObject: {fileID: 1506187123973601863}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2181e7e9dd3327439d3151b107af2b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: Player
+  playerName: Hoang
   playerId: 
   isMale: 0
   currentTile: 0
-  money: 1000
+  money: 5000
   jailCounter: 0
   skipNextTurn: 0
   health: 0
@@ -122,21 +117,26 @@ MonoBehaviour:
   bounceDuration: 0.3
   boardManager: {fileID: 0}
   boardCenter: {x: 0, y: 0, z: 0}
-  animator: {fileID: 2184640274838672231}
-  turnIndicator: {fileID: 1056464822869747156}
---- !u!114 &1056464822869747156
+  animator: {fileID: 5281861778538183303}
+  turnIndicator: {fileID: 7010430644530338274}
+--- !u!114 &7010430644530338274
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4898397665287000999}
+  m_GameObject: {fileID: 1506187123973601863}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41ce38d58627d2d478df0c3a05e126cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pingObject: {fileID: 4724728609282228090, guid: 55d7993435daf4706b9af98b6ec432d0, type: 3}
+  pingObject: {fileID: 2219825264340011979, guid: 82b49152e3ea75a4083294cffe31cfeb, type: 3}
   bobSpeed: 2
   bobHeight: 0.3
   offset: {x: 0, y: 2.5, z: 0}
+--- !u!95 &5281861778538183303 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 2c8ca4039080dab4d99abd3a781554df, type: 3}
+  m_PrefabInstance: {fileID: 1740189238281602838}
+  m_PrefabAsset: {fileID: 0}

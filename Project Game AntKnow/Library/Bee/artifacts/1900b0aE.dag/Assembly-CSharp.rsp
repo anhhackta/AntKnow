@@ -460,6 +460,7 @@
 "Assets/Scenes/Game/Scripts/PlayerGameController.cs"
 "Assets/Scenes/Game/Scripts/PropertyManager.cs"
 "Assets/Scenes/Game/Scripts/PropertyVisual.cs"
+"Assets/Scenes/Game/Scripts/SimpleBoardConfig.cs"
 "Assets/Scenes/Game/Scripts/TileSetup.cs"
 "Assets/Scenes/Game/Scripts/TileVisual.cs"
 "Assets/Scenes/Game/Scripts/TurnIndicator.cs"
