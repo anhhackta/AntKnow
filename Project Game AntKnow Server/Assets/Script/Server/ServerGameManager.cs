@@ -25,6 +25,7 @@ namespace AntKnow.Server
 
         // Server-side game state (Domain layer)
         private GameState gameState;
+        private TurnSystem turnSystem;
         private int currentPlayerIndex = 0;
         private bool gameActive = false;
         private float turnStartTime;
@@ -142,6 +143,23 @@ namespace AntKnow.Server
                 CurrentTurnPlayerId = 1
             };
 
+            // Initialize properties from SimpleBoardConfig
+            var tiles = SimpleBoardConfig.GetTiles();
+            foreach (var tile in tiles)
+            {
+                if (tile.type == TileType.Property)
+                {
+                    gameState.Properties[tile.index] = new PropertyState
+                    {
+                        TileId = tile.index,
+                        BasePrice = tile.basePrice,
+                        Owner = Owner.None,
+                        Level = 0,
+                        HasHotel = false
+                    };
+                }
+            }
+
             // Create player states for each connected client
             int playerId = 1;
             foreach (var kvp in NetworkManager.Singleton.ConnectedClients)
@@ -168,7 +186,10 @@ namespace AntKnow.Server
                 playerId++;
             }
 
-            Debug.Log($"[ServerGameManager] Game initialized with {gameState.Players.Count} players");
+            // Initialize TurnSystem
+            turnSystem = new TurnSystem(gameState, baseSalary: 200);
+
+            Debug.Log($"[ServerGameManager] Game initialized with {gameState.Players.Count} players and {gameState.Properties.Count} properties");
         }
 
         private void StartNextTurn()
@@ -228,10 +249,26 @@ namespace AntKnow.Server
         {
             Debug.Log("[ServerGameManager] Calculating final scores...");
 
+            PlayerState winner = null;
+            int highestAssets = 0;
+
             foreach (var player in gameState.Players)
             {
-                int score = player.Money; // Simple scoring for now
-                Debug.Log($"[ServerGameManager] Player {player.Id}: {score} points");
+                // Calculate total assets = money + property values
+                int totalAssets = BoardRules.CalculateTotalAssets(player, gameState);
+
+                Debug.Log($"[ServerGameManager] Player {player.Id}: Money={player.Money}, Total Assets={totalAssets}");
+
+                if (totalAssets > highestAssets)
+                {
+                    highestAssets = totalAssets;
+                    winner = player;
+                }
+            }
+
+            if (winner != null)
+            {
+                Debug.Log($"[ServerGameManager] ========== WINNER: Player {winner.Id} with {highestAssets} total assets! ==========");
             }
         }
 
@@ -297,7 +334,98 @@ namespace AntKnow.Server
         {
             Debug.Log($"[ServerGameManager] Resolving tile {player.NodeIndex} for Player {player.Id}");
 
-            // TODO: Implement tile resolution logic based on tile type
+            // Get tile data
+            var tileData = SimpleBoardConfig.GetTileByWaypointIndex(player.NodeIndex);
+            if (tileData == null)
+            {
+                Debug.LogWarning($"[ServerGameManager] Invalid tile index: {player.NodeIndex}");
+                return;
+            }
+
+            Debug.Log($"[ServerGameManager] Tile: {tileData.name} (Type: {tileData.type})");
+
+            // Resolve tile using TurnSystem
+            // Note: TurnSystem.MoveAndResolve handles the resolution internally
+            // For now, we'll handle specific cases here
+
+            switch (tileData.type)
+            {
+                case TileType.Property:
+                    HandlePropertyTile(player, tileData);
+                    break;
+
+                case TileType.Chance:
+                    Debug.Log($"[ServerGameManager] Event tile - waiting for client interaction");
+                    // Client will call EventCardServerRpc
+                    break;
+
+                case TileType.Quiz:
+                    Debug.Log($"[ServerGameManager] Quiz tile - waiting for client interaction");
+                    // Client will call QuizServerRpc
+                    break;
+
+                case TileType.Jail:
+                    player.JailTurns = 3;
+                    Debug.Log($"[ServerGameManager] Player {player.Id} sent to jail for 3 turns!");
+                    break;
+
+                case TileType.Travel:
+                    Debug.Log($"[ServerGameManager] Travel tile - waiting for client to choose destination");
+                    // Client will call TravelServerRpc
+                    break;
+
+                case TileType.Start:
+                    Debug.Log($"[ServerGameManager] Start tile - no action");
+                    break;
+
+                default:
+                    Debug.Log($"[ServerGameManager] Tile type {tileData.type} not implemented");
+                    break;
+            }
+        }
+
+        private void HandlePropertyTile(PlayerState player, SimpleTileData tileData)
+        {
+            if (!gameState.Properties.ContainsKey(tileData.index))
+            {
+                Debug.LogWarning($"[ServerGameManager] Property {tileData.index} not found in game state");
+                return;
+            }
+
+            var property = gameState.Properties[tileData.index];
+
+            if (property.Owner == Owner.None)
+            {
+                Debug.Log($"[ServerGameManager] Property {tileData.name} is available for purchase (Price: {tileData.basePrice})");
+                // Client will call BuyPropertyServerRpc if player wants to buy
+            }
+            else if ((int)property.Owner != player.Id)
+            {
+                // Player must pay rent
+                var owner = gameState.Players.Find(p => p.Id == (int)property.Owner);
+                if (owner != null)
+                {
+                    int rent = BoardRules.CalcRent(tileData, property, owner);
+                    BoardRules.PayRent(player, owner, rent);
+
+                    Debug.Log($"[ServerGameManager] Player {player.Id} paid {rent} rent to Player {owner.Id}");
+
+                    // Notify clients
+                    NotifyRentPaidClientRpc(player.Id, owner.Id, rent);
+                }
+            }
+            else
+            {
+                Debug.Log($"[ServerGameManager] Player {player.Id} landed on own property {tileData.name}");
+                // No action needed
+            }
+        }
+
+        [ClientRpc]
+        private void NotifyRentPaidClientRpc(int payerId, int ownerId, int amount)
+        {
+            Debug.Log($"[Client] Player {payerId} paid {amount} rent to Player {ownerId}");
+            // TODO: Update UI
             // For now, just end turn after 2 seconds
 
             Invoke(nameof(EndCurrentTurn), 2f);
