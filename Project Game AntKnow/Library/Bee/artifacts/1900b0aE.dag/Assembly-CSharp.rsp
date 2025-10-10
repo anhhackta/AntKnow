@@ -476,6 +476,8 @@
 "Assets/Scenes/Game/Scripts/UI/PanelQuiz.cs"
 "Assets/Scenes/Game/Scripts/UI/PanelResult.cs"
 "Assets/Scenes/Game/Scripts/UI/PropertySellItem.cs"
+"Assets/Scenes/Game/Scripts/Utils/BoardManagerTest.cs"
+"Assets/Scenes/Game/Scripts/Utils/GameTest.cs"
 "Assets/Scenes/Game/Scripts/Utils/SkillCardEffects.cs"
 "Assets/Scenes/Game/Scripts/Utils/StatsCalculator.cs"
 "Assets/Scenes/Game/Scripts/Utils/WaypointGenerator.cs"
