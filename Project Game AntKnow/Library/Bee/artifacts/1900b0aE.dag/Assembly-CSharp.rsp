@@ -507,6 +507,7 @@
 "Assets/Scenes/Menu/PanelMoney.cs"
 "Assets/Scenes/Menu/PanelSliderManager.cs"
 "Assets/Scenes/Menu/SettingsPanel.cs"
+"Assets/Script/Client/ClientConnectionManager.cs"
 "Assets/Script/Data/BoardConfig.cs"
 "Assets/Script/Data/CardDefinitionAsset.cs"
 "Assets/Script/Data/CardLibrary.cs"
