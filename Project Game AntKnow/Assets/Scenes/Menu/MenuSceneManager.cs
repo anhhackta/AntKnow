@@ -156,9 +156,7 @@ namespace AntKnow.Auth
                         userData.level,
                         userData.xp,
                         userData.currencies.antCoin,
-                        userData.currencies.dCoin,
-                        userData.stats.matchesPlayed,
-                        userData.stats.wins
+                        userData.currencies.dCoin
                     );
                     Debug.Log($"MenuScene: User data loaded from Firebase - Gender: {userData.gender}, IngameName: {userData.ingameName}");
                     Debug.Log($"MenuScene: User data loaded from Firebase - AntCoin: {userData.currencies.antCoin}, DCoin: {userData.currencies.dCoin}");

@@ -81,10 +81,6 @@ namespace AntKnow.Game
             
             if (item != null)
             {
-                // Calculate sell price (60% of purchase price)
-                int sellPrice = Mathf.RoundToInt(property.sellPrice * 0.6f);
-                property.sellPrice = sellPrice;
-                
                 item.Initialize(property, OnPropertySelectionChanged);
                 propertyItems.Add(item);
             }
