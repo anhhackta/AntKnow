@@ -33,6 +33,8 @@ namespace AntKnow.Auth
         public int currentXp = 0;
         public int currentAntCoin = 0;
         public int currentDCoin = 0;
+        public int currentMatchesPlayed = 0;
+        public int currentMatchesWon = 0;
 
         [Header("Game State")]
         public bool isUserLoggedIn = false;
@@ -55,7 +57,7 @@ namespace AntKnow.Auth
         /// <summary>
         /// Set user data sau khi login thành công
         /// </summary>
-        public void SetUserData(string userId, string username, string email, string ingameName = null, string gender = null, int level = 1, int xp = 0, int antCoin = 0, int dCoin = 0)
+        public void SetUserData(string userId, string username, string email, string ingameName = null, string gender = null, int level = 1, int xp = 0, int antCoin = 0, int dCoin = 0, int matchesPlayed = 0, int matchesWon = 0)
         {
             currentUserId = userId;
             currentUsername = username;
@@ -66,9 +68,11 @@ namespace AntKnow.Auth
             currentXp = xp;
             currentAntCoin = antCoin;
             currentDCoin = dCoin;
+            currentMatchesPlayed = matchesPlayed;
+            currentMatchesWon = matchesWon;
             isUserLoggedIn = true;
             
-            Debug.Log($"GameDataManager: User data set - {username} ({userId}) - Level: {level}, AntCoin: {antCoin}, DCoin: {dCoin}");
+            Debug.Log($"GameDataManager: User data set - {username} ({userId}) - Level: {level}, AntCoin: {antCoin}, DCoin: {dCoin}, Matches: {matchesPlayed}/{matchesWon}");
         }
 
         /// <summary>
@@ -85,6 +89,8 @@ namespace AntKnow.Auth
             currentXp = 0;
             currentAntCoin = 0;
             currentDCoin = 0;
+            currentMatchesPlayed = 0;
+            currentMatchesWon = 0;
             isUserLoggedIn = false;
             hasInventory = false;
             hasLoadout = false;
@@ -144,6 +150,34 @@ namespace AntKnow.Auth
             if (!string.IsNullOrEmpty(currentIngameName))
                 return currentIngameName;
             return currentUsername ?? "Unknown User";
+        }
+
+        /// <summary>
+        /// Update matches statistics
+        /// </summary>
+        public void UpdateMatchesStats(int matchesPlayed, int matchesWon)
+        {
+            currentMatchesPlayed = matchesPlayed;
+            currentMatchesWon = matchesWon;
+            Debug.Log($"GameDataManager: Matches stats updated - Played: {matchesPlayed}, Won: {matchesWon}");
+        }
+
+        /// <summary>
+        /// Increment matches played
+        /// </summary>
+        public void IncrementMatchesPlayed()
+        {
+            currentMatchesPlayed++;
+            Debug.Log($"GameDataManager: Matches played incremented to {currentMatchesPlayed}");
+        }
+
+        /// <summary>
+        /// Increment matches won
+        /// </summary>
+        public void IncrementMatchesWon()
+        {
+            currentMatchesWon++;
+            Debug.Log($"GameDataManager: Matches won incremented to {currentMatchesWon}");
         }
     }
 }

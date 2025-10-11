@@ -6,7 +6,7 @@ using System.Collections;
 namespace AntKnow.Game
 {
     /// <summary>
-    /// Panel hiển thị event card
+    /// Panel hiển thị event card - random events từ bộ bài event
     /// </summary>
     public class PanelEvent : MonoBehaviour
     {
@@ -16,6 +16,18 @@ namespace AntKnow.Game
         
         [Header("Settings")]
         [SerializeField] private float autoCloseTime = 3f; // Tự động đóng sau 3 giây
+        
+        [Header("Event Database")]
+        [SerializeField] private string[] eventCards = {
+            "Bạn nhận được tiền thưởng từ công ty: +200",
+            "Bạn trúng xổ số: +500",
+            "Bạn phải trả thuế: -150",
+            "Bạn bị mất ví: -100",
+            "Bạn nhận được tiền từ người thân: +300",
+            "Bạn phải sửa xe: -200",
+            "Bạn nhận được tiền hoàn thuế: +250",
+            "Bạn phải trả tiền bảo hiểm: -180"
+        };
         
         private System.Action onCloseCallback;
         
@@ -28,7 +40,28 @@ namespace AntKnow.Game
         }
         
         /// <summary>
-        /// Show event
+        /// Show random event
+        /// </summary>
+        public void ShowRandomEvent(System.Action onClose = null)
+        {
+            onCloseCallback = onClose;
+            
+            // Get random event
+            string randomEvent = GetRandomEvent();
+            
+            if (textEvent != null)
+            {
+                textEvent.text = randomEvent;
+            }
+            
+            gameObject.SetActive(true);
+            
+            // Auto close after 3 seconds
+            StartCoroutine(AutoCloseCoroutine());
+        }
+        
+        /// <summary>
+        /// Show specific event
         /// </summary>
         public void Show(string eventText, System.Action onClose = null)
         {
@@ -43,6 +76,20 @@ namespace AntKnow.Game
             
             // Auto close after 3 seconds
             StartCoroutine(AutoCloseCoroutine());
+        }
+        
+        /// <summary>
+        /// Get random event from database
+        /// </summary>
+        private string GetRandomEvent()
+        {
+            if (eventCards == null || eventCards.Length == 0)
+            {
+                return "Không có event nào!";
+            }
+            
+            int randomIndex = Random.Range(0, eventCards.Length);
+            return eventCards[randomIndex];
         }
         
         /// <summary>
