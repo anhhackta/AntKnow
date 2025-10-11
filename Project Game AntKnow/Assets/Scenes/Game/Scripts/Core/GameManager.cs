@@ -76,13 +76,12 @@ namespace AntKnow.Game
     {
         [Header("Managers")]
         [SerializeField] private BoardManager boardManager;
-        [SerializeField] private PanelRoll panelRoll;
+        [SerializeField] private DiceController diceController;
         [SerializeField] private PropertyManager propertyManager;
 
         [Header("Players")]
         [SerializeField] private List<PlayerGameController> players = new List<PlayerGameController>();
-        [SerializeField] private GameObject playerPrefabMale;   // Male player prefab
-        [SerializeField] private GameObject playerPrefabFemale; // Female player prefab
+        [SerializeField] private GameObject playerPrefab;
 
         [Header("UI")]
         [SerializeField] private Button rollButton;
@@ -294,24 +293,23 @@ namespace AntKnow.Game
         /// </summary>
         private void SpawnTestPlayer(string name, string id, bool isMale, int hp, int agi, int intel, int lck, int res)
         {
-            GameObject prefabToUse = isMale ? playerPrefabMale : playerPrefabFemale;
-            
-            if (prefabToUse == null)
+            if (playerPrefab == null)
             {
-                Debug.LogError($"[GameManager] {(isMale ? "Male" : "Female")} player prefab not assigned!");
+                Debug.LogError("[GameManager] Player prefab not assigned!");
                 return;
             }
 
             // Spawn at tile 0
             Vector3 spawnPos = boardManager.GetWaypointPosition(0);
-            GameObject playerObj = Instantiate(prefabToUse, spawnPos, Quaternion.identity);
+            GameObject playerObj = Instantiate(playerPrefab, spawnPos, Quaternion.identity);
 
             PlayerGameController player = playerObj.GetComponent<PlayerGameController>();
             if (player != null)
             {
                 player.Initialize(name, id, isMale, hp, agi, intel, lck, res);
                 players.Add(player);
-                Debug.Log($"[GameManager] Spawned {(isMale ? "male" : "female")} test player: {name}");
+
+                Debug.Log($"[GameManager] Spawned player: {name}");
             }
         }
 
@@ -320,17 +318,15 @@ namespace AntKnow.Game
         /// </summary>
         private void SpawnPlayerNetwork(string name, string id, bool isMale, int hp, int agi, int intel, int lck, int res, ulong clientId, List<string> skillCardIds)
         {
-            GameObject prefabToUse = isMale ? playerPrefabMale : playerPrefabFemale;
-            
-            if (prefabToUse == null)
+            if (playerPrefab == null)
             {
-                Debug.LogError($"[GameManager] {(isMale ? "Male" : "Female")} player prefab not assigned!");
+                Debug.LogError("[GameManager] Player prefab not assigned!");
                 return;
             }
 
             // Spawn at tile 0
             Vector3 spawnPos = boardManager.GetWaypointPosition(0);
-            GameObject playerObj = Instantiate(prefabToUse, spawnPos, Quaternion.identity);
+            GameObject playerObj = Instantiate(playerPrefab, spawnPos, Quaternion.identity);
 
             // Spawn as network object
             NetworkObject netObj = playerObj.GetComponent<NetworkObject>();

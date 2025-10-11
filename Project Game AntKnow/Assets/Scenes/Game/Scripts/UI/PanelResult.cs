@@ -3,9 +3,6 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using Firebase.Functions;
-using Firebase.Extensions;
-using AntKnow.Auth;
 
 namespace AntKnow.Game
 {
@@ -46,23 +43,18 @@ namespace AntKnow.Game
         }
         
         /// <summary>
-        /// Show result with Cloud Function rewards
+        /// Show result
         /// </summary>
-        public void Show(List<PlayerResult> results, float gameDuration)
+        public void Show(List<PlayerResult> results)
         {
-            // Sort by total value (money + property value)
-            results.Sort((a, b) => (b.money + b.propertyValue).CompareTo(a.money + a.propertyValue));
+            // Sort by money (descending)
+            results.Sort((a, b) => b.money.CompareTo(a.money));
             
-            // Show top players (2-4 players)
-            int playerCount = results.Count;
-            
-            if (results.Count > 0) ShowPlayerResult(1, results[0], textTop1Name, textTop1Money, textTop1Reward);
-            if (results.Count > 1) ShowPlayerResult(2, results[1], textTop2Name, textTop2Money, textTop2Reward);
-            if (results.Count > 2) ShowPlayerResult(3, results[2], textTop3Name, textTop3Money, textTop3Reward);
-            if (results.Count > 3) ShowPlayerResult(4, results[3], textTop4Name, textTop4Money, textTop4Reward);
-            
-            // Award rewards via Cloud Function
-            StartCoroutine(AwardRewardsCoroutine(results, gameDuration));
+            // Show top 4
+            if (results.Count > 0) ShowPlayerResult(0, results[0], textTop1Name, textTop1Money, textTop1Reward);
+            if (results.Count > 1) ShowPlayerResult(1, results[1], textTop2Name, textTop2Money, textTop2Reward);
+            if (results.Count > 2) ShowPlayerResult(2, results[2], textTop3Name, textTop3Money, textTop3Reward);
+            if (results.Count > 3) ShowPlayerResult(3, results[3], textTop4Name, textTop4Money, textTop4Reward);
             
             gameObject.SetActive(true);
         }
@@ -72,8 +64,6 @@ namespace AntKnow.Game
         /// </summary>
         private void ShowPlayerResult(int rank, PlayerResult result, TextMeshProUGUI nameText, TextMeshProUGUI moneyText, TextMeshProUGUI rewardText)
         {
-            if (result == null) return;
-            
             if (nameText != null)
             {
                 nameText.text = result.playerName;
@@ -81,80 +71,14 @@ namespace AntKnow.Game
             
             if (moneyText != null)
             {
-                int totalValue = result.money + result.propertyValue;
-                moneyText.text = $"{totalValue}";
+                moneyText.text = $"{result.money}";
             }
             
             if (rewardText != null)
             {
-                int antCoin = rank <= antCoinRewards.Length ? antCoinRewards[rank - 1] : 0;
-                int exp = rank <= expRewards.Length ? expRewards[rank - 1] : 0;
+                int antCoin = rank < antCoinRewards.Length ? antCoinRewards[rank] : 0;
+                int exp = rank < expRewards.Length ? expRewards[rank] : 0;
                 rewardText.text = $"+{antCoin} AntCoin, +{exp} EXP";
-            }
-        }
-        
-        /// <summary>
-        /// Award rewards via Cloud Function
-        /// </summary>
-        private System.Collections.IEnumerator AwardRewardsCoroutine(List<PlayerResult> results, float gameDuration)
-        {
-            // Award rewards for each player
-            for (int i = 0; i < results.Count; i++)
-            {
-                var result = results[i];
-                int rank = i + 1;
-                
-                // Call Cloud Function
-                yield return StartCoroutine(CallAwardMatchFunction(result.playerId, rank, gameDuration));
-            }
-        }
-        
-        /// <summary>
-        /// Call awardMatch Cloud Function
-        /// </summary>
-        private System.Collections.IEnumerator CallAwardMatchFunction(string playerId, int rank, float gameDuration)
-        {
-            bool completed = false;
-            bool success = false;
-            
-            var functions = FirebaseFunctions.DefaultInstance;
-            var callable = functions.GetHttpsCallable("awardMatch");
-            
-            var data = new Dictionary<string, object>
-            {
-                { "rank", rank },
-                { "durationSec", Mathf.RoundToInt(gameDuration) }
-            };
-            
-            callable.CallAsync(data).ContinueWithOnMainThread(task =>
-            {
-                if (task.IsFaulted)
-                {
-                    Debug.LogError($"[PanelResult] Award failed for player {playerId}: {task.Exception}");
-                }
-                else if (task.IsCompleted)
-                {
-                    var result = task.Result.Data as Dictionary<string, object>;
-                    if (result != null && result.ContainsKey("antCoin") && result.ContainsKey("xp"))
-                    {
-                        int antCoin = System.Convert.ToInt32(result["antCoin"]);
-                        int xp = System.Convert.ToInt32(result["xp"]);
-                        Debug.Log($"[PanelResult] Awarded {antCoin} AntCoin and {xp} XP to player {playerId}");
-                        success = true;
-                    }
-                }
-                completed = true;
-            });
-            
-            // Wait for completion
-            while (!completed)
-            {
-                yield return null;
-            }
-            
-            if (!success)
-            {
-                Debug.LogWarning($"[PanelResult] Failed to award rewards to player {playerId}");
             }
         }
         

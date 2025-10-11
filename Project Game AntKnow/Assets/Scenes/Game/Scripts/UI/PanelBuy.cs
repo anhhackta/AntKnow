@@ -53,7 +53,7 @@ namespace AntKnow.Game
         }
         
         /// <summary>
-        /// Show panel mua nhà mới (ô trống)
+        /// Show panel mua nhà mới
         /// </summary>
         public void ShowBuy(string propName, int price, int playerMoney, System.Action<int> onBuy, System.Action onSkip)
         {
