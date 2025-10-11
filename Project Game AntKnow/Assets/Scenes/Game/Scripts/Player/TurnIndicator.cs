@@ -1,12 +1,16 @@
 using UnityEngine;
+using Unity.Netcode;
 
 namespace AntKnow.Game
 {
     /// <summary>
-    /// Hiển thị ping indicator trên đầu player khi đến lượt
+    /// Network-aware ping indicator trên đầu player khi đến lượt
     /// </summary>
-    public class TurnIndicator : MonoBehaviour
+    public class TurnIndicator : NetworkBehaviour
     {
+        [Header("Network Settings")]
+        public NetworkVariable<bool> networkIsActive = new NetworkVariable<bool>(false);
+        
         [Header("Settings")]
         [SerializeField] private GameObject pingObject; // Ping visual (sphere, arrow, etc.)
         [SerializeField] private float bobSpeed = 2f; // Tốc độ lên xuống
@@ -16,8 +20,11 @@ namespace AntKnow.Game
         private Vector3 startPosition;
         private bool isActive = false;
         
-        private void Awake()
+        public override void OnNetworkSpawn()
         {
+            base.OnNetworkSpawn();
+            
+            // Setup ping object
             if (pingObject == null)
             {
                 // Create default ping object
@@ -43,6 +50,26 @@ namespace AntKnow.Game
             pingObject.transform.SetParent(transform);
             startPosition = offset;
             pingObject.SetActive(false);
+            
+            // Subscribe to network variable changes
+            networkIsActive.OnValueChanged += OnIsActiveChanged;
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            // Unsubscribe from network variable changes
+            networkIsActive.OnValueChanged -= OnIsActiveChanged;
+            
+            base.OnNetworkDespawn();
+        }
+
+        private void OnIsActiveChanged(bool oldValue, bool newValue)
+        {
+            isActive = newValue;
+            if (pingObject != null)
+            {
+                pingObject.SetActive(newValue);
+            }
         }
         
         private void Update()
@@ -56,26 +83,50 @@ namespace AntKnow.Game
         }
         
         /// <summary>
-        /// Show ping indicator
+        /// Show ping indicator (Server-side)
+        /// </summary>
+        [ServerRpc(RequireOwnership = false)]
+        public void ShowServerRpc()
+        {
+            networkIsActive.Value = true;
+        }
+        
+        /// <summary>
+        /// Show ping indicator (Local method for compatibility)
         /// </summary>
         public void Show()
         {
-            isActive = true;
-            if (pingObject != null)
+            if (IsServer)
             {
-                pingObject.SetActive(true);
+                networkIsActive.Value = true;
+            }
+            else
+            {
+                ShowServerRpc();
             }
         }
         
         /// <summary>
-        /// Hide ping indicator
+        /// Hide ping indicator (Server-side)
+        /// </summary>
+        [ServerRpc(RequireOwnership = false)]
+        public void HideServerRpc()
+        {
+            networkIsActive.Value = false;
+        }
+        
+        /// <summary>
+        /// Hide ping indicator (Local method for compatibility)
         /// </summary>
         public void Hide()
         {
-            isActive = false;
-            if (pingObject != null)
+            if (IsServer)
             {
-                pingObject.SetActive(false);
+                networkIsActive.Value = false;
+            }
+            else
+            {
+                HideServerRpc();
             }
         }
         
