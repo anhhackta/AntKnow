@@ -7,7 +7,7 @@ namespace AntKnow.Game
     /// <summary>
     /// Panel hiển thị thông tin người chơi khác
     /// </summary>
-    public class PanelPlayer : BasePlayerPanel
+    public class PanelPlayer : MonoBehaviour
     {
         [Header("UI Components")]
         [SerializeField] private TextMeshProUGUI textPlayerName;
@@ -19,27 +19,30 @@ namespace AntKnow.Game
         [SerializeField] private Color maleColor = Color.blue;
         [SerializeField] private Color femaleColor = Color.magenta;
         
+        private PlayerGameController player;
+        
         /// <summary>
-        /// Setup UI components
+        /// Initialize panel
         /// </summary>
-        protected override void SetupUI()
+        public void Initialize(PlayerGameController playerController)
         {
-            // UI components are already assigned in inspector
+            player = playerController;
+            
+            if (player != null)
+            {
+                gameObject.SetActive(true);
+                UpdateDisplay();
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
         }
         
         /// <summary>
-        /// Subscribe to player events
+        /// Update display
         /// </summary>
-        protected override void SubscribeToEvents()
-        {
-            // PanelPlayer doesn't need to subscribe to events
-            // It gets updated externally by PanelGame
-        }
-        
-        /// <summary>
-        /// Update display with current player data
-        /// </summary>
-        protected override void UpdateDisplay()
+        public void UpdateDisplay()
         {
             if (player == null)
             {
@@ -80,7 +83,7 @@ namespace AntKnow.Game
         }
         
         /// <summary>
-        /// Update money display
+        /// Update money
         /// </summary>
         public void UpdateMoney(int money)
         {

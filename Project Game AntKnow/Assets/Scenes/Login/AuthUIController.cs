@@ -543,14 +543,7 @@ namespace AntKnow.Auth
                     currentUserData.uid,
                     currentUserData.username,
                     currentUserData.email,
-                    currentUserData.ingameName,
-                    currentUserData.gender,
-                    currentUserData.level,
-                    currentUserData.xp,
-                    currentUserData.currencies.antCoin,
-                    currentUserData.currencies.dCoin,
-                    currentUserData.stats.matchesPlayed,
-                    currentUserData.stats.wins
+                    currentUserData.ingameName
                 );
                 Debug.Log($"AuthUIController: User data set for scene transition - {currentUserData.username}");
             }
