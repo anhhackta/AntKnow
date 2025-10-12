@@ -11,6 +11,8 @@ namespace AntKnow.Game.Editor
     {
         private bool createForAllTiles = true;
         private GameObject selectedTile = null;
+        private float houseYOffset = 0.4f; // Y offset cho house markers
+        private float hotelYOffset = 0.45f; // Y offset cho hotel marker
         
         [MenuItem("Tools/AntKnow/Generate Tile Markers")]
         public static void ShowWindow()
@@ -31,9 +33,9 @@ namespace AntKnow.Game.Editor
             );
             
             GUILayout.Space(10);
-            
+
             createForAllTiles = EditorGUILayout.Toggle("Create for ALL tiles", createForAllTiles);
-            
+
             if (!createForAllTiles)
             {
                 selectedTile = (GameObject)EditorGUILayout.ObjectField(
@@ -43,7 +45,18 @@ namespace AntKnow.Game.Editor
                     true
                 );
             }
-            
+
+            GUILayout.Space(10);
+
+            EditorGUILayout.LabelField("Y Offset Settings", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox(
+                "Adjust Y offset nếu house/hotel bị chìm xuống platform.\n" +
+                "House pivot ở giữa → cần offset ≈ 0.4-0.5",
+                MessageType.Info
+            );
+            houseYOffset = EditorGUILayout.Slider("House Y Offset", houseYOffset, 0f, 1f);
+            hotelYOffset = EditorGUILayout.Slider("Hotel Y Offset", hotelYOffset, 0f, 1f);
+
             GUILayout.Space(10);
             
             if (GUILayout.Button("Generate Markers", GUILayout.Height(40)))
@@ -147,15 +160,16 @@ namespace AntKnow.Game.Editor
             }
             
             // Default positions (local space of Platform)
+            // ⭐ Y offset để compensate cho house/hotel pivot ở giữa (không phải ở chân)
             Vector3[] housePositions = new Vector3[]
             {
-                new Vector3(-0.15f, 0.1f, -0.15f),  // HouseMarker1 (Top-left)
-                new Vector3(0.15f, 0.1f, -0.15f),   // HouseMarker2 (Top-right)
-                new Vector3(-0.15f, 0.1f, 0.15f),   // HouseMarker3 (Bottom-left)
-                new Vector3(0.15f, 0.1f, 0.15f)     // HouseMarker4 (Bottom-right)
+                new Vector3(-0.15f, houseYOffset, -0.15f),  // HouseMarker1 (Top-left)
+                new Vector3(0.15f, houseYOffset, -0.15f),   // HouseMarker2 (Top-right)
+                new Vector3(-0.15f, houseYOffset, 0.15f),   // HouseMarker3 (Bottom-left)
+                new Vector3(0.15f, houseYOffset, 0.15f)     // HouseMarker4 (Bottom-right)
             };
-            
-            Vector3 hotelPosition = new Vector3(0f, 0.15f, 0f); // Center
+
+            Vector3 hotelPosition = new Vector3(0f, hotelYOffset, 0f); // Center
             
             // Create House Markers
             Transform[] houseMarkers = new Transform[4];
