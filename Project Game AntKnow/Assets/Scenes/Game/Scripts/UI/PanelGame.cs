@@ -144,27 +144,29 @@ namespace AntKnow.Game
         
         /// <summary>
         /// PanelMe clicked - show PanelInfo
+        /// PUBLIC để có thể assign trong Inspector nếu cần
         /// </summary>
-        private void OnPanelMeClicked()
+        public void OnPanelMeClicked()
         {
             if (localPlayer != null)
             {
                 ShowPlayerInfo(localPlayer);
             }
         }
-        
+
         /// <summary>
         /// PanelPlayer clicked - show PanelInfo
+        /// PUBLIC để có thể assign trong Inspector nếu cần
         /// </summary>
-        private void OnPanelPlayerClicked(PlayerGameController player)
+        public void OnPanelPlayerClicked(PlayerGameController player)
         {
             ShowPlayerInfo(player);
         }
-        
+
         /// <summary>
         /// Show PanelInfo for player
         /// </summary>
-        private void ShowPlayerInfo(PlayerGameController player)
+        public void ShowPlayerInfo(PlayerGameController player)
         {
             // Find PanelInfo in scene
             var panelInfo = FindObjectOfType<PanelInfo>();
