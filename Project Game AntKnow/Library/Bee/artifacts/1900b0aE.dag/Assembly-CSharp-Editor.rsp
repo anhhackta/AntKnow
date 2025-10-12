@@ -480,6 +480,7 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.0.48f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.0.48f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.UIToolkit.SourceGenerator.dll"
 "Assets/Editor/TileGenerator.cs"
+"Assets/Scenes/Game/Scripts/Editor/AddCollidersToTiles.cs"
 "Assets/Scenes/Game/Scripts/Editor/TileMarkerGenerator.cs"
 "Assets/Script/Editor/ClearPackageCache.cs"
 "Assets/TutorialInfo/Scripts/Editor/ReadmeEditor.cs"

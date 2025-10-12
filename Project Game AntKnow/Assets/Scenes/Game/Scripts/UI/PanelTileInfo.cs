@@ -5,142 +5,63 @@ using TMPro;
 namespace AntKnow.Game
 {
     /// <summary>
-    /// Panel hiển thị thông tin đơn giản của tile khi user click
-    /// CHỈ hiển thị: Hình ảnh, tên, giá mua, giá thuê, chủ sở hữu
+    /// Panel hiển thị thông tin tile: Tên, giá mua, giá thuê, chủ
     /// </summary>
     public class PanelTileInfo : MonoBehaviour
     {
-        [Header("UI References")]
-        [SerializeField] private Image imageLocation; // Hình ảnh địa danh
-        [SerializeField] private TextMeshProUGUI textLocationName; // Tên địa danh
-        [SerializeField] private TextMeshProUGUI textBuyPrice; // Giá mua
-        [SerializeField] private TextMeshProUGUI textRentPrice; // Giá thuê hiện tại
-        [SerializeField] private TextMeshProUGUI textOwner; // Tên chủ sở hữu
-        [SerializeField] private Button btnClose; // Button đóng panel
-
-        [Header("Location Images")]
-        [Tooltip("36 sprites theo tên ô đất (index 0-35)")]
+        [Header("UI")]
+        [SerializeField] private Image imageLocation;
+        [SerializeField] private TextMeshProUGUI textLocationName;
+        [SerializeField] private TextMeshProUGUI textBuyPrice;
+        [SerializeField] private TextMeshProUGUI textRentPrice;
+        [SerializeField] private TextMeshProUGUI textOwner;
+        [SerializeField] private Button btnClose;
         [SerializeField] private Sprite[] locationSprites; // 36 sprites
+
+        private PropertyManager propertyManager;
+        private GameManager gameManager;
         
-        [Header("References")]
-        [SerializeField] private PropertyManager propertyManager;
-        [SerializeField] private BoardManager boardManager;
-        [SerializeField] private GameManager gameManager;
-        
-        [Header("Settings")]
-        [SerializeField] private bool closeOnOutsideClick = true;
-        
-        private int currentTileIndex = -1;
-        
-        private void Awake()
+        private void Start()
         {
-            // Setup button listener
             if (btnClose != null)
-            {
                 btnClose.onClick.AddListener(Hide);
-            }
-            
-            // Auto-find references if not assigned
-            if (propertyManager == null)
-            {
-                propertyManager = FindObjectOfType<PropertyManager>();
-            }
-            
-            if (boardManager == null)
-            {
-                boardManager = FindObjectOfType<BoardManager>();
-            }
-            
-            if (gameManager == null)
-            {
-                gameManager = FindObjectOfType<GameManager>();
-            }
-            
-            // Start hidden
+
+            propertyManager = FindObjectOfType<PropertyManager>();
+            gameManager = FindObjectOfType<GameManager>();
+
             gameObject.SetActive(false);
         }
         
-        private void Update()
-        {
-            // Close on outside click (optional)
-            if (closeOnOutsideClick && Input.GetMouseButtonDown(0))
-            {
-                // Check if click is outside panel
-                if (!RectTransformUtility.RectangleContainsScreenPoint(
-                    GetComponent<RectTransform>(), 
-                    Input.mousePosition, 
-                    null))
-                {
-                    Hide();
-                }
-            }
-        }
-        
-        /// <summary>
-        /// Show tile info panel for specific tile
-        /// </summary>
         public void ShowTileInfo(int tileIndex)
         {
-            currentTileIndex = tileIndex;
+            Debug.Log($"[PanelTileInfo] ShowTileInfo called for index {tileIndex}");
 
-            // Get tile data from SimpleBoardConfig
-            SimpleTileData tileData = SimpleBoardConfig.GetTiles()[tileIndex];
-
-            if (tileData == null)
+            SimpleTileData tile = SimpleBoardConfig.GetTiles()[tileIndex];
+            if (tile == null)
             {
-                Debug.LogWarning($"[PanelTileInfo] No tile data found for tile {tileIndex}");
+                Debug.LogError($"[PanelTileInfo] Tile data is NULL for index {tileIndex}!");
                 return;
             }
 
-            // Update UI
-            UpdateDisplay(tileData, tileIndex);
+            Debug.Log($"[PanelTileInfo] Tile data found: {tile.name}");
 
-            // Show panel
-            gameObject.SetActive(true);
-
-            Debug.Log($"[PanelTileInfo] Showing info for tile {tileIndex}: {tileData.name}");
-        }
-        
-        /// <summary>
-        /// Update display with tile data
-        /// ⭐ SIMPLIFIED: Chỉ hiển thị image, name, buy price, rent price, owner
-        /// </summary>
-        private void UpdateDisplay(SimpleTileData tileData, int tileIndex)
-        {
-            // Update location image (từ locationSprites array)
-            if (imageLocation != null)
-            {
-                if (locationSprites != null && tileIndex >= 0 && tileIndex < locationSprites.Length)
-                {
-                    Sprite sprite = locationSprites[tileIndex];
-                    if (sprite != null)
-                    {
-                        imageLocation.sprite = sprite;
-                        imageLocation.gameObject.SetActive(true);
-                    }
-                    else
-                    {
-                        imageLocation.gameObject.SetActive(false);
-                    }
-                }
-                else
-                {
-                    imageLocation.gameObject.SetActive(false);
-                }
-            }
-
-            // Update location name
+            // Tên
             if (textLocationName != null)
+                textLocationName.text = tile.name;
+
+            // Hình ảnh
+            if (imageLocation != null && locationSprites != null && tileIndex < locationSprites.Length)
             {
-                textLocationName.text = tileData.name;
+                imageLocation.sprite = locationSprites[tileIndex];
+                imageLocation.gameObject.SetActive(locationSprites[tileIndex] != null);
             }
 
-            // Update buy price
+            // Giá mua
             if (textBuyPrice != null)
             {
-                if (tileData.type == TileType.Property)
+                if (tile.type == TileType.Property)
                 {
-                    textBuyPrice.text = $"Giá mua: ${tileData.basePrice}";
+                    textBuyPrice.text = $"Price Buy: ${tile.basePrice}";
                     textBuyPrice.gameObject.SetActive(true);
                 }
                 else
@@ -149,14 +70,14 @@ namespace AntKnow.Game
                 }
             }
 
-            // Update rent price (current level)
-            if (textRentPrice != null)
+            // Giá thuê
+            if (textRentPrice != null && propertyManager != null)
             {
-                if (tileData.type == TileType.Property && propertyManager != null)
+                if (tile.type == TileType.Property)
                 {
                     int level = propertyManager.GetPropertyLevel(tileIndex);
-                    int rent = GetRentForLevel(tileData, level);
-                    textRentPrice.text = $"Giá thuê (Level {level}): ${rent}";
+                    int rent = GetRent(tile, level);
+                    textRentPrice.text = $"Price Rent (Lv{level}): ${rent}";
                     textRentPrice.gameObject.SetActive(true);
                 }
                 else
@@ -165,83 +86,52 @@ namespace AntKnow.Game
                 }
             }
 
-            // Update owner
-            if (textOwner != null)
+            // Chủ sở hữu
+            if (textOwner != null && propertyManager != null)
             {
-                string ownerText = GetOwnerText(tileIndex);
-                textOwner.text = ownerText;
+                if (propertyManager.IsPropertyOwned(tileIndex))
+                {
+                    int ownerIndex = propertyManager.GetPropertyOwner(tileIndex);
+                    string ownerName = GetPlayerName(ownerIndex);
+                    textOwner.text = $"Owner: {ownerName}";
+                }
+                else
+                {
+                    textOwner.text = "";
+                }
             }
+
+            Debug.Log("[PanelTileInfo] Activating panel...");
+            gameObject.SetActive(true);
+            Debug.Log($"[PanelTileInfo] Panel active: {gameObject.activeSelf}");
         }
         
-        /// <summary>
-        /// Get rent for specific level
-        /// </summary>
-        private int GetRentForLevel(SimpleTileData tileData, int level)
+        private int GetRent(SimpleTileData tile, int level)
         {
             switch (level)
             {
-                case 0: return tileData.rent0;
-                case 1: return tileData.rent1;
-                case 2: return tileData.rent2;
-                case 3: return tileData.rent3;
-                case 4: return tileData.rent4;
-                case 5: return tileData.rentHotel;
+                case 0: return tile.rent0;
+                case 1: return tile.rent1;
+                case 2: return tile.rent2;
+                case 3: return tile.rent3;
+                case 4: return tile.rent4;
+                case 5: return tile.rentHotel;
                 default: return 0;
             }
         }
-        
-        /// <summary>
-        /// Get owner text
-        /// </summary>
-        private string GetOwnerText(int tileIndex)
-        {
-            if (propertyManager == null)
-            {
-                return "Chưa có chủ";
-            }
 
-            // Check if property is owned
-            if (propertyManager.IsPropertyOwned(tileIndex))
-            {
-                int ownerIndex = propertyManager.GetPropertyOwner(tileIndex);
-                string ownerName = GetPlayerName(ownerIndex);
-                return $"Chủ: {ownerName}";
-            }
-            else
-            {
-                return "Chưa có chủ";
-            }
-        }
-        
-        /// <summary>
-        /// Get player name by index
-        /// </summary>
         private string GetPlayerName(int playerIndex)
         {
             if (gameManager == null)
-            {
                 return $"Player {playerIndex + 1}";
-            }
 
-            // ⭐ FIX: Get player from GameManager
             PlayerGameController player = gameManager.GetPlayer(playerIndex);
-            if (player != null)
-            {
-                return player.PlayerName;
-            }
-
-            return $"Player {playerIndex + 1}";
+            return player != null ? player.PlayerName : $"Player {playerIndex + 1}";
         }
-        
-        /// <summary>
-        /// Hide panel
-        /// </summary>
+
         public void Hide()
         {
             gameObject.SetActive(false);
-            currentTileIndex = -1;
-            
-            Debug.Log("[PanelTileInfo] Panel hidden");
         }
     }
 }
