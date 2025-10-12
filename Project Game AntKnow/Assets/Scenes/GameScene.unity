@@ -618,8 +618,17 @@ MonoBehaviour:
   platform: {fileID: 0}
   textName: {fileID: 216193282}
   textPrice: {fileID: 0}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 15
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &78140746
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,80 +1009,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 89483289}
   m_CullTransparentMesh: 1
---- !u!1001 &91142282
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 239311142}
-    m_Modifications:
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 12.750002
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.26842105
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.319
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 7.6793957
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334055856671939928, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_Name
-      value: HousePrefab (3)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
---- !u!4 &91142283 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-  m_PrefabInstance: {fileID: 91142282}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &93507795
 GameObject:
   m_ObjectHideFlags: 0
@@ -1199,8 +1134,17 @@ MonoBehaviour:
   platform: {fileID: 0}
   textName: {fileID: 974063263}
   textPrice: {fileID: 0}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 6
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!224 &102137060 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 199697714496602697, guid: 5a03db65e19ace54da83f8c3b55c9d83, type: 3}
@@ -1333,8 +1277,17 @@ MonoBehaviour:
   platform: {fileID: 756446367}
   textName: {fileID: 2120646526}
   textPrice: {fileID: 968201958}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 20
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &105695645
 GameObject:
   m_ObjectHideFlags: 0
@@ -2233,8 +2186,17 @@ MonoBehaviour:
   platform: {fileID: 183346552}
   textName: {fileID: 1109228603}
   textPrice: {fileID: 801228500}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 34
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &181618648
 GameObject:
   m_ObjectHideFlags: 0
@@ -2850,11 +2812,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.55, z: 0.38}
   m_LocalScale: {x: 1, y: 0.1, z: 0.25}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1671498990}
-  - {fileID: 1283742536}
-  - {fileID: 594492659}
-  - {fileID: 91142283}
+  m_Children: []
   m_Father: {fileID: 655115772}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &239311144
@@ -3268,8 +3226,17 @@ MonoBehaviour:
   platform: {fileID: 1477099412}
   textName: {fileID: 865967621}
   textPrice: {fileID: 2028469666}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 35
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &277305954
 GameObject:
   m_ObjectHideFlags: 0
@@ -3533,8 +3500,17 @@ MonoBehaviour:
   platform: {fileID: 1535332896}
   textName: {fileID: 997304823}
   textPrice: {fileID: 1444534138}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 21
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &286583576
 GameObject:
   m_ObjectHideFlags: 0
@@ -4008,8 +3984,17 @@ MonoBehaviour:
   platform: {fileID: 0}
   textName: {fileID: 1953792747}
   textPrice: {fileID: 0}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 0
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &330480011
 GameObject:
   m_ObjectHideFlags: 0
@@ -4146,90 +4131,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330480011}
   m_CullTransparentMesh: 1
---- !u!1001 &335237883
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 664355036}
-    m_Modifications:
-    - target: {fileID: 2096338041149333725, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2096338041149333725, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2096338041149333725, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2096338041149333725, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2096338041149333725, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2096338041149333725, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2096338041149333725, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2096338041149333725, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2096338041149333725, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2096338041149333725, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2096338041149333725, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2096338041149333725, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2096338041149333725, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4213319449500419844, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
-      propertyPath: m_Name
-      value: HotelPrefab
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
---- !u!4 &335237884
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 2096338041149333725, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
-  m_PrefabInstance: {fileID: 335237883}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2006192259}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 9, y: 9, z: 9}
-  m_ConstrainProportionsScale: 1
-  m_Children: []
-  m_Father: {fileID: 664355036}
-  m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
 --- !u!1 &339861219
 GameObject:
   m_ObjectHideFlags: 0
@@ -4357,8 +4258,17 @@ MonoBehaviour:
   platform: {fileID: 667014876}
   textName: {fileID: 244084754}
   textPrice: {fileID: 1196351904}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 5
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &355552991
 GameObject:
   m_ObjectHideFlags: 0
@@ -5543,8 +5453,17 @@ MonoBehaviour:
   platform: {fileID: 1687820024}
   textName: {fileID: 2076493328}
   textPrice: {fileID: 1489167591}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 22
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &424806720
 GameObject:
   m_ObjectHideFlags: 0
@@ -6750,8 +6669,17 @@ MonoBehaviour:
   platform: {fileID: 1291773226}
   textName: {fileID: 995452576}
   textPrice: {fileID: 467498922}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 23
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &507670962
 GameObject:
   m_ObjectHideFlags: 0
@@ -7357,80 +7285,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0.00026223, y: -14}
   m_SizeDelta: {x: 714.0005, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1001 &594492658
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 239311142}
-    m_Modifications:
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 12.750002
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.26842105
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.073
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 7.6793957
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334055856671939928, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_Name
-      value: HousePrefab (2)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
---- !u!4 &594492659 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-  m_PrefabInstance: {fileID: 594492658}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &594840899
 GameObject:
   m_ObjectHideFlags: 0
@@ -8087,8 +7941,17 @@ MonoBehaviour:
   platform: {fileID: 1998993375}
   textName: {fileID: 1688534016}
   textPrice: {fileID: 2091279302}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 17
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &624869283
 GameObject:
   m_ObjectHideFlags: 0
@@ -8657,8 +8520,17 @@ MonoBehaviour:
   platform: {fileID: 239311142}
   textName: {fileID: 1521601914}
   textPrice: {fileID: 1885088310}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 1
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &657886894
 GameObject:
   m_ObjectHideFlags: 0
@@ -8780,38 +8652,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 657886894}
   m_CullTransparentMesh: 1
---- !u!1 &664355035
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 664355036}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &664355036
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 664355035}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.39830947, y: 0.12101263, z: 1.9679902}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 335237884}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &667014875
 GameObject:
   m_ObjectHideFlags: 0
@@ -9249,8 +9089,17 @@ MonoBehaviour:
   platform: {fileID: 705544897}
   textName: {fileID: 110181279}
   textPrice: {fileID: 361587994}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 30
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &695485538
 GameObject:
   m_ObjectHideFlags: 0
@@ -9418,9 +9267,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c3df5cb0a3611449eebce61b357add, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  housePrefab: {fileID: 758937104}
-  hotelPrefab: {fileID: 2006192259}
-  roofMaterialName: "ng\xF3i"
+  housePrefab: {fileID: 7334055856671939928, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
+  hotelPrefab: {fileID: 2529756296598581180, guid: e172382501dee5d4dbc755304e28bd8b, type: 3}
+  roofMaterialName: hotelMaterial
   playerColors:
   - {r: 1, g: 0.2, b: 0.2, a: 1}
   - {r: 0.2, g: 0.5, b: 1, a: 1}
@@ -10069,8 +9918,17 @@ MonoBehaviour:
   platform: {fileID: 806900544}
   textName: {fileID: 1387973911}
   textPrice: {fileID: 313594142}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 4
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &738095380
 GameObject:
   m_ObjectHideFlags: 0
@@ -10334,8 +10192,17 @@ MonoBehaviour:
   platform: {fileID: 1847399176}
   textName: {fileID: 675502360}
   textPrice: {fileID: 1811621022}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 19
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &741245802
 GameObject:
   m_ObjectHideFlags: 0
@@ -10815,11 +10682,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &758937104 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7334055856671939928, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-  m_PrefabInstance: {fileID: 1671498989}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &795806145
 GameObject:
   m_ObjectHideFlags: 0
@@ -11047,8 +10909,17 @@ MonoBehaviour:
   platform: {fileID: 254324703}
   textName: {fileID: 371550120}
   textPrice: {fileID: 1586434896}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 10
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &801228498
 GameObject:
   m_ObjectHideFlags: 0
@@ -11687,8 +11558,17 @@ MonoBehaviour:
   platform: {fileID: 443467001}
   textName: {fileID: 1120576632}
   textPrice: {fileID: 105695647}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 25
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &821468361
 GameObject:
   m_ObjectHideFlags: 0
@@ -12657,8 +12537,17 @@ MonoBehaviour:
   platform: {fileID: 361910922}
   textName: {fileID: 939002183}
   textPrice: {fileID: 1376777550}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 2
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &912777003
 GameObject:
   m_ObjectHideFlags: 0
@@ -12786,8 +12675,17 @@ MonoBehaviour:
   platform: {fileID: 81168788}
   textName: {fileID: 709248830}
   textPrice: {fileID: 690482017}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 28
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &939002181
 GameObject:
   m_ObjectHideFlags: 0
@@ -13227,8 +13125,17 @@ MonoBehaviour:
   platform: {fileID: 1414875320}
   textName: {fileID: 869497500}
   textPrice: {fileID: 410533823}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 13
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -13991,8 +13898,17 @@ MonoBehaviour:
   platform: {fileID: 0}
   textName: {fileID: 301083990}
   textPrice: {fileID: 0}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 24
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &1037911883
 GameObject:
   m_ObjectHideFlags: 0
@@ -15290,63 +15206,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1001 &1156073594
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.396
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.263588
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 4.705
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334055856671939928, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_Name
-      value: HousePrefab
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
 --- !u!1 &1161345787
 GameObject:
   m_ObjectHideFlags: 0
@@ -16563,8 +16422,17 @@ MonoBehaviour:
   platform: {fileID: 2019116664}
   textName: {fileID: 757836862}
   textPrice: {fileID: 821468363}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 12
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &1243905080
 GameObject:
   m_ObjectHideFlags: 0
@@ -16890,8 +16758,17 @@ MonoBehaviour:
   platform: {fileID: 695485539}
   textName: {fileID: 1889891354}
   textPrice: {fileID: 1037911885}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 29
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &1270545538
 GameObject:
   m_ObjectHideFlags: 0
@@ -17026,80 +16903,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1985172665}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1283742535
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 239311142}
-    m_Modifications:
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 12.750002
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.26842105
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.16
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 7.6793957
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334055856671939928, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_Name
-      value: HousePrefab (1)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
---- !u!4 &1283742536 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-  m_PrefabInstance: {fileID: 1283742535}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1284346847
 GameObject:
   m_ObjectHideFlags: 0
@@ -18668,8 +18471,17 @@ MonoBehaviour:
   platform: {fileID: 491989661}
   textName: {fileID: 2033257332}
   textPrice: {fileID: 1694670946}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 7
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &1414875319
 GameObject:
   m_ObjectHideFlags: 0
@@ -19364,8 +19176,17 @@ MonoBehaviour:
   platform: {fileID: 0}
   textName: {fileID: 1374666429}
   textPrice: {fileID: 0}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 32
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &1463202496
 GameObject:
   m_ObjectHideFlags: 0
@@ -19941,8 +19762,17 @@ MonoBehaviour:
   platform: {fileID: 1074431094}
   textName: {fileID: 1139279817}
   textPrice: {fileID: 1209578166}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 33
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &1508824422
 GameObject:
   m_ObjectHideFlags: 0
@@ -21734,80 +21564,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1668151330}
   m_CullTransparentMesh: 1
---- !u!1001 &1671498989
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 239311142}
-    m_Modifications:
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.0199997
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 12.749999
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.268421
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.38929072
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 7.679396
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.07725859
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7334055856671939928, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-      propertyPath: m_Name
-      value: HousePrefab
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
---- !u!4 &1671498990 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4506344396837200464, guid: 4a865e41d47bbc342981cdde8f12efa5, type: 3}
-  m_PrefabInstance: {fileID: 1671498989}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1679934293
 GameObject:
   m_ObjectHideFlags: 0
@@ -22779,8 +22535,17 @@ MonoBehaviour:
   platform: {fileID: 2140614682}
   textName: {fileID: 434070909}
   textPrice: {fileID: 1948871297}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 16
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &1727199197
 GameObject:
   m_ObjectHideFlags: 0
@@ -23075,8 +22840,17 @@ MonoBehaviour:
   platform: {fileID: 1243905081}
   textName: {fileID: 438620459}
   textPrice: {fileID: 113116468}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 14
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &1789464052
 GameObject:
   m_ObjectHideFlags: 0
@@ -23204,8 +22978,17 @@ MonoBehaviour:
   platform: {fileID: 1575648651}
   textName: {fileID: 1817718431}
   textPrice: {fileID: 795806147}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 3
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &1811621020
 GameObject:
   m_ObjectHideFlags: 0
@@ -23564,8 +23347,17 @@ MonoBehaviour:
   platform: {fileID: 0}
   textName: {fileID: 723719818}
   textPrice: {fileID: 0}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 18
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &1842667367
 GameObject:
   m_ObjectHideFlags: 0
@@ -24201,8 +23993,17 @@ MonoBehaviour:
   platform: {fileID: 0}
   textName: {fileID: 1463202498}
   textPrice: {fileID: 0}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 9
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &1885088308
 GameObject:
   m_ObjectHideFlags: 0
@@ -24639,8 +24440,17 @@ MonoBehaviour:
   platform: {fileID: 1508824423}
   textName: {fileID: 2043059753}
   textPrice: {fileID: 541301828}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 11
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &1908719863
 GameObject:
   m_ObjectHideFlags: 0
@@ -24768,8 +24578,17 @@ MonoBehaviour:
   platform: {fileID: 1118951600}
   textName: {fileID: 355552993}
   textPrice: {fileID: 543378639}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 26
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &1910784939
 GameObject:
   m_ObjectHideFlags: 0
@@ -24897,8 +24716,17 @@ MonoBehaviour:
   platform: {fileID: 1692330486}
   textName: {fileID: 3343669}
   textPrice: {fileID: 507670964}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 8
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &1919612208
 GameObject:
   m_ObjectHideFlags: 0
@@ -25616,8 +25444,17 @@ MonoBehaviour:
   platform: {fileID: 0}
   textName: {fileID: 1153459598}
   textPrice: {fileID: 0}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 27
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &1980732227
 GameObject:
   m_ObjectHideFlags: 0
@@ -26323,83 +26160,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1998993374}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &2006192259
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 4213319449500419844, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
-  m_PrefabInstance: {fileID: 335237883}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 335237884}
-  - component: {fileID: 2006192261}
-  - component: {fileID: 2006192260}
-  m_Layer: 0
-  m_Name: HotelPrefab
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!23 &2006192260
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 6105841985271906925, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
-  m_PrefabInstance: {fileID: 335237883}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2006192259}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 54dbf3c308b2a18459fc9eb37db79b92, type: 2}
-  - {fileID: 2100000, guid: 3f6f2e6ca8284434fa71318ff13bb2fc, type: 2}
-  - {fileID: 2100000, guid: a1c3a2ffea0d3f342bc941d20ab9b296, type: 2}
-  - {fileID: 2100000, guid: 0045054706991954a897c0ea00552cce, type: 2}
-  - {fileID: 2100000, guid: c4892fee6f16f7e42a68891e9deb1f8c, type: 2}
-  - {fileID: 2100000, guid: 206a628816c0f1a4b957af5837f99690, type: 2}
-  - {fileID: 2100000, guid: f5622183c3462d347a7b7ae4664a5037, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &2006192261
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 1180760722209623345, guid: 855ad3e71bf851f469c235954272b79b, type: 3}
-  m_PrefabInstance: {fileID: 335237883}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2006192259}
-  m_Mesh: {fileID: -641984265268737785, guid: ded77e9d1eb8a004a983eafc3abf3001, type: 3}
 --- !u!1 &2007953920
 GameObject:
   m_ObjectHideFlags: 0
@@ -27785,8 +27545,17 @@ MonoBehaviour:
   platform: {fileID: 710443417}
   textName: {fileID: 744176193}
   textPrice: {fileID: 509762318}
+  houseMarkers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hotelMarker: {fileID: 0}
   autoFindChildren: 1
   tileIndex: 31
+  showHousePositions: 0
+  housePositionColor: {r: 0, g: 1, b: 0, a: 1}
+  hotelPositionColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &2091279300
 GameObject:
   m_ObjectHideFlags: 0
@@ -29175,63 +28944,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!1001 &4481973323706344977
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2529756296598581180, guid: e172382501dee5d4dbc755304e28bd8b, type: 3}
-      propertyPath: m_Name
-      value: Hotel
-      objectReference: {fileID: 0}
-    - target: {fileID: 8418164358097242308, guid: e172382501dee5d4dbc755304e28bd8b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.363
-      objectReference: {fileID: 0}
-    - target: {fileID: 8418164358097242308, guid: e172382501dee5d4dbc755304e28bd8b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.101012394
-      objectReference: {fileID: 0}
-    - target: {fileID: 8418164358097242308, guid: e172382501dee5d4dbc755304e28bd8b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 4.038
-      objectReference: {fileID: 0}
-    - target: {fileID: 8418164358097242308, guid: e172382501dee5d4dbc755304e28bd8b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 8418164358097242308, guid: e172382501dee5d4dbc755304e28bd8b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8418164358097242308, guid: e172382501dee5d4dbc755304e28bd8b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 8418164358097242308, guid: e172382501dee5d4dbc755304e28bd8b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8418164358097242308, guid: e172382501dee5d4dbc755304e28bd8b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8418164358097242308, guid: e172382501dee5d4dbc755304e28bd8b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 8418164358097242308, guid: e172382501dee5d4dbc755304e28bd8b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e172382501dee5d4dbc755304e28bd8b, type: 3}
 --- !u!114 &4848172698344842372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29777,10 +29489,7 @@ SceneRoots:
   - {fileID: 651690245}
   - {fileID: 218244418}
   - {fileID: 1698958505}
-  - {fileID: 664355036}
   - {fileID: 1626044624}
   - {fileID: 1211401723}
   - {fileID: 1210067846}
   - {fileID: 425224904}
-  - {fileID: 1156073594}
-  - {fileID: 4481973323706344977}
