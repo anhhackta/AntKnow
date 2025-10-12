@@ -14,8 +14,9 @@ namespace AntKnow.Game
         [Header("UI Components")]
         [SerializeField] private Image imageGender;
         [SerializeField] private TextMeshProUGUI textPlayerName;
-        [SerializeField] private TextMeshProUGUI textMatchesPlayed;
-        [SerializeField] private TextMeshProUGUI textMatchesWon;
+        [SerializeField] private TextMeshProUGUI textLevel;
+        [SerializeField] private TextMeshProUGUI textMatches; // "Matches: 10/3"
+        [SerializeField] private TextMeshProUGUI textStats; // Stats display
         [SerializeField] private Button btnClose;
         
         [Header("Gender Sprites")]
@@ -83,40 +84,40 @@ namespace AntKnow.Game
         }
         
         /// <summary>
-        /// Load player stats from Firebase
+        /// Load player stats from Firebase and player data
         /// </summary>
         private void LoadPlayerStats()
         {
             if (currentPlayer == null) return;
-            
+
             // Get player stats from GameDataManager or Firebase
             var gameDataManager = GameDataManager.Instance;
-            if (gameDataManager != null)
+
+            // Update Level
+            if (textLevel != null)
             {
-                // Update matches played
-                if (textMatchesPlayed != null)
+                int level = gameDataManager != null ? gameDataManager.currentLevel : 1;
+                textLevel.text = $"Level: {level}";
+            }
+
+            // Update Matches (played/won)
+            if (textMatches != null)
+            {
+                if (gameDataManager != null)
                 {
-                    textMatchesPlayed.text = $"Số trận chơi: {gameDataManager.currentMatchesPlayed}";
+                    textMatches.text = $"Matches: {gameDataManager.currentMatchesPlayed}/{gameDataManager.currentMatchesWon}";
                 }
-                
-                // Update matches won
-                if (textMatchesWon != null)
+                else
                 {
-                    textMatchesWon.text = $"Số trận thắng: {gameDataManager.currentMatchesWon}";
+                    textMatches.text = "Matches: 0/0";
                 }
             }
-            else
+
+            // ⭐ Update Stats (HP, AGI, INT, LUCK, RES)
+            if (textStats != null)
             {
-                // Fallback values
-                if (textMatchesPlayed != null)
-                {
-                    textMatchesPlayed.text = "Số trận chơi: 0";
-                }
-                
-                if (textMatchesWon != null)
-                {
-                    textMatchesWon.text = "Số trận thắng: 0";
-                }
+                textStats.text = $"HP: {currentPlayer.Health}  AGI: {currentPlayer.Agility}  INT: {currentPlayer.Intelligence}\n" +
+                                 $"LUCK: {currentPlayer.Luck}  RES: {currentPlayer.Resistance}";
             }
         }
         
