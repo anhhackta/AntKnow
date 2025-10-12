@@ -993,33 +993,54 @@ namespace AntKnow.Game
             if (!demoMode && !IsHost) return;
 
             Debug.Log($"[GameManager] Turn ended. Player {currentPlayerIndex}/{players.Count - 1}");
-            
+
             // Reduce skill card cooldowns for current player
             if (currentPlayerIndex >= 0 && currentPlayerIndex < players.Count)
             {
                 players[currentPlayerIndex].ReduceCooldowns();
             }
-            
+
+            // ✅ FIX: Demo Mode - Stay on same player
+            if (demoMode)
+            {
+                Debug.Log("[GameManager] Demo Mode - Starting next turn for same player");
+                currentTurn++;
+
+                // Check max turns
+                if (currentTurn > maxTurns)
+                {
+                    Debug.Log("[GameManager] Max turns reached!");
+                    EndGame();
+                    return;
+                }
+
+                // Start next turn immediately
+                StartTurn();
+                return;
+            }
+
+            // ⭐ MULTIPLAYER MODE BELOW
+
             // Check win condition
             if (CheckWinCondition())
             {
                 EndGame();
                 return;
             }
-            
+
             // Next player
             currentPlayerIndex++;
-            
+
             // Check if completed a ROUND (all players finished their turn)
             if (currentPlayerIndex >= players.Count)
             {
                 currentPlayerIndex = 0;
                 roundCounter++;
                 currentTurn++;
-                
+
                 Debug.Log($"[GameManager] ========== ROUND {roundCounter} COMPLETED ==========");
                 Debug.Log($"[GameManager] Turn {currentTurn}/{maxTurns}");
-                
+
                 // Check for QUIZ ROUND (every 8 rounds)
                 if (roundCounter % QUIZ_INTERVAL == 0)
                 {
@@ -1027,7 +1048,7 @@ namespace AntKnow.Game
                     StartQuizRound();
                     return; // Don't start next turn yet
                 }
-                
+
                 // Check max turns
                 if (currentTurn > maxTurns)
                 {
@@ -1036,7 +1057,7 @@ namespace AntKnow.Game
                     return;
                 }
             }
-            
+
             // Start next turn
             StartTurn();
         }

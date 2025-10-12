@@ -291,6 +291,7 @@ namespace AntKnow.Game
             // Move step by step
             for (int i = 0; i < steps; i++)
             {
+                int previousTile = currentTile;
                 currentTile = (currentTile + 1) % boardManager.TotalTiles;
                 Vector3 targetPos = boardManager.GetWaypointPosition(currentTile);
 
@@ -300,10 +301,12 @@ namespace AntKnow.Game
                 // Move to waypoint with bounce effect
                 yield return StartCoroutine(MoveToWaypointWithBounce(targetPos));
 
-                // Check if passed Start (tile 0)
-                if (currentTile == 0 && i > 0)
+                // ✅ FIX: Check if passed Start (tile 0)
+                // Passed Start if: previous tile != 0 AND current tile == 0
+                if (previousTile != 0 && currentTile == 0)
                 {
                     OnPassStart();
+                    Debug.Log($"[PlayerGameController] {playerName} passed Start! (from tile {previousTile} to 0)");
                 }
             }
 
