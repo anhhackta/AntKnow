@@ -126,6 +126,18 @@ namespace AntKnow.Game
         public int CurrentTurn => currentTurn;
         public PlayerGameController CurrentPlayer => players.Count > 0 ? players[currentPlayerIndex] : null;
 
+        /// <summary>
+        /// Get player by index
+        /// </summary>
+        public PlayerGameController GetPlayer(int index)
+        {
+            if (index >= 0 && index < players.Count)
+            {
+                return players[index];
+            }
+            return null;
+        }
+
         private void Start()
         {
             // Find services if not assigned
@@ -645,6 +657,13 @@ namespace AntKnow.Game
                                 Debug.Log($"[GameManager] {player.PlayerName} lost {-moneyChange} from event");
                             }
 
+                            // ⭐ UPDATE UI - Refresh panels to show new money
+                            if (panelGame != null)
+                            {
+                                panelGame.UpdateAllPanels();
+                                Debug.Log($"[GameManager] Updated panels after event - Player money: {player.Money}");
+                            }
+
                             // ⭐ End turn after event
                             StartCoroutine(AutoEndTurnAfterDelay(0.5f));
                         });
@@ -700,6 +719,14 @@ namespace AntKnow.Game
                 case TileType.Travel:
                     player.SubtractMoney(100);
                     Debug.Log($"[GameManager] Travel tile - {player.PlayerName} pays 100");
+
+                    // ⭐ UPDATE UI - Refresh panels to show new money
+                    if (panelGame != null)
+                    {
+                        panelGame.UpdateAllPanels();
+                        Debug.Log($"[GameManager] Updated panels after travel - Player money: {player.Money}");
+                    }
+
                     if (panelNotification != null)
                     {
                         panelNotification.ShowNotification($"{player.PlayerName} đi du lịch! -100");
@@ -756,6 +783,13 @@ namespace AntKnow.Game
 
                     // Calculate actual rent paid (money lost)
                     int rentPaid = moneyBefore - player.Money;
+
+                    // ⭐ UPDATE UI - Refresh panels to show new money
+                    if (panelGame != null)
+                    {
+                        panelGame.UpdateAllPanels();
+                        Debug.Log($"[GameManager] Updated panels after rent - Player money: {player.Money}, Owner money: {owner.Money}");
+                    }
 
                     // ⭐ Show notification
                     if (panelNotification != null)
@@ -822,21 +856,46 @@ namespace AntKnow.Game
                 {
                     if (selectedLevel > 0)
                     {
+                        // ⭐ DEBUG: Check before buying
+                        Debug.Log($"[GameManager] Attempting to buy property - Tile: {tileIndex}, Player: {playerIdx}, Price: {basePrice}, PlayerMoney: {player.Money}, SelectedLevel: {selectedLevel}");
+                        Debug.Log($"[GameManager] PropertyManager is null? {propertyManager == null}");
+
                         // Buy property
-                        propertyManager.BuyProperty(tileIndex, playerIdx, basePrice, player);
+                        bool buySuccess = propertyManager.BuyProperty(tileIndex, playerIdx, basePrice, player);
 
-                        Debug.Log($"[GameManager] {player.PlayerName} bought {tileName} for {basePrice}");
+                        Debug.Log($"[GameManager] BuyProperty returned: {buySuccess}");
 
-                        // Show notification
-                        if (panelNotification != null)
+                        if (buySuccess)
                         {
-                            panelNotification.ShowNotification($"{player.PlayerName} mua {tileName} ({basePrice})");
+                            Debug.Log($"[GameManager] {player.PlayerName} bought {tileName} for {basePrice}");
+
+                            // Show notification
+                            if (panelNotification != null)
+                            {
+                                panelNotification.ShowNotification($"{player.PlayerName} mua {tileName} ({basePrice})");
+                            }
+
+                            // ⭐ FIX: Upgrade to selectedLevel directly
+                            // selectedLevel = 1 → level 1 (1 house)
+                            // selectedLevel = 2 → level 2 (2 houses)
+                            // selectedLevel = 5 → level 5 (hotel)
+                            if (selectedLevel > 0)
+                            {
+                                Debug.Log($"[GameManager] Attempting to upgrade to level {selectedLevel}");
+                                bool upgradeSuccess = propertyManager.UpgradeProperty(tileIndex, selectedLevel, basePrice, player);
+                                Debug.Log($"[GameManager] UpgradeProperty returned: {upgradeSuccess}");
+                            }
+
+                            // ⭐ UPDATE UI - Refresh PanelMe to show new money
+                            if (panelGame != null)
+                            {
+                                panelGame.UpdateAllPanels();
+                                Debug.Log($"[GameManager] Updated PanelMe - New money: {player.Money}");
+                            }
                         }
-
-                        // Upgrade if selected level > 0
-                        if (selectedLevel > 1)
+                        else
                         {
-                            propertyManager.UpgradeProperty(tileIndex, selectedLevel - 1, basePrice, player);
+                            Debug.LogError($"[GameManager] BuyProperty FAILED! Check PropertyManager logs above.");
                         }
                     }
 

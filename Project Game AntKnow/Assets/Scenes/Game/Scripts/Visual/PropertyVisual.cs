@@ -32,6 +32,16 @@ namespace AntKnow.Game
 
         private void Awake()
         {
+            // ⭐ Check prefabs
+            if (housePrefab == null)
+            {
+                Debug.LogError("[PropertyVisual] housePrefab is not assigned! Houses will not spawn!");
+            }
+            if (hotelPrefab == null)
+            {
+                Debug.LogError("[PropertyVisual] hotelPrefab is not assigned! Hotels will not spawn!");
+            }
+
             // Get tiles from TileSetup
             if (tileSetup != null)
             {
@@ -61,6 +71,8 @@ namespace AntKnow.Game
         /// </summary>
         public void UpdatePropertyVisual(int tileId, int level, int ownerIndex, int rentPrice)
         {
+            Debug.Log($"[PropertyVisual] UpdatePropertyVisual called - Tile: {tileId}, Level: {level}, Owner: {ownerIndex}");
+
             TileVisual tile = GetTile(tileId);
             if (tile == null)
             {
@@ -70,6 +82,7 @@ namespace AntKnow.Game
 
             // Clear old houses
             tile.ClearHouses();
+            Debug.Log($"[PropertyVisual] Cleared old houses on tile {tileId}");
 
             Color playerColor = GetPlayerColor(ownerIndex);
 
@@ -78,11 +91,13 @@ namespace AntKnow.Game
                 // Level 0 = empty land, no houses, but platform has color
                 tile.SetPlatformColor(playerColor);
                 tile.UpdatePrice(rentPrice, true); // Show rent price, isProperty = true
+                Debug.Log($"[PropertyVisual] Set platform color for empty land (level 0) on tile {tileId}");
                 return;
             }
 
             // Set platform color
             tile.SetPlatformColor(playerColor);
+            Debug.Log($"[PropertyVisual] Set platform color on tile {tileId}");
 
             // Update price to rent
             tile.UpdatePrice(rentPrice, true); // isProperty = true
@@ -90,11 +105,23 @@ namespace AntKnow.Game
             if (level >= 1 && level <= 4)
             {
                 // Spawn houses (1-4)
+                if (housePrefab == null)
+                {
+                    Debug.LogError($"[PropertyVisual] housePrefab is null! Cannot spawn houses on tile {tileId}");
+                    return;
+                }
+                Debug.Log($"[PropertyVisual] Spawning {level} houses on tile {tileId}");
                 tile.SpawnHouses(housePrefab, level, playerColor, roofMaterialName);
             }
             else if (level == 5)
             {
                 // Spawn hotel
+                if (hotelPrefab == null)
+                {
+                    Debug.LogError($"[PropertyVisual] hotelPrefab is null! Cannot spawn hotel on tile {tileId}");
+                    return;
+                }
+                Debug.Log($"[PropertyVisual] Spawning hotel on tile {tileId}");
                 tile.SpawnHotel(hotelPrefab, playerColor, roofMaterialName);
             }
         }

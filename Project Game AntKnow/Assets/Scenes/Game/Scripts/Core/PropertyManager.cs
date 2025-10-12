@@ -26,11 +26,23 @@ namespace AntKnow.Game
             if (propertyVisual == null)
             {
                 propertyVisual = GetComponent<PropertyVisual>();
+                if (propertyVisual == null)
+                {
+                    Debug.LogError("[PropertyManager] PropertyVisual component not found! House models will not display!");
+                }
+                else
+                {
+                    Debug.Log("[PropertyManager] PropertyVisual component found");
+                }
             }
 
             if (boardManager == null)
             {
                 boardManager = FindObjectOfType<BoardManager>();
+                if (boardManager == null)
+                {
+                    Debug.LogError("[PropertyManager] BoardManager not found!");
+                }
             }
         }
         
@@ -71,25 +83,31 @@ namespace AntKnow.Game
         /// </summary>
         public bool BuyProperty(int tileId, int playerIndex, int basePrice, PlayerGameController player)
         {
+            Debug.Log($"[PropertyManager] BuyProperty called - Tile: {tileId}, Player: {playerIndex}, Price: {basePrice}");
+
             // Check if already owned
             if (IsPropertyOwned(tileId))
             {
                 Debug.LogWarning($"[PropertyManager] Property {tileId} already owned!");
                 return false;
             }
-            
+
             // Check money
             if (player.Money < basePrice)
             {
-                Debug.LogWarning($"[PropertyManager] Player {playerIndex} cannot afford property {tileId}");
+                Debug.LogWarning($"[PropertyManager] Player {playerIndex} cannot afford property {tileId}. Money: {player.Money}, Price: {basePrice}");
                 return false;
             }
-            
+
+            Debug.Log($"[PropertyManager] Checks passed, buying property {tileId}...");
+
             // Buy
             player.SubtractMoney(basePrice);
             propertyOwners[tileId] = playerIndex;
             propertyLevels[tileId] = 0; // Level 0 = đất trống
             propertyRentMultipliers[tileId] = 1f;
+
+            Debug.Log($"[PropertyManager] Property ownership set. Calling UpdatePropertyVisual...");
 
             // Check Agility: Nhân đôi tiền thuê
             if (StatsCalculator.CheckAgilityForDoubleRent(player.Agility))
@@ -101,7 +119,7 @@ namespace AntKnow.Game
             // Update visual (level 0 = no visual)
             UpdatePropertyVisual(tileId);
 
-            Debug.Log($"[PropertyManager] Player {playerIndex} bought property {tileId} for {basePrice}");
+            Debug.Log($"[PropertyManager] Player {playerIndex} bought property {tileId} for {basePrice} - COMPLETE");
             return true;
         }
         
@@ -261,8 +279,15 @@ namespace AntKnow.Game
         /// </summary>
         private void UpdatePropertyVisual(int tileId)
         {
-            if (propertyVisual == null || boardManager == null)
+            if (propertyVisual == null)
             {
+                Debug.LogError($"[PropertyManager] PropertyVisual is null! Cannot update visual for tile {tileId}");
+                return;
+            }
+
+            if (boardManager == null)
+            {
+                Debug.LogError($"[PropertyManager] BoardManager is null! Cannot update visual for tile {tileId}");
                 return;
             }
 
@@ -274,6 +299,8 @@ namespace AntKnow.Game
             int rent = CalculateRent(basePrice, level);
             float multiplier = propertyRentMultipliers.ContainsKey(tileId) ? propertyRentMultipliers[tileId] : 1f;
             int finalRent = StatsCalculator.CalculateFinalRent(rent, multiplier);
+
+            Debug.Log($"[PropertyManager] UpdatePropertyVisual - Tile: {tileId}, Level: {level}, Owner: {ownerIndex}, Rent: {finalRent}");
 
             propertyVisual.UpdatePropertyVisual(tileId, level, ownerIndex, finalRent);
         }

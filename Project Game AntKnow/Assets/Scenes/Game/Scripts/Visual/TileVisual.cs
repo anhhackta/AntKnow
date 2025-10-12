@@ -12,12 +12,28 @@ namespace AntKnow.Game
         [SerializeField] private Transform platform; // Platform con để spawn house lên
         [SerializeField] private TextMesh textName; // Text hiển thị tên ô đất (TextMesh, not TextMeshPro)
         [SerializeField] private TextMesh textPrice; // Text hiển thị giá (TextMesh, optional cho Property tiles)
+
+        [Header("House/Hotel Markers")]
+        [Tooltip("Transform markers cho house positions (4 markers)")]
+        [SerializeField] private Transform[] houseMarkers = new Transform[4]; // HouseMarker1-4
+        [Tooltip("Transform marker cho hotel position (1 marker)")]
+        [SerializeField] private Transform hotelMarker; // HotelMarker
         
         [Header("Auto Find")]
         [SerializeField] private bool autoFindChildren = true;
-        
+
         [Header("Info")]
         public int tileIndex = -1;
+
+        [Header("Debug Visualization")]
+        [SerializeField] private bool showHousePositions = false;
+        [SerializeField] private Color housePositionColor = Color.green;
+        [SerializeField] private Color hotelPositionColor = Color.blue;
+
+        /// <summary>
+        /// Public property to access tile index (for TileClickDetector)
+        /// </summary>
+        public int TileIndex => tileIndex;
         
         // Spawned houses on this tile
         private GameObject[] spawnedHouses = new GameObject[4]; // Max 4 houses
@@ -217,40 +233,39 @@ namespace AntKnow.Game
         {
             ClearHouses();
 
-            if (housePrefab == null || platform == null)
+            if (housePrefab == null)
             {
+                Debug.LogWarning("[TileVisual] housePrefab is null!");
                 return;
             }
 
-            // 4 vị trí cố định trên Platform (hình chữ nhật)
-            // Positions trong local space của Platform
-            Vector3[] localPositions = new Vector3[]
-            {
-                new Vector3(-0.15f, 0.1f, -0.15f),  // Top-left (X trái, Z xa)
-                new Vector3(0.15f, 0.1f, -0.15f),   // Top-right (X phải, Z xa)
-                new Vector3(-0.15f, 0.1f, 0.15f),   // Bottom-left (X trái, Z gần)
-                new Vector3(0.15f, 0.1f, 0.15f)     // Bottom-right (X phải, Z gần)
-            };
-
+            // ⭐ NEW: Sử dụng Transform Markers thay vì hardcode positions
             for (int i = 0; i < count && i < 4; i++)
             {
-                // Spawn as child of platform
-                GameObject house = Instantiate(housePrefab, platform);
+                // Check if marker exists
+                if (houseMarkers == null || i >= houseMarkers.Length || houseMarkers[i] == null)
+                {
+                    Debug.LogWarning($"[TileVisual] HouseMarker{i + 1} not found! Skipping house {i + 1}");
+                    continue;
+                }
 
-                // Set local position
-                house.transform.localPosition = localPositions[i];
+                Transform marker = houseMarkers[i];
 
-                // Set local scale (0.255 như khi để ngoài)
-                house.transform.localScale = Vector3.one * 0.255f;
+                // Spawn house tại vị trí marker
+                GameObject house = Instantiate(housePrefab);
 
-                // Fix rotation:
-                // House: Y↑, X→giữa, Z←trái
-                // Platform: Y↑, Z→giữa, X→phải
-                // Rotate -90° around Y axis để align X của House với Z của Platform
-                house.transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
+                // Set position, rotation, scale từ marker
+                house.transform.position = marker.position;
+                house.transform.rotation = marker.rotation;
+                house.transform.localScale = Vector3.one * 0.255f; // Uniform scale
+
+                Debug.Log($"[TileVisual] House {i + 1} spawned at marker position: {marker.position}");
 
                 // Set color to roof material
                 SetHouseColor(house, playerColor, roofMaterialName);
+
+                // Parent to tile (not marker, not platform)
+                house.transform.SetParent(transform);
 
                 spawnedHouses[i] = house;
             }
@@ -276,29 +291,34 @@ namespace AntKnow.Game
         {
             ClearHouses();
 
-            if (hotelPrefab == null || platform == null)
+            if (hotelPrefab == null)
             {
+                Debug.LogWarning("[TileVisual] hotelPrefab is null!");
                 return;
             }
 
-            // Spawn as child of platform
-            spawnedHotel = Instantiate(hotelPrefab, platform);
+            // ⭐ NEW: Sử dụng HotelMarker thay vì hardcode position
+            if (hotelMarker == null)
+            {
+                Debug.LogWarning("[TileVisual] HotelMarker not found! Cannot spawn hotel");
+                return;
+            }
 
-            // Set local position (center of platform)
-            spawnedHotel.transform.localPosition = new Vector3(0f, 0.15f, 0f);
+            // Spawn hotel tại vị trí marker
+            spawnedHotel = Instantiate(hotelPrefab);
 
-            // Set local scale (9 như khi để ngoài)
-            spawnedHotel.transform.localScale = Vector3.one * 9f;
+            // Set position, rotation, scale từ marker
+            spawnedHotel.transform.position = hotelMarker.position;
+            spawnedHotel.transform.rotation = hotelMarker.rotation;
+            spawnedHotel.transform.localScale = Vector3.one * 9f; // Uniform scale
 
-            // Fix rotation:
-            // Hotel: Z↑, Y→giữa, X←trái
-            // Platform: Y↑, Z→giữa, X→phải
-            // Step 1: Rotate 90° around X → Z↑ becomes Y↑
-            // Step 2: Rotate 180° around Y → X← becomes X→
-            spawnedHotel.transform.localRotation = Quaternion.Euler(90f, 180f, 0f);
+            Debug.Log($"[TileVisual] Hotel spawned at marker position: {hotelMarker.position}");
 
             // Set color to roof material
             SetHouseColor(spawnedHotel, playerColor, roofMaterialName);
+
+            // Parent to tile (not marker, not platform)
+            spawnedHotel.transform.SetParent(transform);
 
             Debug.Log($"[TileVisual] Spawned hotel on tile {tileIndex}");
         }
@@ -366,6 +386,54 @@ namespace AntKnow.Game
                 return platform.position;
             }
             return transform.position;
+        }
+
+        /// <summary>
+        /// Draw Gizmos to visualize house/hotel spawn positions
+        /// </summary>
+        private void OnDrawGizmos()
+        {
+            if (!showHousePositions || platform == null)
+            {
+                return;
+            }
+
+            // House positions (same as in SpawnHouses())
+            Vector3[] localPositions = new Vector3[]
+            {
+                new Vector3(-0.15f, 0.1f, -0.15f),  // House 1
+                new Vector3(0.15f, 0.1f, -0.15f),   // House 2
+                new Vector3(-0.15f, 0.1f, 0.15f),   // House 3
+                new Vector3(0.15f, 0.1f, 0.15f)     // House 4
+            };
+
+            // Draw house positions
+            Gizmos.color = housePositionColor;
+            for (int i = 0; i < localPositions.Length; i++)
+            {
+                Vector3 worldPos = platform.TransformPoint(localPositions[i]);
+                worldPos.y = platform.position.y + (platform.localScale.y / 2f) + 0.05f;
+
+                // Draw sphere at position
+                Gizmos.DrawWireSphere(worldPos, 0.05f);
+
+                // Draw label
+#if UNITY_EDITOR
+                UnityEditor.Handles.Label(worldPos + Vector3.up * 0.1f, $"H{i + 1}");
+#endif
+            }
+
+            // Draw hotel position (center)
+            Gizmos.color = hotelPositionColor;
+            Vector3 hotelLocalPos = new Vector3(0f, 0f, 0f);
+            Vector3 hotelWorldPos = platform.TransformPoint(hotelLocalPos);
+            hotelWorldPos.y = platform.position.y + (platform.localScale.y / 2f) + 0.1f;
+
+            Gizmos.DrawWireSphere(hotelWorldPos, 0.08f);
+
+#if UNITY_EDITOR
+            UnityEditor.Handles.Label(hotelWorldPos + Vector3.up * 0.15f, "Hotel");
+#endif
         }
     }
 }
