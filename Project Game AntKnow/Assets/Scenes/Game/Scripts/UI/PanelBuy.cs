@@ -29,16 +29,22 @@ namespace AntKnow.Game
         [SerializeField] private Color selectedColor = Color.green;
         [SerializeField] private Color disabledColor = new Color(0.5f, 0.5f, 0.5f, 1f);
         [SerializeField] private Color cannotAffordColor = Color.red;
-        
+
+        [Header("Timeout Settings")]
+        [SerializeField] private float autoSkipTimeout = 10f; // 10 seconds timeout
+        [SerializeField] private TextMeshProUGUI textTimer; // Optional timer display
+
         private int selectedLevel = 0; // 0 = không mua, 1-4 = house level, 5 = hotel
         private int currentMoney = 0;
         private int basePrice = 0;
         private int currentLevel = 0;
         private string propertyName = "";
         private string ownerName = "";
-        
+
         private System.Action<int> onBuyCallback;
         private System.Action onSkipCallback;
+
+        private Coroutine timeoutCoroutine;
         
         private void Awake()
         {
@@ -48,12 +54,13 @@ namespace AntKnow.Game
             if (btnHouse3 != null) btnHouse3.onClick.AddListener(() => OnHouseButtonClicked(3));
             if (btnHouse4 != null) btnHouse4.onClick.AddListener(() => OnHouseButtonClicked(4));
             if (btnHotel != null) btnHotel.onClick.AddListener(() => OnHouseButtonClicked(5));
-            
+
             if (btnBuy != null) btnBuy.onClick.AddListener(OnBuyClicked);
             if (btnSkip != null) btnSkip.onClick.AddListener(OnSkipClicked);
-            
-            // Initially hidden
-            gameObject.SetActive(false);
+
+            // ⭐ KHÔNG set inactive trong Awake()
+            // Để Unity Inspector quyết định initial state
+            // ShowBuy() sẽ tự activate khi cần
         }
         
         /// <summary>
@@ -61,18 +68,60 @@ namespace AntKnow.Game
         /// </summary>
         public void ShowBuy(string propName, int price, int playerMoney, System.Action<int> onBuy, System.Action onSkip)
         {
+            Debug.Log($"[PanelBuy] ShowBuy called: {propName}, Price: {price}, Money: {playerMoney}");
+
             propertyName = propName;
             basePrice = price;
             currentMoney = playerMoney;
             currentLevel = 0;
             ownerName = "";
             selectedLevel = 0;
-            
+
             onBuyCallback = onBuy;
             onSkipCallback = onSkip;
-            
+
             UpdateDisplay();
+
+            Debug.Log($"[PanelBuy] Setting active to TRUE");
+
+            // ⭐ Check and activate ALL parents in hierarchy
+            Transform current = transform.parent;
+            while (current != null)
+            {
+                if (!current.gameObject.activeSelf)
+                {
+                    Debug.LogWarning($"[PanelBuy] Parent '{current.name}' is inactive! Activating...");
+                    current.gameObject.SetActive(true);
+                }
+                current = current.parent;
+            }
+
+            // ⭐ Activate this GameObject
+            Debug.Log($"[PanelBuy] Before SetActive: activeSelf={gameObject.activeSelf}");
             gameObject.SetActive(true);
+            Debug.Log($"[PanelBuy] After SetActive: activeSelf={gameObject.activeSelf}");
+
+            Debug.Log($"[PanelBuy] Panel is now active: {gameObject.activeInHierarchy}");
+
+            // ⭐ If still not active, log full hierarchy
+            if (!gameObject.activeInHierarchy)
+            {
+                Debug.LogError("[PanelBuy] Panel still not active! Checking hierarchy...");
+                Transform node = transform;
+                while (node != null)
+                {
+                    Debug.LogError($"  - {node.name}: activeSelf={node.gameObject.activeSelf}, activeInHierarchy={node.gameObject.activeInHierarchy}");
+                    node = node.parent;
+                }
+                return; // ⭐ Don't start timeout if inactive
+            }
+
+            // ⭐ Start timeout coroutine
+            if (timeoutCoroutine != null)
+            {
+                StopCoroutine(timeoutCoroutine);
+            }
+            timeoutCoroutine = StartCoroutine(TimeoutCoroutine());
         }
         
         /// <summary>
@@ -292,26 +341,87 @@ namespace AntKnow.Game
         private void OnBuyClicked()
         {
             if (selectedLevel == 0) return;
-            
+
+            // ⭐ Stop timeout
+            if (timeoutCoroutine != null)
+            {
+                StopCoroutine(timeoutCoroutine);
+                timeoutCoroutine = null;
+            }
+
             // Callback với level được chọn
             onBuyCallback?.Invoke(selectedLevel);
             Hide();
         }
-        
+
         /// <summary>
         /// On skip clicked
         /// </summary>
         private void OnSkipClicked()
         {
+            // ⭐ Stop timeout
+            if (timeoutCoroutine != null)
+            {
+                StopCoroutine(timeoutCoroutine);
+                timeoutCoroutine = null;
+            }
+
             onSkipCallback?.Invoke();
             Hide();
         }
-        
+
+        /// <summary>
+        /// Timeout coroutine - Auto skip after X seconds
+        /// </summary>
+        private System.Collections.IEnumerator TimeoutCoroutine()
+        {
+            float remainingTime = autoSkipTimeout;
+
+            while (remainingTime > 0)
+            {
+                // Update timer display (if exists)
+                if (textTimer != null)
+                {
+                    textTimer.text = $"Thời gian: {Mathf.CeilToInt(remainingTime)}s";
+                }
+
+                yield return new WaitForSeconds(1f);
+                remainingTime -= 1f;
+            }
+
+            // Timeout - Auto skip
+            Debug.Log("[PanelBuy] Timeout! Auto skipping...");
+
+            if (textTimer != null)
+            {
+                textTimer.text = "Hết giờ!";
+            }
+
+            yield return new WaitForSeconds(0.5f);
+
+            // Auto skip
+            onSkipCallback?.Invoke();
+            Hide();
+        }
+
         /// <summary>
         /// Hide panel
         /// </summary>
         public void Hide()
         {
+            // ⭐ Stop timeout when hiding
+            if (timeoutCoroutine != null)
+            {
+                StopCoroutine(timeoutCoroutine);
+                timeoutCoroutine = null;
+            }
+
+            // Clear timer display
+            if (textTimer != null)
+            {
+                textTimer.text = "";
+            }
+
             gameObject.SetActive(false);
         }
     }

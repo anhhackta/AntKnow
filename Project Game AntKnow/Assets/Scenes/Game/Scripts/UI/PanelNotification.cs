@@ -19,8 +19,9 @@ namespace AntKnow.Game
         
         private void Awake()
         {
-            // Initially hidden
-            gameObject.SetActive(false);
+            // ⭐ KHÔNG set inactive trong Awake()
+            // Để Unity Inspector quyết định initial state
+            // ShowNotification() sẽ tự activate khi cần
         }
         
         /// <summary>
@@ -28,19 +29,52 @@ namespace AntKnow.Game
         /// </summary>
         public void ShowNotification(string message)
         {
+            Debug.Log($"[PanelNotification] ShowNotification: {message}");
+
             if (textNotification != null)
             {
                 textNotification.text = message;
             }
-            
+
+            // ⭐ Check and activate ALL parents in hierarchy
+            Transform current = transform.parent;
+            while (current != null)
+            {
+                if (!current.gameObject.activeSelf)
+                {
+                    Debug.LogWarning($"[PanelNotification] Parent '{current.name}' is inactive! Activating...");
+                    current.gameObject.SetActive(true);
+                }
+                current = current.parent;
+            }
+
+            // ⭐ Activate this GameObject
+            Debug.Log($"[PanelNotification] Before SetActive: activeSelf={gameObject.activeSelf}");
             gameObject.SetActive(true);
-            
+            Debug.Log($"[PanelNotification] After SetActive: activeSelf={gameObject.activeSelf}");
+
+            Debug.Log($"[PanelNotification] Panel is now active: {gameObject.activeInHierarchy}");
+
+            // ⭐ If still not active, log error
+            if (!gameObject.activeInHierarchy)
+            {
+                Debug.LogError("[PanelNotification] Panel still not active! Cannot start coroutine!");
+                Debug.LogError("[PanelNotification] Checking hierarchy...");
+                Transform node = transform;
+                while (node != null)
+                {
+                    Debug.LogError($"  - {node.name}: activeSelf={node.gameObject.activeSelf}, activeInHierarchy={node.gameObject.activeInHierarchy}");
+                    node = node.parent;
+                }
+                return; // ⭐ Don't start coroutine if inactive
+            }
+
             // Stop previous coroutine if running
             if (notificationCoroutine != null)
             {
                 StopCoroutine(notificationCoroutine);
             }
-            
+
             // Start new notification coroutine
             notificationCoroutine = StartCoroutine(NotificationCoroutine());
         }
