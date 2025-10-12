@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Firebase.Firestore;
 using Firebase.Extensions;
 
@@ -76,58 +77,104 @@ namespace AntKnow.Game
         }
         
         /// <summary>
-        /// Load random question from Firebase
+        /// Load random question from Firebase using randomValue field
+        /// ✅ OPTIMIZED: Only loads 1 document instead of all
+        /// Logic: Random anchor → Query randomValue >= anchor → Fallback to min if not found
         /// </summary>
-        private void LoadRandomQuestion()
+        private async void LoadRandomQuestion()
         {
-            FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
-            
-            db.Collection("quizzes").GetSnapshotAsync().ContinueWithOnMainThread(task =>
+            try
             {
-                if (task.IsFaulted)
+                FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
+
+                // ✅ Random anchor point (0.0 - 1.0)
+                float anchor = Random.Range(0f, 1f);
+
+                Debug.Log($"[PanelQuiz] Querying quiz with randomValue >= {anchor:F3}");
+
+                // ✅ Query 1 quiz with randomValue >= anchor
+                Query query = db.Collection("quizzes")
+                    .OrderBy("randomValue")
+                    .StartAt(anchor)
+                    .Limit(1);
+
+                QuerySnapshot snapshot = await query.GetSnapshotAsync();
+
+                DocumentSnapshot doc = null;
+
+                // If no quiz found (anchor too high), fallback to smallest randomValue
+                if (snapshot.Count == 0)
                 {
-                    Debug.LogError($"[PanelQuiz] Error loading questions: {task.Exception}");
-                    LoadDemoQuestion();
-                    return;
+                    Debug.Log("[PanelQuiz] No quiz found with anchor, getting smallest randomValue");
+                    query = db.Collection("quizzes")
+                        .OrderBy("randomValue")
+                        .Limit(1);
+
+                    snapshot = await query.GetSnapshotAsync();
                 }
-                
-                if (task.IsCompleted)
+
+                if (snapshot.Count > 0)
                 {
-                    QuerySnapshot snapshot = task.Result;
-
-                    if (snapshot.Count == 0)
-                    {
-                        Debug.LogWarning("[PanelQuiz] No questions found in Firebase");
-                        LoadDemoQuestion();
-                        return;
-                    }
-
-                    // Convert to list to support indexing
-                    var documentsList = new List<DocumentSnapshot>(snapshot.Documents);
-
-                    // Get random question
-                    int randomIndex = Random.Range(0, documentsList.Count);
-                    DocumentSnapshot doc = documentsList[randomIndex];
+                    // ✅ FIX: Use First() instead of [0]
+                    doc = snapshot.Documents.First();
 
                     // Parse question data
                     Dictionary<string, object> data = doc.ToDictionary();
 
-                    string question = data.ContainsKey("question") ? data["question"].ToString() : "Question not found";
-                    string difficulty = data.ContainsKey("difficulty") ? data["difficulty"].ToString() : "Easy";
-                    
-                    // Parse options array
-                    var options = data.ContainsKey("options") ? data["options"] as object[] : new object[4];
-                    string answer1 = options.Length > 0 ? options[0].ToString() : "";
-                    string answer2 = options.Length > 1 ? options[1].ToString() : "";
-                    string answer3 = options.Length > 2 ? options[2].ToString() : "";
-                    string answer4 = options.Length > 3 ? options[3].ToString() : "";
-                    
-                    int correctIndex = data.ContainsKey("correctAnswer") ? System.Convert.ToInt32(data["correctAnswer"]) : 0;
+                    string question = data.ContainsKey("question") && data["question"] != null
+                        ? data["question"].ToString()
+                        : "Question not found";
+
+                    string difficulty = data.ContainsKey("difficulty") && data["difficulty"] != null
+                        ? data["difficulty"].ToString()
+                        : "Easy";
+
+                    // ✅ FIX: Parse options array safely
+                    string answer1 = "";
+                    string answer2 = "";
+                    string answer3 = "";
+                    string answer4 = "";
+
+                    if (data.ContainsKey("options") && data["options"] != null)
+                    {
+                        // Try as List<object> first (Firestore array)
+                        if (data["options"] is List<object> optionsList)
+                        {
+                            answer1 = optionsList.Count > 0 && optionsList[0] != null ? optionsList[0].ToString() : "";
+                            answer2 = optionsList.Count > 1 && optionsList[1] != null ? optionsList[1].ToString() : "";
+                            answer3 = optionsList.Count > 2 && optionsList[2] != null ? optionsList[2].ToString() : "";
+                            answer4 = optionsList.Count > 3 && optionsList[3] != null ? optionsList[3].ToString() : "";
+                        }
+                        // Fallback to object[]
+                        else if (data["options"] is object[] optionsArray)
+                        {
+                            answer1 = optionsArray.Length > 0 && optionsArray[0] != null ? optionsArray[0].ToString() : "";
+                            answer2 = optionsArray.Length > 1 && optionsArray[1] != null ? optionsArray[1].ToString() : "";
+                            answer3 = optionsArray.Length > 2 && optionsArray[2] != null ? optionsArray[2].ToString() : "";
+                            answer4 = optionsArray.Length > 3 && optionsArray[3] != null ? optionsArray[3].ToString() : "";
+                        }
+                    }
+
+                    int correctIndex = data.ContainsKey("correctAnswer") && data["correctAnswer"] != null
+                        ? System.Convert.ToInt32(data["correctAnswer"])
+                        : 0;
+
+                    Debug.Log($"[PanelQuiz] ✅ Loaded quiz: '{question}' (difficulty: {difficulty})");
 
                     // Set question
                     SetQuestion(question, difficulty, answer1, answer2, answer3, answer4, correctIndex);
                 }
-            });
+                else
+                {
+                    Debug.LogWarning("[PanelQuiz] No questions found in Firebase, using demo");
+                    LoadDemoQuestion();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"[PanelQuiz] Error loading question: {e.Message}\n{e.StackTrace}");
+                LoadDemoQuestion();
+            }
         }
         
         /// <summary>

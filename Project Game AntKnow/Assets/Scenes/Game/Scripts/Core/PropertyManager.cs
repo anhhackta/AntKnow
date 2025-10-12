@@ -169,28 +169,38 @@ namespace AntKnow.Game
         /// <summary>
         /// Pay rent
         /// </summary>
-        public void PayRent(int tileId, int basePrice, PlayerGameController tenant, PlayerGameController owner)
+        public void PayRent(int tileIndex, int basePrice, PlayerGameController tenant, PlayerGameController owner)
         {
-            int level = GetPropertyLevel(tileId);
-            
-            // Calculate base rent
-            int baseRent = CalculateRent(basePrice, level);
-            
+            int level = GetPropertyLevel(tileIndex);
+
+            // ✅ Get tile data directly from SimpleBoardConfig
+            SimpleTileData tileData = SimpleBoardConfig.GetTiles()[tileIndex];
+            if (tileData == null)
+            {
+                Debug.LogError($"[PropertyManager] Tile data not found for index {tileIndex}");
+                return;
+            }
+
+            // Calculate base rent from tile data
+            int baseRent = tileData.GetRent(level);
+
+            Debug.Log($"[PropertyManager] Rent calculation: Tile={tileData.name}, Level={level}, BaseRent={baseRent}");
+
             // Apply rent multiplier (Agility effect)
-            float multiplier = propertyRentMultipliers.ContainsKey(tileId) ? propertyRentMultipliers[tileId] : 1f;
+            float multiplier = propertyRentMultipliers.ContainsKey(tileIndex) ? propertyRentMultipliers[tileIndex] : 1f;
             int finalRent = StatsCalculator.CalculateFinalRent(baseRent, multiplier);
-            
+
             // Tenant pays with Resistance
             var (payToOwner, cashback, actualLoss) = StatsCalculator.CalculateRentWithResistance(finalRent, tenant.Resistance);
-            
+
             // Owner receives with Intelligence
             var (baseReceive, bonus, totalReceived) = StatsCalculator.CalculateRentWithIntelligence(payToOwner, owner.Intelligence);
-            
+
             // Execute transaction
             tenant.SubtractMoney(actualLoss);
             owner.AddMoney(totalReceived);
-            
-            Debug.Log($"[PropertyManager] Rent: {tenant.PlayerName} pays {actualLoss} (cashback: {cashback}), {owner.PlayerName} receives {totalReceived} (bonus: {bonus})");
+
+            Debug.Log($"[PropertyManager] Rent paid: {tenant.PlayerName} pays {actualLoss} (base: {finalRent}, cashback: {cashback}), {owner.PlayerName} receives {totalReceived} (base: {payToOwner}, bonus: {bonus})");
         }
         
         /// <summary>
