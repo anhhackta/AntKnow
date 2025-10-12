@@ -93,12 +93,14 @@ namespace AntKnow.Game
         [SerializeField] private TMPro.TextMeshProUGUI timeText;
 
         [Header("UI Panels")]
+        [SerializeField] private PanelGame panelGame; // ⭐ Panel chính quản lý PanelMe và PanelPlayer
         [SerializeField] private PanelBuy panelBuy;
         [SerializeField] private PanelQuiz panelQuiz;
         [SerializeField] private PanelEvent panelEvent;
         [SerializeField] private PanelHouseSell panelHouseSell;
         [SerializeField] private PanelResult panelResult;
         [SerializeField] private PanelCard panelCard;
+        [SerializeField] private PanelNotification panelNotification; // ⭐ Thông báo nhanh
 
         [Header("Game Settings")]
         [SerializeField] private int maxTurns = 25;
@@ -330,11 +332,18 @@ namespace AntKnow.Game
             {
                 player.Initialize(name, id, isMale, hp, agi, intel, lck, res);
                 players.Add(player);
-                
+
                 // ⭐ SET PLAYER INDEX cho màu sắc
                 player.SetPlayerIndex(players.Count - 1);
-                
+
                 Debug.Log($"[GameManager] Spawned {(isMale ? "male" : "female")} test player: {name} (Index: {players.Count - 1})");
+
+                // ⭐ INITIALIZE PANELGAME với local player (Demo Mode)
+                if (demoMode && panelGame != null)
+                {
+                    panelGame.Initialize(player);
+                    Debug.Log($"[GameManager] Initialized PanelGame for {name}");
+                }
             }
         }
 
@@ -434,6 +443,12 @@ namespace AntKnow.Game
             {
                 rollButton.interactable = true;
             }
+
+            // ⭐ Enable PanelRoll button (if exists)
+            if (panelRoll != null)
+            {
+                panelRoll.SetRollButtonEnabled(true);
+            }
         }
 
         /// <summary>
@@ -472,7 +487,13 @@ namespace AntKnow.Game
             {
                 rollButton.interactable = false;
             }
-            
+
+            // ⭐ Disable PanelRoll button (if exists)
+            if (panelRoll != null)
+            {
+                panelRoll.SetRollButtonEnabled(false);
+            }
+
             // Roll dice
             StartCoroutine(RollAndMove());
         }
@@ -483,10 +504,11 @@ namespace AntKnow.Game
         private IEnumerator RollAndMove()
         {
             PlayerGameController player = CurrentPlayer;
-            
-            if (!IsHost)
+
+            // ⭐ Demo Mode: Không cần check IsHost
+            if (!demoMode && !IsHost)
             {
-                yield break; // Only Host can roll dice
+                yield break; // Only Host can roll dice (multiplayer only)
             }
             
             // === LUCK-BASED DICE ROLL ===
@@ -522,10 +544,22 @@ namespace AntKnow.Game
                 
                 Debug.Log($"[Host] Player {player.PlayerName} rolled {die1} + {die2} = {diceResult}");
             }
-            
-            // Notify all clients of dice result
-            NotifyDiceRolledClientRpc(currentPlayerIndex, die1, die2, diceResult, isDouble, wasLuckyDouble);
-            
+
+            // Notify all clients of dice result (Multiplayer only)
+            if (!demoMode)
+            {
+                NotifyDiceRolledClientRpc(currentPlayerIndex, die1, die2, diceResult, isDouble, wasLuckyDouble);
+            }
+            else
+            {
+                // ⭐ Demo Mode: Show dice animation locally
+                Debug.Log($"[Demo] Dice result: {die1} + {die2} = {diceResult}");
+                if (panelRoll != null)
+                {
+                    StartCoroutine(panelRoll.RollDice(die1, die2, isDouble, wasLuckyDouble));
+                }
+            }
+
             // Wait for dice animation
             yield return new WaitForSeconds(1.5f);
             
@@ -580,7 +614,11 @@ namespace AntKnow.Game
             switch (tileType)
             {
                 case TileType.Start:
-                    // Already handled in MoveBySteps
+                    // Already handled in MoveBySteps (OnPassStart)
+                    if (panelNotification != null)
+                    {
+                        panelNotification.ShowNotification($"{player.PlayerName} đến Ô Bắt Đầu!");
+                    }
                     break;
 
                 case TileType.Property:
@@ -588,23 +626,60 @@ namespace AntKnow.Game
                     break;
 
                 case TileType.Event:
-                    // TODO: Draw event card
-                    Debug.Log($"[GameManager] Event tile - TODO: Draw event card");
+                    // ⭐ Show event panel
+                    Debug.Log($"[GameManager] Event tile - Showing event panel");
+                    if (panelEvent != null)
+                    {
+                        panelEvent.ShowRandomEvent(() => {
+                            Debug.Log($"[GameManager] Event panel closed");
+                        });
+                    }
+                    else
+                    {
+                        Debug.LogWarning("[GameManager] PanelEvent not assigned!");
+                    }
                     break;
 
                 case TileType.Quiz:
-                    // TODO: Show quiz panel
-                    Debug.Log($"[GameManager] Quiz tile - TODO: Show quiz");
+                    // ⭐ Show quiz panel
+                    Debug.Log($"[GameManager] Quiz tile - Showing quiz panel");
+                    if (panelQuiz != null)
+                    {
+                        panelQuiz.Show((isCorrect) => {
+                            if (isCorrect)
+                            {
+                                Debug.Log($"[GameManager] {player.PlayerName} answered correctly!");
+                                // Reward handled by PanelQuiz
+                            }
+                            else
+                            {
+                                Debug.Log($"[GameManager] {player.PlayerName} answered incorrectly!");
+                                // Penalty handled by PanelQuiz
+                            }
+                        });
+                    }
+                    else
+                    {
+                        Debug.LogWarning("[GameManager] PanelQuiz not assigned!");
+                    }
                     break;
 
                 case TileType.Jail:
                     player.SetJailCounter(2); // 2 turns in jail
                     Debug.Log($"[GameManager] Jail tile - {player.PlayerName} in jail for 2 turns");
+                    if (panelNotification != null)
+                    {
+                        panelNotification.ShowNotification($"{player.PlayerName} bị giam 2 lượt!");
+                    }
                     break;
 
                 case TileType.Travel:
                     player.SubtractMoney(100);
                     Debug.Log($"[GameManager] Travel tile - {player.PlayerName} pays 100");
+                    if (panelNotification != null)
+                    {
+                        panelNotification.ShowNotification($"{player.PlayerName} đi du lịch! -100");
+                    }
                     break;
             }
         }
@@ -645,9 +720,22 @@ namespace AntKnow.Game
                 {
                     // Thuê nhà người khác
                     PlayerGameController owner = players[ownerIndex];
+
                     Debug.Log($"[GameManager] {player.PlayerName} must pay rent to {owner.PlayerName}");
 
+                    // Get money before paying rent
+                    int moneyBefore = player.Money;
+
                     propertyManager.PayRent(tileIndex, basePrice, player, owner);
+
+                    // Calculate actual rent paid (money lost)
+                    int rentPaid = moneyBefore - player.Money;
+
+                    // ⭐ Show notification
+                    if (panelNotification != null)
+                    {
+                        panelNotification.ShowNotification($"{player.PlayerName} trả {rentPaid} cho {owner.PlayerName}");
+                    }
 
                     // Check bankruptcy
                     if (player.IsBankrupt())
@@ -668,13 +756,33 @@ namespace AntKnow.Game
 
             if (panelBuy == null)
             {
+                Debug.LogWarning("[GameManager] PanelBuy not assigned! Auto-buying property...");
+
                 // Auto buy for demo
                 if (player.Money >= basePrice)
                 {
                     propertyManager.BuyProperty(tileIndex, playerIdx, basePrice, player);
+
+                    // ⭐ Show notification
+                    if (panelNotification != null)
+                    {
+                        panelNotification.ShowNotification($"{player.PlayerName} mua {tileName} ({basePrice})");
+                    }
+                }
+                else
+                {
+                    Debug.Log($"[GameManager] {player.PlayerName} không đủ tiền mua {tileName}");
+
+                    // ⭐ Show notification
+                    if (panelNotification != null)
+                    {
+                        panelNotification.ShowNotification($"{player.PlayerName} không đủ tiền!");
+                    }
                 }
                 return;
             }
+
+            Debug.Log($"[GameManager] Showing PanelBuy for {tileName}");
 
             panelBuy.ShowBuy(tileName, basePrice, player.Money, (selectedLevel) =>
             {

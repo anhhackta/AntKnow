@@ -75,11 +75,26 @@ namespace AntKnow.Game
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-            
+
+            // Setup components (Multiplayer)
+            SetupComponents();
+
+            Debug.Log($"[PlayerGameController] Spawned: {playerName} (IsOwner: {IsOwner}, IsMale: {isMale})");
+        }
+
+        /// <summary>
+        /// Setup components - Called by OnNetworkSpawn (Multiplayer) or Initialize (Demo Mode)
+        /// </summary>
+        private void SetupComponents()
+        {
             // Setup local components
             if (boardManager == null)
             {
                 boardManager = FindObjectOfType<BoardManager>();
+                if (boardManager == null)
+                {
+                    Debug.LogError("[PlayerGameController] BoardManager not found in scene!");
+                }
             }
 
             // Auto-find animator if not assigned
@@ -89,8 +104,6 @@ namespace AntKnow.Game
             }
 
             // Setup turn indicator
-            // NOTE: Turn Indicator CHỈ HIỆN CHO NGƯỜI CHƠI ĐIỀU KHIỂN (IsOwner)
-            // Người chơi khác KHÔNG THẤY turn indicator của mình
             if (turnIndicator == null)
             {
                 turnIndicator = GetComponentInChildren<TurnIndicator>();
@@ -119,7 +132,7 @@ namespace AntKnow.Game
                 }
             }
 
-            Debug.Log($"[PlayerGameController] Spawned: {playerName} (IsOwner: {IsOwner}, IsMale: {isMale})");
+            Debug.Log($"[PlayerGameController] Components setup complete (BoardManager: {boardManager != null}, Animator: {animator != null}, TurnIndicator: {turnIndicator != null})");
         }
         
         /// <summary>
@@ -149,6 +162,9 @@ namespace AntKnow.Game
             currentTile = 0;    // ⭐ Start at tile 0 (Ô Bắt Đầu)
             jailCounter = 0;
             skipNextTurn = false;
+
+            // ⭐ DEMO MODE: Setup components (OnNetworkSpawn không được gọi)
+            SetupComponents();
 
             Debug.Log($"[PlayerGameController] Initialized {name} (Male: {male})");
             Debug.Log($"[PlayerGameController] Stats - HP:{hp} AGI:{agi} INT:{intel} LUCK:{lck} RES:{res}");
@@ -424,13 +440,18 @@ namespace AntKnow.Game
 
         /// <summary>
         /// Show turn indicator
-        /// NOTE: CHỈ HIỆN CHO NGƯỜI CHƠI ĐIỀU KHIỂN (IsOwner)
-        /// Người chơi khác KHÔNG THẤY turn indicator của mình
+        /// NOTE:
+        /// - Multiplayer: CHỈ HIỆN CHO NGƯỜI CHƠI ĐIỀU KHIỂN (IsOwner)
+        /// - Demo Mode: Luôn hiện (không có network)
         /// </summary>
         public void ShowTurnIndicator()
         {
-            // ⭐ CHỈ HIỆN CHO NGƯỜI CHƠI ĐIỀU KHIỂN
-            if (!IsOwner)
+            // ⭐ Check NetworkObject - nếu không có (Demo Mode) → luôn hiện
+            var networkObject = GetComponent<NetworkObject>();
+            bool isDemoMode = (networkObject == null || !networkObject.IsSpawned);
+
+            // Multiplayer: Chỉ hiện cho owner
+            if (!isDemoMode && !IsOwner)
             {
                 Debug.Log($"[PlayerGameController] Turn indicator NOT shown for {playerName} (not owner)");
                 return;
@@ -439,7 +460,7 @@ namespace AntKnow.Game
             if (turnIndicator != null)
             {
                 turnIndicator.Show();
-                Debug.Log($"[PlayerGameController] Turn indicator shown for {playerName} (owner)");
+                Debug.Log($"[PlayerGameController] Turn indicator shown for {playerName} (Demo: {isDemoMode}, Owner: {IsOwner})");
             }
         }
 
