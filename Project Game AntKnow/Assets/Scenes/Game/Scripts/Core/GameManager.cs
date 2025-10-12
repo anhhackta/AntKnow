@@ -71,7 +71,9 @@ namespace AntKnow.Game
     /// <summary>
     /// Main game controller
     /// Tích hợp với lobby system và multiplayer
+    /// REQUIREMENT: GameObject phải có NetworkObject component!
     /// </summary>
+    [RequireComponent(typeof(NetworkObject))]
     public class GameManager : NetworkBehaviour
     {
         [Header("Managers")]
@@ -130,6 +132,13 @@ namespace AntKnow.Game
                 firebaseAuthService = FindObjectOfType<FirebaseAuthService>();
             }
 
+            // Validate prefab assignments
+            if (playerPrefabMale == null || playerPrefabFemale == null)
+            {
+                Debug.LogError("[GameManager] Player prefabs not assigned! Please assign both playerPrefabMale and playerPrefabFemale in Inspector.");
+                return;
+            }
+
             // Wait for network ready
             if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
             {
@@ -138,6 +147,7 @@ namespace AntKnow.Game
             else if (demoMode)
             {
                 // Demo mode: Start immediately without network
+                Debug.Log("[GameManager] Demo Mode: Starting game without network...");
                 StartGame();
             }
             else
@@ -303,7 +313,16 @@ namespace AntKnow.Game
             }
 
             // Spawn at tile 0
-            Vector3 spawnPos = boardManager.GetWaypointPosition(0);
+            Vector3 spawnPos = Vector3.zero;
+            if (boardManager != null)
+            {
+                spawnPos = boardManager.GetWaypointPosition(0);
+            }
+            else
+            {
+                Debug.LogWarning("[GameManager] BoardManager not assigned! Spawning at origin.");
+            }
+            
             GameObject playerObj = Instantiate(prefabToUse, spawnPos, Quaternion.identity);
 
             PlayerGameController player = playerObj.GetComponent<PlayerGameController>();
@@ -311,7 +330,11 @@ namespace AntKnow.Game
             {
                 player.Initialize(name, id, isMale, hp, agi, intel, lck, res);
                 players.Add(player);
-                Debug.Log($"[GameManager] Spawned {(isMale ? "male" : "female")} test player: {name}");
+                
+                // ⭐ SET PLAYER INDEX cho màu sắc
+                player.SetPlayerIndex(players.Count - 1);
+                
+                Debug.Log($"[GameManager] Spawned {(isMale ? "male" : "female")} test player: {name} (Index: {players.Count - 1})");
             }
         }
 
@@ -329,7 +352,16 @@ namespace AntKnow.Game
             }
 
             // Spawn at tile 0
-            Vector3 spawnPos = boardManager.GetWaypointPosition(0);
+            Vector3 spawnPos = Vector3.zero;
+            if (boardManager != null)
+            {
+                spawnPos = boardManager.GetWaypointPosition(0);
+            }
+            else
+            {
+                Debug.LogWarning("[GameManager] BoardManager not assigned! Spawning at origin.");
+            }
+            
             GameObject playerObj = Instantiate(prefabToUse, spawnPos, Quaternion.identity);
 
             // Spawn as network object
@@ -337,6 +369,11 @@ namespace AntKnow.Game
             if (netObj != null)
             {
                 netObj.SpawnAsPlayerObject(clientId);
+                Debug.Log($"[GameManager] NetworkObject spawned for client {clientId}");
+            }
+            else
+            {
+                Debug.LogError($"[GameManager] NetworkObject component not found on player prefab!");
             }
 
             PlayerGameController player = playerObj.GetComponent<PlayerGameController>();
@@ -345,8 +382,11 @@ namespace AntKnow.Game
                 player.Initialize(name, id, isMale, hp, agi, intel, lck, res);
                 player.SetSkillCards(skillCardIds); // SET SKILL CARDS!
                 players.Add(player);
+                
+                // ⭐ SET PLAYER INDEX cho màu sắc (0 = Red, 1 = Blue, 2 = Green, 3 = Yellow)
+                player.SetPlayerIndex(players.Count - 1);
 
-                Debug.Log($"[GameManager] Spawned network player: {name} (ClientId: {clientId}) with {skillCardIds.Count} skill cards");
+                Debug.Log($"[GameManager] Spawned network player: {name} (ClientId: {clientId}, Index: {players.Count - 1}) with {skillCardIds.Count} skill cards");
             }
         }
         

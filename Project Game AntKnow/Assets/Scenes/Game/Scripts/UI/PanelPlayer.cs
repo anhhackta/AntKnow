@@ -10,14 +10,17 @@ namespace AntKnow.Game
     public class PanelPlayer : BasePlayerPanel
     {
         [Header("UI Components")]
+        [SerializeField] private Image imageBackground; // Background màu player
         [SerializeField] private TextMeshProUGUI textPlayerName;
         [SerializeField] private TextMeshProUGUI textMoney;
         [SerializeField] private Image imageAvatar;
-        [SerializeField] private Image imageTurnIndicator;
         
-        [Header("Avatar Colors")]
-        [SerializeField] private Color maleColor = Color.blue;
-        [SerializeField] private Color femaleColor = Color.magenta;
+        [Header("Avatar Sprites")]
+        [SerializeField] private Sprite spriteMale;
+        [SerializeField] private Sprite spriteFemale;
+        
+        [Header("Background Settings")]
+        [SerializeField] private float backgroundAlpha = 0.3f; // Độ trong suốt nền
         
         /// <summary>
         /// Setup UI components
@@ -58,24 +61,28 @@ namespace AntKnow.Game
             // Update money
             if (textMoney != null)
             {
-                textMoney.text = $"{player.Money}";
+                textMoney.text = $"${player.Money}";
             }
             
-            // Update avatar color
+            // Update avatar sprite (nam/nữ)
             if (imageAvatar != null)
             {
-                imageAvatar.color = player.IsMale ? maleColor : femaleColor;
+                if (player.IsMale)
+                {
+                    imageAvatar.sprite = spriteMale;
+                }
+                else
+                {
+                    imageAvatar.sprite = spriteFemale;
+                }
             }
-        }
-        
-        /// <summary>
-        /// Set turn indicator
-        /// </summary>
-        public void SetTurnActive(bool active)
-        {
-            if (imageTurnIndicator != null)
+            
+            // ⭐ UPDATE BACKGROUND COLOR dựa trên player index
+            if (imageBackground != null)
             {
-                imageTurnIndicator.enabled = active;
+                Color bgColor = player.GetPlayerColor();
+                bgColor.a = backgroundAlpha; // Set alpha (transparency)
+                imageBackground.color = bgColor;
             }
         }
         
@@ -86,7 +93,7 @@ namespace AntKnow.Game
         {
             if (textMoney != null)
             {
-                textMoney.text = $"{money}";
+                textMoney.text = $"${money}";
             }
         }
     }

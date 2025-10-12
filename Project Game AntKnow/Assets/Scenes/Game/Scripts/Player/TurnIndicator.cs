@@ -5,7 +5,9 @@ namespace AntKnow.Game
 {
     /// <summary>
     /// Network-aware ping indicator trên đầu player khi đến lượt
+    /// REQUIREMENT: GameObject phải có NetworkObject component!
     /// </summary>
+    [RequireComponent(typeof(NetworkObject))]
     public class TurnIndicator : NetworkBehaviour
     {
         [Header("Network Settings")]

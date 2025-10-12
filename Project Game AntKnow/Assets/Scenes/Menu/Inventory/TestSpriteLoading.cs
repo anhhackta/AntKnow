@@ -23,7 +23,36 @@ namespace AntKnow.Inventory
         [ContextMenu("Test All Sprites")]
         public void TestAllSprites()
         {
-            Debug.Log("=== Testing Sprite Loading ===");
+            Debug.Log("=== Testing Sprite Loading with SpriteLoader ===");
+            
+            // Test với tên file đơn giản (như trong Resources root)
+            Debug.Log("--- Testing simple file names ---");
+            TestSpriteWithLoader("skill.bao-ke");
+            TestSpriteWithLoader("skill.cham-chi");
+            TestSpriteWithLoader("skill.lan-tron");
+            TestSpriteWithLoader("skill.sieu-sale");
+            TestSpriteWithLoader("equip.hat.basic");
+            TestSpriteWithLoader("equip.mask.basic");
+            TestSpriteWithLoader("equip.shirt.basic");
+            TestSpriteWithLoader("equip.shoes.basic");
+            TestSpriteWithLoader("equip.wings.basic");
+            TestSpriteWithLoader("exp.small");
+            
+            // Test với path có folder (như trong Firebase)
+            Debug.Log("--- Testing paths with folders ---");
+            TestSpriteWithLoader("Cards/skill.bao-ke");
+            TestSpriteWithLoader("Cards/skill.cham-chi");
+            TestSpriteWithLoader("Equipment/equip.hat.basic");
+            TestSpriteWithLoader("Equipment/equip.mask.basic");
+            TestSpriteWithLoader("Items/exp.small");
+            
+            Debug.Log("=== Test Complete ===");
+        }
+
+        [ContextMenu("Test Old Method")]
+        public void TestOldMethod()
+        {
+            Debug.Log("=== Testing Old Resources.Load Method ===");
             
             // Test equipment sprites
             TestSprite("Equipment/equip.hat.basic");
@@ -41,7 +70,12 @@ namespace AntKnow.Inventory
             // Test item sprites
             TestSprite("Items/exp.small");
             
-            Debug.Log("=== Test Complete ===");
+            Debug.Log("=== Old Method Test Complete ===");
+        }
+
+        private void TestSpriteWithLoader(string iconPath)
+        {
+            SpriteLoader.TestSprite(iconPath);
         }
         
         private void TestSprite(string iconPath)

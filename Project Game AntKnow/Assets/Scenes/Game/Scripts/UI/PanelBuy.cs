@@ -27,9 +27,10 @@ namespace AntKnow.Game
         [Header("Colors")]
         [SerializeField] private Color normalColor = Color.white;
         [SerializeField] private Color selectedColor = Color.green;
+        [SerializeField] private Color disabledColor = new Color(0.5f, 0.5f, 0.5f, 1f);
         [SerializeField] private Color cannotAffordColor = Color.red;
         
-        private int selectedLevel = 0; // 0 = chưa chọn, 1-4 = house, 5 = hotel
+        private int selectedLevel = 0; // 0 = không mua, 1-4 = house level, 5 = hotel
         private int currentMoney = 0;
         private int basePrice = 0;
         private int currentLevel = 0;
@@ -50,6 +51,9 @@ namespace AntKnow.Game
             
             if (btnBuy != null) btnBuy.onClick.AddListener(OnBuyClicked);
             if (btnSkip != null) btnSkip.onClick.AddListener(OnSkipClicked);
+            
+            // Initially hidden
+            gameObject.SetActive(false);
         }
         
         /// <summary>
@@ -126,12 +130,17 @@ namespace AntKnow.Game
         /// </summary>
         private void UpdateHouseButtons()
         {
-            // Disable buttons dưới current level
+            // Nếu là ô trống (currentLevel = 0): Tất cả button house sáng, hotel mờ (chưa có house 4)
+            // Nếu là ô của mình: Button đã mua thì mờ đi, chỉ mua thêm được
+            // Hotel chỉ mua được khi đã có House 4 (currentLevel = 4)
+            
             SetButtonState(btnHouse1, currentLevel < 1, selectedLevel == 1);
             SetButtonState(btnHouse2, currentLevel < 2, selectedLevel == 2);
             SetButtonState(btnHouse3, currentLevel < 3, selectedLevel == 3);
             SetButtonState(btnHouse4, currentLevel < 4, selectedLevel == 4);
-            SetButtonState(btnHotel, currentLevel < 5, selectedLevel == 5);
+            
+            // Hotel chỉ enable khi currentLevel = 4 (đã có 4 houses)
+            SetButtonState(btnHotel, currentLevel >= 4, selectedLevel == 5);
         }
         
         /// <summary>
@@ -144,13 +153,23 @@ namespace AntKnow.Game
             btn.interactable = interactable;
             
             var colors = btn.colors;
-            if (selected)
+            if (!interactable)
             {
+                // Đã mua rồi hoặc chưa đủ điều kiện - mờ đi
+                colors.normalColor = disabledColor;
+                colors.highlightedColor = disabledColor;
+            }
+            else if (selected)
+            {
+                // Đang chọn - sáng xanh
                 colors.normalColor = selectedColor;
+                colors.highlightedColor = selectedColor;
             }
             else
             {
+                // Chưa chọn - màu bình thường
                 colors.normalColor = normalColor;
+                colors.highlightedColor = new Color(0.9f, 0.9f, 0.9f, 1f);
             }
             btn.colors = colors;
         }
@@ -183,8 +202,18 @@ namespace AntKnow.Game
             
             if (selectedLevel == 0)
             {
-                textPrice.text = "Chọn level để xem giá";
-                textPrice.color = normalColor;
+                // Nếu là ô trống: Hiển thị giá đất
+                if (currentLevel == 0)
+                {
+                    textPrice.text = $"Giá đất: {basePrice}";
+                    textPrice.color = normalColor;
+                }
+                else
+                {
+                    // Nếu là ô của mình nhưng chưa chọn nâng cấp
+                    textPrice.text = "Chọn nhà để nâng cấp";
+                    textPrice.color = normalColor;
+                }
                 btnBuy.interactable = false;
                 return;
             }
@@ -196,7 +225,15 @@ namespace AntKnow.Game
             bool canAfford = currentMoney >= totalPrice;
             
             // Update text
-            textPrice.text = $"Giá: {totalPrice}";
+            if (currentLevel == 0)
+            {
+                textPrice.text = $"Tổng: {totalPrice} (Đất + Nhà {selectedLevel})";
+            }
+            else
+            {
+                textPrice.text = $"Nâng cấp: +{totalPrice}";
+            }
+            
             textPrice.color = canAfford ? normalColor : cannotAffordColor;
             
             // Update buy button
@@ -216,13 +253,13 @@ namespace AntKnow.Game
                 total += basePrice;
             }
             
-            // Giá houses
+            // Giá houses (chỉ tính những nhà chưa mua)
             for (int i = currentLevel + 1; i <= selectedLevel && i <= 4; i++)
             {
                 total += GetHousePrice(i);
             }
             
-            // Giá hotel
+            // Giá hotel (nếu chọn hotel)
             if (selectedLevel == 5)
             {
                 total += GetHotelPrice();
@@ -236,14 +273,8 @@ namespace AntKnow.Game
         /// </summary>
         private int GetHousePrice(int level)
         {
-            switch (level)
-            {
-                case 1: return basePrice * 100 / 100; // 100%
-                case 2: return basePrice * 150 / 100; // 150%
-                case 3: return basePrice * 200 / 100; // 200%
-                case 4: return basePrice * 250 / 100; // 250%
-                default: return 0;
-            }
+            // Mỗi nhà giá = basePrice
+            return basePrice;
         }
         
         /// <summary>
@@ -251,7 +282,8 @@ namespace AntKnow.Game
         /// </summary>
         private int GetHotelPrice()
         {
-            return basePrice * 400 / 100; // 400%
+            // Hotel = basePrice * 4 (hoặc theo công thức khác)
+            return basePrice * 4;
         }
         
         /// <summary>
@@ -261,6 +293,7 @@ namespace AntKnow.Game
         {
             if (selectedLevel == 0) return;
             
+            // Callback với level được chọn
             onBuyCallback?.Invoke(selectedLevel);
             Hide();
         }

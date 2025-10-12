@@ -143,53 +143,6 @@ namespace AntKnow.Game
         }
         
         /// <summary>
-        /// Set turn indicators
-        /// </summary>
-        public void SetTurnIndicators(int currentPlayerIndex, List<PlayerGameController> allPlayers)
-        {
-            // Reset all indicators
-            if (panelMe != null)
-            {
-                panelMe.SetTurnActive(false);
-            }
-            
-            foreach (var panel in panelPlayers)
-            {
-                if (panel != null)
-                {
-                    panel.SetTurnActive(false);
-                }
-            }
-            
-            // Set active indicator
-            if (currentPlayerIndex >= 0 && currentPlayerIndex < allPlayers.Count)
-            {
-                var currentPlayer = allPlayers[currentPlayerIndex];
-                
-                // Check if it's local player
-                if (currentPlayer == localPlayer)
-                {
-                    if (panelMe != null)
-                    {
-                        panelMe.SetTurnActive(true);
-                    }
-                }
-                else
-                {
-                    // Find corresponding panel
-                    foreach (var panel in panelPlayers)
-                    {
-                        if (panel != null && panel.GetPlayer() == currentPlayer)
-                        {
-                            panel.SetTurnActive(true);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        
-        /// <summary>
         /// PanelMe clicked - show PanelInfo
         /// </summary>
         private void OnPanelMeClicked()

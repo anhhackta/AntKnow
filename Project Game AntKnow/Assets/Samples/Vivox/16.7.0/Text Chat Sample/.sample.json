@@ -1,0 +1,5 @@
+{
+	"displayName": "Text Chat Sample", 
+	"description": "This text-focused sample showcases a robust chat experience that demonstrates sending, editing, and deleting DM or channel messages and retrieving past conversations and their message history.",
+	"createSeparatePackage": false
+}

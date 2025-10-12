@@ -106,20 +106,8 @@ namespace AntKnow.Inventory
             if (targetImage == null || string.IsNullOrEmpty(iconPath))
                 return;
 
-            // iconPath từ Firestore: "Equipment/equip.hat.basic"
-            // Resources.Load sẽ tự động tìm file: Assets/Resources/Equipment/equip.hat.basic.png
-            Sprite sprite = Resources.Load<Sprite>(iconPath);
-
-            if (sprite != null)
-            {
-                targetImage.sprite = sprite;
-                Debug.Log($"[ItemSlot] ✅ Loaded sprite: {iconPath}");
-            }
-            else
-            {
-                Debug.LogWarning($"[ItemSlot] ❌ Sprite not found: {iconPath}\nCheck file: Assets/Resources/{iconPath}.png");
-                targetImage.sprite = null;
-            }
+            // Sử dụng SpriteLoader để load sprite một cách linh hoạt
+            SpriteLoader.LoadSpriteToImage(targetImage, iconPath);
         }
         
         /// <summary>

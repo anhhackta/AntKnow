@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using AntKnow.Auth;
+using AntKnow.Chat;
 using TMPro;
 
 namespace AntKnow.Auth
@@ -36,6 +37,9 @@ namespace AntKnow.Auth
 
         [Header("Services")]
         [SerializeField] private FirebaseAuthService firebaseAuthService;
+        
+        [Header("Simple Chat")]
+        [SerializeField] private SimpleChatManager simpleChatManager;
 
         private GameDataManager gameDataManager;
 
@@ -79,6 +83,9 @@ namespace AntKnow.Auth
 
             // Load user data and inventory
             await LoadUserDataAndInventory();
+            
+            // Initialize chat system
+            await InitializeChatSystem();
 
             // Update character display after data is loaded
             if (panelHome != null)
@@ -225,11 +232,67 @@ namespace AntKnow.Auth
             }
         }
 
+        /// <summary>
+        /// Initialize simple chat system after user data is loaded
+        /// </summary>
+        private async Task InitializeChatSystem()
+        {
+            try
+            {
+                Debug.Log("MenuScene: Initializing simple chat system...");
+                
+                // Find simple chat manager if not assigned
+                if (simpleChatManager == null)
+                {
+                    simpleChatManager = FindObjectOfType<SimpleChatManager>();
+                }
+                
+                // Simple chat will auto-connect when it starts
+                if (simpleChatManager != null)
+                {
+                    Debug.Log("MenuScene: Simple chat manager found, auto-connect enabled");
+                }
+                else
+                {
+                    Debug.LogWarning("MenuScene: SimpleChatManager not found");
+                }
+                
+                // Small delay to ensure user data is ready
+                await Task.Delay(1000);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"MenuScene: Error initializing simple chat system: {e.Message}");
+            }
+        }
+        
+        /// <summary>
+        /// Disconnect from chat when leaving menu
+        /// </summary>
+        private async void DisconnectFromChat()
+        {
+            try
+            {
+                if (simpleChatManager != null)
+                {
+                    Debug.Log("MenuScene: Disconnecting from simple chat...");
+                    simpleChatManager.DisconnectFromChat();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"MenuScene: Error disconnecting from chat: {e.Message}");
+            }
+        }
+
         private void OnDestroy()
         {
             // Clean up event listeners
             if (buttonSetting != null)
                 buttonSetting.onClick.RemoveAllListeners();
+            
+            // Disconnect from chat
+            DisconnectFromChat();
         }
     }
 }

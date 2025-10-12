@@ -77,7 +77,7 @@ namespace AntKnow.Game
             {
                 // Level 0 = empty land, no houses, but platform has color
                 tile.SetPlatformColor(playerColor);
-                tile.UpdatePrice(rentPrice); // Show rent price
+                tile.UpdatePrice(rentPrice, true); // Show rent price, isProperty = true
                 return;
             }
 
@@ -85,7 +85,7 @@ namespace AntKnow.Game
             tile.SetPlatformColor(playerColor);
 
             // Update price to rent
-            tile.UpdatePrice(rentPrice);
+            tile.UpdatePrice(rentPrice, true); // isProperty = true
 
             if (level >= 1 && level <= 4)
             {
@@ -116,8 +116,8 @@ namespace AntKnow.Game
             // Reset platform color
             tile.ResetPlatformColor();
 
-            // Reset price to buy price
-            tile.UpdatePrice(buyPrice);
+            // Reset price to buy price (isProperty = true)
+            tile.UpdatePrice(buyPrice, true);
         }
         
         /// <summary>

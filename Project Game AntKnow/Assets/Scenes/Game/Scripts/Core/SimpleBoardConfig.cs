@@ -17,7 +17,7 @@ namespace AntKnow.Game
                 // Index, Name, Type, BuyPrice, H1, H2, H3, H4, Hotel, R0, R1, R2, R3, R4, RHotel
 
                 // Tile 1: Start (Ô góc)
-                new SimpleTileData(1, "Ô Bắt Đầu", TileType.Start, 0, 0,0,0,0,0, 0,0,0,0,0,0),
+                new SimpleTileData(1, "Start", TileType.Start, 0, 0,0,0,0,0, 0,0,0,0,0,0),
 
                 // Zone 1: Asia (2-6, 8-9, 11-15)
                 new SimpleTileData(2, "Tokyo", TileType.Property, 800, 400,500,600,700,1200, 80,200,400,600,800,2000),
@@ -27,13 +27,13 @@ namespace AntKnow.Game
                 new SimpleTileData(6, "Manila", TileType.Property, 550, 275,375,475,575,950, 55,138,275,413,550,1375),
 
                 // Tile 7: Event
-                new SimpleTileData(7, "Ô Event", TileType.Event, 0, 0,0,0,0,0, 0,0,0,0,0,0),
+                new SimpleTileData(7, "Event", TileType.Event, 0, 0,0,0,0,0, 0,0,0,0,0,0),
 
                 new SimpleTileData(8, "Jakarta", TileType.Property, 600, 300,400,500,600,1000, 60,150,300,450,600,1500),
                 new SimpleTileData(9, "Beijing", TileType.Property, 700, 350,450,550,650,1100, 70,175,350,525,700,1750),
 
                 // Tile 10: Ô góc (Tai Nạn)
-                new SimpleTileData(10, "Ô Tai Nạn", TileType.Jail, 0, 0,0,0,0,0, 0,0,0,0,0,0),
+                new SimpleTileData(10, "Accident", TileType.Jail, 0, 0,0,0,0,0, 0,0,0,0,0,0),
 
                 new SimpleTileData(11, "Shanghai", TileType.Property, 750, 375,475,575,675,1150, 75,188,375,563,750,1875),
                 new SimpleTileData(12, "Hong Kong", TileType.Property, 800, 400,500,600,700,1200, 80,200,400,600,800,2000),
@@ -42,14 +42,14 @@ namespace AntKnow.Game
                 new SimpleTileData(15, "Hanoi", TileType.Property, 550, 275,375,475,575,950, 55,138,275,413,550,1375),
 
                 // Tile 16: Event
-                new SimpleTileData(16, "Ô Event", TileType.Event, 0, 0,0,0,0,0, 0,0,0,0,0,0),
+                new SimpleTileData(16, "Event", TileType.Event, 0, 0,0,0,0,0, 0,0,0,0,0,0),
 
                 // Zone 2: Europe (17-18, 20-24)
                 new SimpleTileData(17, "Ho Chi Minh", TileType.Property, 600, 300,400,500,600,1000, 60,150,300,450,600,1500),
                 new SimpleTileData(18, "London", TileType.Property, 1000, 500,600,700,800,1400, 100,250,500,750,1000,2500),
 
                 // Tile 19: Ô góc (Tra Khảo)
-                new SimpleTileData(19, "Ô Tra Khảo", TileType.Quiz, 0, 0,0,0,0,0, 0,0,0,0,0,0),
+                new SimpleTileData(19, "Quiz", TileType.Quiz, 0, 0,0,0,0,0, 0,0,0,0,0,0),
 
                 new SimpleTileData(20, "Paris", TileType.Property, 950, 475,575,675,775,1350, 95,238,475,713,950,2375),
                 new SimpleTileData(21, "Berlin", TileType.Property, 850, 425,525,625,725,1250, 85,213,425,638,850,2125),
@@ -58,14 +58,14 @@ namespace AntKnow.Game
                 new SimpleTileData(24, "Amsterdam", TileType.Property, 850, 425,525,625,725,1250, 85,213,425,638,850,2125),
 
                 // Tile 25: Event
-                new SimpleTileData(25, "Ô Event", TileType.Event, 0, 0,0,0,0,0, 0,0,0,0,0,0),
+                new SimpleTileData(25, "Event", TileType.Event, 0, 0,0,0,0,0, 0,0,0,0,0,0),
 
                 // Zone 3: Americas (26-27, 29-32)
                 new SimpleTileData(26, "Vienna", TileType.Property, 800, 400,500,600,700,1200, 80,200,400,600,800,2000),
                 new SimpleTileData(27, "New York", TileType.Property, 950, 475,575,675,775,1350, 95,238,475,713,950,2375),
 
                 // Tile 28: Ô góc (Du Lịch)
-                new SimpleTileData(28, "Ô Du Lịch", TileType.Travel, 0, 0,0,0,0,0, 0,0,0,0,0,0),
+                new SimpleTileData(28, "Travel", TileType.Travel, 0, 0,0,0,0,0, 0,0,0,0,0,0),
 
                 new SimpleTileData(29, "Los Angeles", TileType.Property, 900, 450,550,650,750,1300, 90,225,450,675,900,2250),
                 new SimpleTileData(30, "Chicago", TileType.Property, 800, 400,500,600,700,1200, 80,200,400,600,800,2000),
@@ -73,7 +73,7 @@ namespace AntKnow.Game
                 new SimpleTileData(32, "Mexico City", TileType.Property, 700, 350,450,550,650,1100, 70,175,350,525,700,1750),
 
                 // Tile 33: Event
-                new SimpleTileData(33, "Ô Event", TileType.Event, 0, 0,0,0,0,0, 0,0,0,0,0,0),
+                new SimpleTileData(33, "Event", TileType.Event, 0, 0,0,0,0,0, 0,0,0,0,0,0),
 
                 // Zone 4: Oceania (34-36)
                 new SimpleTileData(34, "São Paulo", TileType.Property, 750, 375,475,575,675,1150, 75,188,375,563,750,1875),

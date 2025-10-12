@@ -328,8 +328,6 @@ namespace AntKnow.Inventory
         
         private ItemData ParseItemData(DocumentSnapshot doc)
         {
-            // TODO: Implement full parsing
-            // For now, return basic data
             var data = doc.ToDictionary();
             var itemData = new ItemData
             {
@@ -341,7 +339,44 @@ namespace AntKnow.Inventory
                 icon = data.ContainsKey("icon") ? data["icon"].ToString() : ""
             };
             
-            // TODO: Parse attributes, skill, equipment, exp, upgrade, lang
+            // Parse attributes
+            if (data.ContainsKey("attributes") && data["attributes"] is Dictionary<string, object> attrDict)
+            {
+                itemData.attributes = new ItemAttributes();
+                if (attrDict.ContainsKey("health")) itemData.attributes.health = Convert.ToInt32(attrDict["health"]);
+                if (attrDict.ContainsKey("agility")) itemData.attributes.agility = Convert.ToInt32(attrDict["agility"]);
+                if (attrDict.ContainsKey("intelligence")) itemData.attributes.intelligence = Convert.ToInt32(attrDict["intelligence"]);
+                if (attrDict.ContainsKey("luck")) itemData.attributes.luck = Convert.ToInt32(attrDict["luck"]);
+                if (attrDict.ContainsKey("resistance")) itemData.attributes.resistance = Convert.ToInt32(attrDict["resistance"]);
+                if (attrDict.ContainsKey("primaryStat")) itemData.attributes.primaryStat = attrDict["primaryStat"].ToString();
+                if (attrDict.ContainsKey("attributePerLevel")) itemData.attributes.attributePerLevel = Convert.ToInt32(attrDict["attributePerLevel"]);
+            }
+            
+            // Parse skill data
+            if (data.ContainsKey("skill") && data["skill"] is Dictionary<string, object> skillDict)
+            {
+                itemData.skill = new SkillData();
+                if (skillDict.ContainsKey("mode")) itemData.skill.mode = skillDict["mode"].ToString();
+                if (skillDict.ContainsKey("effect")) itemData.skill.effect = skillDict["effect"].ToString();
+                if (skillDict.ContainsKey("cooldownBaseTurns")) itemData.skill.cooldownBaseTurns = Convert.ToInt32(skillDict["cooldownBaseTurns"]);
+            }
+            
+            // Parse equipment data
+            if (data.ContainsKey("equipment") && data["equipment"] is Dictionary<string, object> equipDict)
+            {
+                itemData.equipment = new EquipmentData();
+                if (equipDict.ContainsKey("slot")) itemData.equipment.slot = equipDict["slot"].ToString();
+                if (equipDict.ContainsKey("durabilityMax")) itemData.equipment.durabilityMax = Convert.ToInt32(equipDict["durabilityMax"]);
+            }
+            
+            // Parse exp data
+            if (data.ContainsKey("exp") && data["exp"] is Dictionary<string, object> expDict)
+            {
+                itemData.exp = new ExpData();
+                if (expDict.ContainsKey("xpValue")) itemData.exp.xpValue = Convert.ToInt32(expDict["xpValue"]);
+            }
+            
+            DebugLog($"Parsed item data: {itemData.itemId}, icon: {itemData.icon}");
             
             return itemData;
         }

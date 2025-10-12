@@ -7,81 +7,68 @@ using System.Collections.Generic;
 namespace AntKnow.Game
 {
     /// <summary>
-    /// Network-aware controller cho player trong multiplayer game
-    /// Quản lý movement, stats, animation với NetworkObject sync
+    /// Controller cho player trong game
+    /// NOTE: Mỗi prefab (Male/Female) đã có model riêng, không cần toggle
+    /// REQUIREMENT: GameObject phải có NetworkObject component cho multiplayer!
     /// </summary>
+    [RequireComponent(typeof(NetworkObject))]
     public class PlayerGameController : NetworkBehaviour
     {
-        [Header("Network Player Info")]
-        public NetworkVariable<FixedString64Bytes> networkPlayerName = new NetworkVariable<FixedString64Bytes>("Player");
-        public NetworkVariable<FixedString64Bytes> networkPlayerId = new NetworkVariable<FixedString64Bytes>("");
-        public NetworkVariable<bool> networkIsMale = new NetworkVariable<bool>(true);
+        [Header("Player Info")]
+        [SerializeField] private string playerName = "Player";
+        [SerializeField] private string playerId = "";
+        [SerializeField] private bool isMale = true; // Set theo prefab (Male=true, Female=false)
+        [SerializeField] private int playerIndex = 0; // 0-3 for colors (Red, Blue, Green, Yellow)
         
-        [Header("Network Game State")]
-        public NetworkVariable<int> networkCurrentTile = new NetworkVariable<int>(0);
-        public NetworkVariable<int> networkMoney = new NetworkVariable<int>(1000);
-        public NetworkVariable<int> networkJailCounter = new NetworkVariable<int>(0);
-        public NetworkVariable<bool> networkSkipNextTurn = new NetworkVariable<bool>(false);
+        [Header("Game State")]
+        [SerializeField] private int currentTile = 0;
+        [SerializeField] private int money = 10000; // Starting money
+        [SerializeField] private int jailCounter = 0;
+        [SerializeField] private bool skipNextTurn = false;
         
-        [Header("Network Stats from Loadout")]
-        public NetworkVariable<int> networkHealth = new NetworkVariable<int>(0);
-        public NetworkVariable<int> networkAgility = new NetworkVariable<int>(0);
-        public NetworkVariable<int> networkIntelligence = new NetworkVariable<int>(0);
-        public NetworkVariable<int> networkLuck = new NetworkVariable<int>(0);
-        public NetworkVariable<int> networkResistance = new NetworkVariable<int>(0);
+        [Header("Stats from Loadout")]
+        [SerializeField] private int health = 0;
+        [SerializeField] private int agility = 0;
+        [SerializeField] private int intelligence = 0;
+        [SerializeField] private int luck = 0;
+        [SerializeField] private int resistance = 0;
         
-        [Header("Skill Cards from Loadout")]
-        public NetworkVariable<FixedString512Bytes> networkSkillCardIds = new NetworkVariable<FixedString512Bytes>(""); // Comma-separated effectIds
-        private Dictionary<string, int> skillCooldowns = new Dictionary<string, int>(); // effectId -> remaining cooldown (local only)
+        [Header("Skill Cards")]
+        private List<string> skillCardIds = new List<string>(); // effectId list
+        private Dictionary<string, int> skillCooldowns = new Dictionary<string, int>(); // effectId -> cooldown turns
         
         [Header("Movement")]
         [SerializeField] private float moveSpeed = 5f;
-        [SerializeField] private float bounceHeight = 0.5f; // Độ cao nhảy lên
-        [SerializeField] private float bounceDuration = 0.3f; // Thời gian nhảy
+        [SerializeField] private float bounceHeight = 0.5f;
+        [SerializeField] private float bounceDuration = 0.3f;
         [SerializeField] private BoardManager boardManager;
-        [SerializeField] private Vector3 boardCenter = Vector3.zero; // Tâm bàn cờ
+        [SerializeField] private Vector3 boardCenter = Vector3.zero;
 
-        [Header("Player Models")]
-        [SerializeField] private GameObject maleModel; // Main character model
-        [SerializeField] private GameObject femaleModel; // Girl character model
-        
         [Header("Animation")]
-        [SerializeField] private Animator maleAnimator;
-        [SerializeField] private Animator femaleAnimator;
+        [SerializeField] private Animator animator; // Single animator (model đã có sẵn trong prefab)
         
         [Header("Turn Indicator")]
         [SerializeField] private TurnIndicator turnIndicator;
 
-        // Properties (Network-aware)
-        public string PlayerName => networkPlayerName.Value.ToString();
-        public string PlayerId => networkPlayerId.Value.ToString();
-        public bool IsMale => networkIsMale.Value;
-        public int CurrentTile => networkCurrentTile.Value;
-        public int Money => networkMoney.Value;
-        public int JailCounter => networkJailCounter.Value;
-        public bool SkipNextTurn => networkSkipNextTurn.Value;
+        // Public Properties (Simplified - no NetworkVariable overhead)
+        public string PlayerName => playerName;
+        public string PlayerId => playerId;
+        public bool IsMale => isMale;
+        public int PlayerIndex => playerIndex;
+        public int CurrentTile => currentTile;
+        public int Money => money;
+        public int JailCounter => jailCounter;
+        public bool SkipNextTurn => skipNextTurn;
         
-        // Stats (Network-aware)
-        public int Health => networkHealth.Value;
-        public int Agility => networkAgility.Value;
-        public int Intelligence => networkIntelligence.Value;
-        public int Luck => networkLuck.Value;
-        public int Resistance => networkResistance.Value;
+        // Stats
+        public int Health => health;
+        public int Agility => agility;
+        public int Intelligence => intelligence;
+        public int Luck => luck;
+        public int Resistance => resistance;
         
-        // Skill Cards (Network-aware)
-        public List<string> SkillCardIds 
-        { 
-            get 
-            { 
-                var ids = new List<string>();
-                if (!string.IsNullOrEmpty(networkSkillCardIds.Value.ToString()))
-                {
-                    var cardIdsStr = networkSkillCardIds.Value.ToString();
-                    ids.AddRange(cardIdsStr.Split(','));
-                }
-                return ids;
-            } 
-        }
+        // Skill Cards
+        public List<string> SkillCardIds => skillCardIds;
         
         private bool isMoving = false;
         
@@ -95,17 +82,15 @@ namespace AntKnow.Game
                 boardManager = FindObjectOfType<BoardManager>();
             }
 
-            // Auto-assign animators if not set
-            if (maleAnimator == null && maleModel != null)
+            // Auto-find animator if not assigned
+            if (animator == null)
             {
-                maleAnimator = maleModel.GetComponent<Animator>();
-            }
-            
-            if (femaleAnimator == null && femaleModel != null)
-            {
-                femaleAnimator = femaleModel.GetComponent<Animator>();
+                animator = GetComponentInChildren<Animator>();
             }
 
+            // Setup turn indicator
+            // NOTE: Turn Indicator CHỈ HIỆN CHO NGƯỜI CHƠI ĐIỀU KHIỂN (IsOwner)
+            // Người chơi khác KHÔNG THẤY turn indicator của mình
             if (turnIndicator == null)
             {
                 turnIndicator = GetComponentInChildren<TurnIndicator>();
@@ -114,197 +99,116 @@ namespace AntKnow.Game
                     // Create turn indicator if not exists
                     GameObject indicatorObj = new GameObject("TurnIndicator");
                     indicatorObj.transform.SetParent(transform);
-                    indicatorObj.transform.localPosition = new Vector3(0, 2.5f, 0); // Above player head
-                    
-                    // Add sphere mesh
+                    indicatorObj.transform.localPosition = new Vector3(0, 2.5f, 0);
+
                     var meshFilter = indicatorObj.AddComponent<MeshFilter>();
                     var meshRenderer = indicatorObj.AddComponent<MeshRenderer>();
                     meshFilter.mesh = Resources.GetBuiltinResource<Mesh>("Sphere.fbx");
-                    
-                    // Add bright material
+
                     var material = new Material(Shader.Find("Standard"));
                     material.color = Color.yellow;
+                    material.SetFloat("_Metallic", 0.5f);
+                    material.EnableKeyword("_EMISSION");
+                    material.SetColor("_EmissionColor", Color.yellow * 2f);
                     meshRenderer.material = material;
-                    
-                    // Scale down
+
                     indicatorObj.transform.localScale = Vector3.one * 0.3f;
-                    
+
                     turnIndicator = indicatorObj.AddComponent<TurnIndicator>();
-                    indicatorObj.SetActive(false); // Hidden by default
+                    indicatorObj.SetActive(false);
                 }
             }
 
-            // Subscribe to network variable changes
-            networkPlayerName.OnValueChanged += OnPlayerNameChanged;
-            networkIsMale.OnValueChanged += OnIsMaleChanged;
-            
-            Debug.Log($"[PlayerGameController] Network spawned: {PlayerName} (IsOwner: {IsOwner})");
-        }
-
-        public override void OnNetworkDespawn()
-        {
-            // Unsubscribe from network variable changes
-            networkPlayerName.OnValueChanged -= OnPlayerNameChanged;
-            networkIsMale.OnValueChanged -= OnIsMaleChanged;
-            
-            base.OnNetworkDespawn();
-        }
-
-        private void OnPlayerNameChanged(FixedString64Bytes oldValue, FixedString64Bytes newValue)
-        {
-            Debug.Log($"[PlayerGameController] Player name changed: {oldValue} -> {newValue}");
-        }
-
-        private void OnIsMaleChanged(bool oldValue, bool newValue)
-        {
-            Debug.Log($"[PlayerGameController] Player gender changed: {oldValue} -> {newValue}");
-            SetupPlayerModel();
+            Debug.Log($"[PlayerGameController] Spawned: {playerName} (IsOwner: {IsOwner}, IsMale: {isMale})");
         }
         
         /// <summary>
-        /// Initialize player data (Server-side)
-        /// </summary>
-        [ServerRpc(RequireOwnership = false)]
-        public void InitializePlayerServerRpc(string name, string id, bool male, int hp, int agi, int intel, int lck, int res)
-        {
-            networkPlayerName.Value = name;
-            networkPlayerId.Value = id;
-            networkIsMale.Value = male;
-            
-            networkHealth.Value = hp;
-            networkAgility.Value = agi;
-            networkIntelligence.Value = intel;
-            networkLuck.Value = lck;
-            networkResistance.Value = res;
-            
-            networkMoney.Value = 1000;
-            networkCurrentTile.Value = 0;
-            
-            Debug.Log($"[PlayerGameController] Server initialized {name} at tile {networkCurrentTile.Value} with {networkMoney.Value} money");
-        }
-
-        /// <summary>
-        /// Initialize player data (Local method for compatibility)
+        /// Initialize player data - Called by GameManager when spawning
+        /// NOTE:
+        /// - playerName: Lấy từ Firebase (GameDataManager.currentIngameName)
+        /// - money: LUÔN BẮT ĐẦU = 10000 (game cung cấp, không lấy từ Firebase)
+        /// - currentTile: LUÔN BẮT ĐẦU = 0 (Start tile)
+        /// - stats (hp, agi, intel, lck, res): Lấy từ loadout (equipment + skill cards)
         /// </summary>
         public void Initialize(string name, string id, bool male, int hp, int agi, int intel, int lck, int res)
         {
-            if (IsServer)
-            {
-                // Server can directly set values
-                networkPlayerName.Value = name;
-                networkPlayerId.Value = id;
-                networkIsMale.Value = male;
-                
-                networkHealth.Value = hp;
-                networkAgility.Value = agi;
-                networkIntelligence.Value = intel;
-                networkLuck.Value = lck;
-                networkResistance.Value = res;
-                
-                networkMoney.Value = 1000;
-                networkCurrentTile.Value = 0;
-                
-                Debug.Log($"[PlayerGameController] Server initialized {name} at tile {networkCurrentTile.Value} with {networkMoney.Value} money");
-            }
-            else
-            {
-                // Client calls ServerRpc
-                InitializePlayerServerRpc(name, id, male, hp, agi, intel, lck, res);
-            }
-        }
-    
-        /// <summary>
-        /// Setup player model based on gender (Network-aware)
-        /// With separate prefabs, this is much simpler
-        /// </summary>
-        private void SetupPlayerModel()
-        {
-            // With separate prefabs, the correct model is already active
-            // Just validate that the prefab matches the gender
-            if (IsMale)
-            {
-                if (maleModel != null && maleModel.activeInHierarchy)
-                {
-                    Debug.Log($"[PlayerGameController] Male prefab active for {PlayerName}");
-                }
-                else
-                {
-                    Debug.LogWarning($"[PlayerGameController] Male prefab issue for {PlayerName}!");
-                }
-            }
-            else
-            {
-                if (femaleModel != null && femaleModel.activeInHierarchy)
-                {
-                    Debug.Log($"[PlayerGameController] Female prefab active for {PlayerName}");
-                }
-                else
-                {
-                    Debug.LogWarning($"[PlayerGameController] Female prefab issue for {PlayerName}!");
-                }
-            }
-        }
-    
-        /// <summary>
-        /// Set skill cards from loadout (Server-side)
-        /// </summary>
-        [ServerRpc(RequireOwnership = false)]
-        public void SetSkillCardsServerRpc(string cardIdsStr)
-        {
-            networkSkillCardIds.Value = cardIdsStr;
-            
-            // Initialize cooldowns on server
-            skillCooldowns.Clear();
-            if (!string.IsNullOrEmpty(cardIdsStr))
-            {
-                var cardIds = cardIdsStr.Split(',');
-                foreach (var effectId in cardIds)
-                {
-                    if (!string.IsNullOrEmpty(effectId))
-                    {
-                        skillCooldowns[effectId] = 0; // Start with 0 cooldown
-                    }
-                }
-            }
-            
-            Debug.Log($"[PlayerGameController] Server set skill cards for {PlayerName}: {cardIdsStr}");
-        }
+            // Player info từ Firebase
+            playerName = name;
+            playerId = id;
+            isMale = male;
 
+            // Stats từ loadout (equipment + skill cards)
+            health = hp;
+            agility = agi;
+            intelligence = intel;
+            luck = lck;
+            resistance = res;
+
+            // Game state - LUÔN BẮT ĐẦU TỪ ĐÂY
+            money = 10000;      // ⭐ Starting money - game cung cấp
+            currentTile = 0;    // ⭐ Start at tile 0 (Ô Bắt Đầu)
+            jailCounter = 0;
+            skipNextTurn = false;
+
+            Debug.Log($"[PlayerGameController] Initialized {name} (Male: {male})");
+            Debug.Log($"[PlayerGameController] Stats - HP:{hp} AGI:{agi} INT:{intel} LUCK:{lck} RES:{res}");
+            Debug.Log($"[PlayerGameController] Starting - Money:{money} Tile:{currentTile}");
+        }
+        
         /// <summary>
-        /// Set skill cards from loadout (Local method for compatibility)
+        /// Set player index (0-3) for color system
+        /// </summary>
+        public void SetPlayerIndex(int index)
+        {
+            playerIndex = index;
+            Debug.Log($"[PlayerGameController] Set player index: {index} for {playerName}");
+        }
+        
+        /// <summary>
+        /// Get player color based on index (Red, Blue, Green, Yellow)
+        /// </summary>
+        public Color GetPlayerColor()
+        {
+            Color[] playerColors = new Color[]
+            {
+                new Color(1f, 0.2f, 0.2f, 1f),    // Player 0: Red
+                new Color(0.2f, 0.5f, 1f, 1f),    // Player 1: Blue
+                new Color(0.2f, 1f, 0.2f, 1f),    // Player 2: Green
+                new Color(1f, 1f, 0.2f, 1f)       // Player 3: Yellow
+            };
+            
+            int index = Mathf.Clamp(playerIndex, 0, 3);
+            return playerColors[index];
+        }
+    
+        /// <summary>
+        /// Set skill cards from loadout
         /// </summary>
         public void SetSkillCards(List<string> cardIds)
         {
-            var cardIdsStr = string.Join(",", cardIds);
+            skillCardIds = new List<string>(cardIds);
             
-            if (IsServer)
+            // Initialize cooldowns
+            skillCooldowns.Clear();
+            foreach (var effectId in cardIds)
             {
-                // Server can directly set values
-                networkSkillCardIds.Value = cardIdsStr;
-                
-                // Initialize cooldowns
-                skillCooldowns.Clear();
-                foreach (var effectId in cardIds)
+                if (!string.IsNullOrEmpty(effectId))
                 {
                     skillCooldowns[effectId] = 0; // Start with 0 cooldown
                 }
-                
-                Debug.Log($"[PlayerGameController] Server set skill cards for {PlayerName}: {cardIdsStr}");
             }
-            else
-            {
-                // Client calls ServerRpc
-                SetSkillCardsServerRpc(cardIdsStr);
-            }
+            
+            Debug.Log($"[PlayerGameController] Set {cardIds.Count} skill cards for {playerName}");
         }
     
-        /// <summary>
-        /// Check if player has a skill card with specific effectId
-        /// </summary>
-        public bool HasSkillCard(string effectId)
-        {
-            return SkillCardIds.Contains(effectId);
-        }
+    
+    /// <summary>
+    /// Check if player has a skill card with specific effectId
+    /// </summary>
+    public bool HasSkillCard(string effectId)
+    {
+        return skillCardIds.Contains(effectId);
+    }
     
     /// <summary>
     /// Check if skill card is available (not on cooldown)
@@ -329,7 +233,7 @@ namespace AntKnow.Game
         if (HasSkillCard(effectId))
         {
             skillCooldowns[effectId] = cooldownTurns;
-            Debug.Log($"[PlayerGameController] {PlayerName} used skill {effectId}, cooldown: {cooldownTurns} turns");
+            Debug.Log($"[PlayerGameController] {playerName} used skill {effectId}, cooldown: {cooldownTurns} turns");
         }
     }
     
@@ -344,92 +248,55 @@ namespace AntKnow.Game
             if (skillCooldowns[key] > 0)
             {
                 skillCooldowns[key]--;
-                Debug.Log($"[PlayerGameController] {PlayerName} skill {key} cooldown: {skillCooldowns[key]}");
+                Debug.Log($"[PlayerGameController] {playerName} skill {key} cooldown: {skillCooldowns[key]}");
             }
         }
     }
         
         /// <summary>
-        /// Move player by steps (Server-side)
+        /// Move player by steps
         /// </summary>
-        [ServerRpc(RequireOwnership = false)]
-        public void MoveByStepsServerRpc(int steps)
+        public IEnumerator MoveBySteps(int steps)
         {
             if (isMoving)
             {
-                Debug.LogWarning($"[PlayerGameController] {PlayerName} is already moving!");
-                return;
-            }
-
-            StartCoroutine(MoveByStepsCoroutine(steps));
-        }
-
-        /// <summary>
-        /// Move player by steps với bounce effect và look at center (Server Coroutine)
-        /// </summary>
-        private IEnumerator MoveByStepsCoroutine(int steps)
-        {
-            if (isMoving)
-            {
-                Debug.LogWarning($"[PlayerGameController] {PlayerName} is already moving!");
+                Debug.LogWarning($"[PlayerGameController] {playerName} is already moving!");
                 yield break;
             }
 
             isMoving = true;
-            SetAnimationClientRpc(true);
+            SetAnimation(true);
 
-            int startTile = CurrentTile;
-            int targetTile = (CurrentTile + steps) % boardManager.TotalTiles;
+            int startTile = currentTile;
+            int targetTile = (currentTile + steps) % boardManager.TotalTiles;
 
-            Debug.Log($"[PlayerGameController] {PlayerName} moving from tile {startTile} to {targetTile} ({steps} steps)");
+            Debug.Log($"[PlayerGameController] {playerName} moving from tile {startTile} to {targetTile} ({steps} steps)");
 
             // Move step by step
             for (int i = 0; i < steps; i++)
             {
-                networkCurrentTile.Value = (networkCurrentTile.Value + 1) % boardManager.TotalTiles;
-                Vector3 targetPos = boardManager.GetWaypointPosition(networkCurrentTile.Value);
+                currentTile = (currentTile + 1) % boardManager.TotalTiles;
+                Vector3 targetPos = boardManager.GetWaypointPosition(currentTile);
 
-                // Notify all clients about position update
-                UpdatePositionClientRpc(targetPos, networkCurrentTile.Value);
+                // Look at center before moving
+                LookAtCenter(targetPos);
 
-                // Look at center trước khi di chuyển
-                LookAtCenterClientRpc(targetPos);
-
-                // Move to waypoint với bounce effect
+                // Move to waypoint with bounce effect
                 yield return StartCoroutine(MoveToWaypointWithBounce(targetPos));
 
                 // Check if passed Start (tile 0)
-                if (networkCurrentTile.Value == 0 && i > 0)
+                if (currentTile == 0 && i > 0)
                 {
                     OnPassStart();
                 }
             }
 
-            SetAnimationClientRpc(false);
+            SetAnimation(false);
             isMoving = false;
 
-            Debug.Log($"[PlayerGameController] {PlayerName} reached tile {networkCurrentTile.Value}");
-        }
-
-        /// <summary>
-        /// Move player by steps (Local method for compatibility)
-        /// </summary>
-        public IEnumerator MoveBySteps(int steps)
-        {
-            if (IsServer)
-            {
-                yield return StartCoroutine(MoveByStepsCoroutine(steps));
-            }
-            else
-            {
-                // Client calls ServerRpc
-                MoveByStepsServerRpc(steps);
-                yield break; // Client doesn't wait for server coroutine
-            }
-        }
-
-        /// <summary>
-        /// Move to waypoint với bounce effect
+            Debug.Log($"[PlayerGameController] {playerName} reached tile {currentTile}");
+        }        /// <summary>
+        /// Move to waypoint with bounce effect
         /// </summary>
         private IEnumerator MoveToWaypointWithBounce(Vector3 targetPos)
         {
@@ -447,8 +314,6 @@ namespace AntKnow.Game
                 Vector3 currentPos = Vector3.Lerp(startPos, targetPos, t);
 
                 // Add bounce (parabola)
-                // y = -4h * (t - 0.5)^2 + h
-                // Đỉnh ở giữa (t = 0.5), độ cao = bounceHeight
                 float bounceOffset = -4f * bounceHeight * Mathf.Pow(t - 0.5f, 2f) + bounceHeight;
                 currentPos.y += bounceOffset;
 
@@ -462,43 +327,12 @@ namespace AntKnow.Game
         }
 
         /// <summary>
-        /// Update position on all clients
-        /// </summary>
-        [ClientRpc]
-        private void UpdatePositionClientRpc(Vector3 position, int tileIndex)
-        {
-            if (!IsOwner) // Only update non-owner clients
-            {
-                transform.position = position;
-            }
-        }
-
-        /// <summary>
-        /// Look at center on all clients
-        /// </summary>
-        [ClientRpc]
-        private void LookAtCenterClientRpc(Vector3 currentWaypointPos)
-        {
-            LookAtCenter(currentWaypointPos);
-        }
-
-        /// <summary>
-        /// Set animation on all clients
-        /// </summary>
-        [ClientRpc]
-        private void SetAnimationClientRpc(bool isRunning)
-        {
-            SetAnimation(isRunning);
-        }
-
-        /// <summary>
-        /// Quay mặt về phía tâm bàn cờ
+        /// Look at center of board
         /// </summary>
         private void LookAtCenter(Vector3 currentWaypointPos)
         {
-            // Calculate direction từ waypoint về center
             Vector3 directionToCenter = boardCenter - currentWaypointPos;
-            directionToCenter.y = 0; // Chỉ xoay theo trục Y
+            directionToCenter.y = 0;
 
             if (directionToCenter.sqrMagnitude > 0.001f)
             {
@@ -508,184 +342,76 @@ namespace AntKnow.Game
         }
         
         /// <summary>
-        /// Set animation state on the active model
+        /// Set animation state
         /// </summary>
         private void SetAnimation(bool isRunning)
         {
-            Animator activeAnimator = GetActiveAnimator();
-            if (activeAnimator != null)
+            if (animator != null)
             {
-                activeAnimator.SetBool("isRunning", isRunning);
+                animator.SetBool("isRunning", isRunning);
             }
         }
         
         /// <summary>
-        /// Get the currently active animator (male or female)
-        /// </summary>
-        private Animator GetActiveAnimator()
-        {
-            if (IsMale && maleAnimator != null)
-            {
-                return maleAnimator;
-            }
-            else if (!IsMale && femaleAnimator != null)
-            {
-                return femaleAnimator;
-            }
-            
-            return null;
-        }
-        
-        /// <summary>
-        /// Called when player passes Start tile (Server-side)
+        /// Called when player passes Start tile
         /// </summary>
         private void OnPassStart()
         {
-            if (!IsServer) return; // Only server handles game logic
-            
             int baseMoney = 150;
-            int healthBonus = Mathf.RoundToInt(baseMoney * Health / 100f);
+            int healthBonus = Mathf.RoundToInt(baseMoney * health / 100f);
             int totalMoney = baseMoney + healthBonus;
             
-            AddMoneyServerRpc(totalMoney);
+            AddMoney(totalMoney);
             
-            Debug.Log($"[PlayerGameController] {PlayerName} passed Start! +{totalMoney} money (base: {baseMoney}, health bonus: {healthBonus})");
+            Debug.Log($"[PlayerGameController] {playerName} passed Start! +{totalMoney} money (base: {baseMoney}, health bonus: {healthBonus})");
         }
         
         /// <summary>
-        /// Add money (Server-side)
-        /// </summary>
-        [ServerRpc(RequireOwnership = false)]
-        public void AddMoneyServerRpc(int amount)
-        {
-            networkMoney.Value += amount;
-            Debug.Log($"[PlayerGameController] {PlayerName} money: {networkMoney.Value} (+{amount})");
-        }
-        
-        /// <summary>
-        /// Add money (Local method for compatibility)
+        /// Add money
         /// </summary>
         public void AddMoney(int amount)
         {
-            if (IsServer)
-            {
-                networkMoney.Value += amount;
-                Debug.Log($"[PlayerGameController] {PlayerName} money: {networkMoney.Value} (+{amount})");
-            }
-            else
-            {
-                AddMoneyServerRpc(amount);
-            }
+            money += amount;
+            Debug.Log($"[PlayerGameController] {playerName} money: {money} (+{amount})");
         }
         
         /// <summary>
-        /// Subtract money (Server-side)
-        /// </summary>
-        [ServerRpc(RequireOwnership = false)]
-        public void SubtractMoneyServerRpc(int amount)
-        {
-            networkMoney.Value -= amount;
-            Debug.Log($"[PlayerGameController] {PlayerName} money: {networkMoney.Value} (-{amount})");
-        }
-        
-        /// <summary>
-        /// Subtract money (Local method for compatibility)
+        /// Subtract money
         /// </summary>
         public void SubtractMoney(int amount)
         {
-            if (IsServer)
-            {
-                networkMoney.Value -= amount;
-                Debug.Log($"[PlayerGameController] {PlayerName} money: {networkMoney.Value} (-{amount})");
-            }
-            else
-            {
-                SubtractMoneyServerRpc(amount);
-            }
+            money -= amount;
+            Debug.Log($"[PlayerGameController] {playerName} money: {money} (-{amount})");
         }
         
         /// <summary>
-        /// Set jail counter (Server-side)
-        /// </summary>
-        [ServerRpc(RequireOwnership = false)]
-        public void SetJailCounterServerRpc(int turns)
-        {
-            networkJailCounter.Value = turns;
-            Debug.Log($"[PlayerGameController] {PlayerName} in jail for {networkJailCounter.Value} turns");
-        }
-        
-        /// <summary>
-        /// Set jail counter (Local method for compatibility)
+        /// Set jail counter
         /// </summary>
         public void SetJailCounter(int turns)
         {
-            if (IsServer)
-            {
-                networkJailCounter.Value = turns;
-                Debug.Log($"[PlayerGameController] {PlayerName} in jail for {networkJailCounter.Value} turns");
-            }
-            else
-            {
-                SetJailCounterServerRpc(turns);
-            }
+            jailCounter = turns;
+            Debug.Log($"[PlayerGameController] {playerName} in jail for {jailCounter} turns");
         }
         
         /// <summary>
-        /// Decrease jail counter (Server-side)
-        /// </summary>
-        [ServerRpc(RequireOwnership = false)]
-        public void DecreaseJailCounterServerRpc()
-        {
-            if (networkJailCounter.Value > 0)
-            {
-                networkJailCounter.Value--;
-                Debug.Log($"[PlayerGameController] {PlayerName} jail counter: {networkJailCounter.Value}");
-            }
-        }
-        
-        /// <summary>
-        /// Decrease jail counter (Local method for compatibility)
+        /// Decrease jail counter
         /// </summary>
         public void DecreaseJailCounter()
         {
-            if (IsServer)
+            if (jailCounter > 0)
             {
-                if (networkJailCounter.Value > 0)
-                {
-                    networkJailCounter.Value--;
-                    Debug.Log($"[PlayerGameController] {PlayerName} jail counter: {networkJailCounter.Value}");
-                }
-            }
-            else
-            {
-                DecreaseJailCounterServerRpc();
+                jailCounter--;
+                Debug.Log($"[PlayerGameController] {playerName} jail counter: {jailCounter}");
             }
         }
         
         /// <summary>
-        /// Set skip next turn (Server-side)
-        /// </summary>
-        [ServerRpc(RequireOwnership = false)]
-        public void SetSkipNextTurnServerRpc(bool skip)
-        {
-            networkSkipNextTurn.Value = skip;
-            Debug.Log($"[PlayerGameController] {PlayerName} skip next turn: {networkSkipNextTurn.Value}");
-        }
-        
-        /// <summary>
-        /// Set skip next turn (Local method for compatibility)
+        /// Set skip next turn
         /// </summary>
         public void SetSkipNextTurn(bool skip)
         {
-            if (IsServer)
-            {
-                networkSkipNextTurn.Value = skip;
-                Debug.Log($"[PlayerGameController] {PlayerName} skip next turn: {networkSkipNextTurn.Value}");
-            }
-            else
-            {
-                SetSkipNextTurnServerRpc(skip);
-            }
+            skipNextTurn = skip;
+            Debug.Log($"[PlayerGameController] {playerName} skip next turn: {skipNextTurn}");
         }
         
         /// <summary>
@@ -693,17 +419,27 @@ namespace AntKnow.Game
         /// </summary>
         public bool IsBankrupt()
         {
-            return networkMoney.Value < 0;
+            return money < 0;
         }
 
         /// <summary>
         /// Show turn indicator
+        /// NOTE: CHỈ HIỆN CHO NGƯỜI CHƠI ĐIỀU KHIỂN (IsOwner)
+        /// Người chơi khác KHÔNG THẤY turn indicator của mình
         /// </summary>
         public void ShowTurnIndicator()
         {
+            // ⭐ CHỈ HIỆN CHO NGƯỜI CHƠI ĐIỀU KHIỂN
+            if (!IsOwner)
+            {
+                Debug.Log($"[PlayerGameController] Turn indicator NOT shown for {playerName} (not owner)");
+                return;
+            }
+
             if (turnIndicator != null)
             {
                 turnIndicator.Show();
+                Debug.Log($"[PlayerGameController] Turn indicator shown for {playerName} (owner)");
             }
         }
 

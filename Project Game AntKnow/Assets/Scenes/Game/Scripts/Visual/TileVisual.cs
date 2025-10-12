@@ -1,5 +1,4 @@
 using UnityEngine;
-using TMPro;
 
 namespace AntKnow.Game
 {
@@ -11,8 +10,8 @@ namespace AntKnow.Game
     {
         [Header("Tile Structure")]
         [SerializeField] private Transform platform; // Platform con để spawn house lên
-        [SerializeField] private TextMeshPro textName; // Text hiển thị tên ô đất
-        [SerializeField] private TextMeshPro textPrice; // Text hiển thị giá
+        [SerializeField] private TextMesh textName; // Text hiển thị tên ô đất (TextMesh, not TextMeshPro)
+        [SerializeField] private TextMesh textPrice; // Text hiển thị giá (TextMesh, optional cho Property tiles)
         
         [Header("Auto Find")]
         [SerializeField] private bool autoFindChildren = true;
@@ -87,10 +86,10 @@ namespace AntKnow.Game
                 }
             }
             
-            // Tìm text name
+            // Tìm text name (TextMesh)
             if (textName == null)
             {
-                TextMeshPro[] texts = GetComponentsInChildren<TextMeshPro>();
+                TextMesh[] texts = GetComponentsInChildren<TextMesh>();
                 foreach (var text in texts)
                 {
                     if (text.name.ToLower().Contains("name"))
@@ -101,13 +100,13 @@ namespace AntKnow.Game
                 }
             }
             
-            // Tìm text price
+            // Tìm text price (TextMesh, optional)
             if (textPrice == null)
             {
-                TextMeshPro[] texts = GetComponentsInChildren<TextMeshPro>();
+                TextMesh[] texts = GetComponentsInChildren<TextMesh>();
                 foreach (var text in texts)
                 {
-                    if (text.name.ToLower().Contains("price"))
+                    if (text.name.ToLower().Contains("price") || text.name.ToLower().Contains("gia"))
                     {
                         textPrice = text;
                         break;
@@ -119,7 +118,7 @@ namespace AntKnow.Game
         /// <summary>
         /// Set tile info
         /// </summary>
-        public void SetTileInfo(int index, string name, int price)
+        public void SetTileInfo(int index, string name, int price, TileType tileType)
         {
             tileIndex = index;
 
@@ -130,31 +129,38 @@ namespace AntKnow.Game
 
             if (textPrice != null)
             {
-                if (price > 0)
+                // Chỉ hiển thị giá cho Property tiles
+                if (tileType == TileType.Property && price > 0)
                 {
-                    textPrice.text = $"{price}";
+                    textPrice.text = $"${price}";
                 }
                 else
                 {
+                    // Ô đặc biệt (Start, Event, Jail, Quiz, Travel) không hiển thị giá
                     textPrice.text = "";
+                    // Hoặc có thể ẩn luôn TextMeshPro component
+                    textPrice.gameObject.SetActive(false);
                 }
             }
         }
 
         /// <summary>
         /// Update price text (for rent display)
+        /// Only for Property tiles - Special tiles never show price
         /// </summary>
-        public void UpdatePrice(int price)
+        public void UpdatePrice(int price, bool isProperty = true)
         {
             if (textPrice != null)
             {
-                if (price > 0)
+                if (isProperty && price > 0)
                 {
-                    textPrice.text = $"{price}";
+                    textPrice.text = $"${price}";
+                    textPrice.gameObject.SetActive(true);
                 }
                 else
                 {
                     textPrice.text = "";
+                    textPrice.gameObject.SetActive(false);
                 }
             }
         }

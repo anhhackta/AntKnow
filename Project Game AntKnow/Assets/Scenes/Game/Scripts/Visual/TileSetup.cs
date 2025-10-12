@@ -59,9 +59,9 @@ namespace AntKnow.Game
                     if (i < tileData.Length)
                     {
                         SimpleTileData data = tileData[i];
-                        tileVisual.SetTileInfo(i, data.name, data.basePrice);
+                        tileVisual.SetTileInfo(i, data.name, data.basePrice, data.type); // ⭐ Added tileType parameter
 
-                        if (showDebug) Debug.Log($"[TileSetup] Tile {i}: {data.name} - ${data.basePrice}");
+                        if (showDebug) Debug.Log($"[TileSetup] Tile {i}: {data.name} - ${data.basePrice} ({data.type})");
                     }
                     else
                     {

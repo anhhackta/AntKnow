@@ -34,6 +34,7 @@ Library\Bee\artifacts\mvdfrm\Unity.Mathematics.ref.dll_E8EFDB1B8D5C174E.mvfrm
 Library\Bee\artifacts\mvdfrm\Unity.Multiplayer.Widgets.Core.ref.dll_ED30A9BFA6E41C20.mvfrm
 Library\Bee\artifacts\mvdfrm\Unity.Multiplayer.Widgets.Editor.ref.dll_537074B6AFAED4CE.mvfrm
 Library\Bee\artifacts\mvdfrm\Unity.Multiplayer.Widgets.Session.ref.dll_D772C527D623AE8B.mvfrm
+Library\Bee\artifacts\mvdfrm\Unity.Multiplayer.Widgets.Vivox.ref.dll_03D3E87547F98B51.mvfrm
 Library\Bee\artifacts\mvdfrm\Unity.Netcode.Editor.ref.dll_5B6B06A4AA08C33F.mvfrm
 Library\Bee\artifacts\mvdfrm\Unity.Netcode.PackageChecker.Editor.ref.dll_D588C05C4C399880.mvfrm
 Library\Bee\artifacts\mvdfrm\Unity.Netcode.Runtime.ref.dll_DC22D56636C4177C.mvfrm
@@ -54,6 +55,9 @@ Library\Bee\artifacts\mvdfrm\Unity.Services.Multiplayer.Multiplay.Authoring.Core
 Library\Bee\artifacts\mvdfrm\Unity.Services.Multiplayer.Multiplay.Authoring.Editor.ref.dll_ED84F8B832C90751.mvfrm
 Library\Bee\artifacts\mvdfrm\Unity.Services.Multiplayer.ref.dll_13E2AECA5CD67FA8.mvfrm
 Library\Bee\artifacts\mvdfrm\Unity.Services.QoS.ref.dll_7A6B4C964C0CAC83.mvfrm
+Library\Bee\artifacts\mvdfrm\Unity.Services.Vivox.Editor.ref.dll_FACBCB10835C40E7.mvfrm
+Library\Bee\artifacts\mvdfrm\Unity.Services.Vivox.ref.dll_426277EF47B22B6A.mvfrm
+Library\Bee\artifacts\mvdfrm\Unity.Settings.Editor.ref.dll_7F5B154C05A780B0.mvfrm
 Library\Bee\artifacts\mvdfrm\Unity.Sysroot.Linux_x86_64.ref.dll_24C7B1A47E18827F.mvfrm
 Library\Bee\artifacts\mvdfrm\Unity.SysrootPackage.Editor.ref.dll_51BD9AC91712BC0C.mvfrm
 Library\Bee\artifacts\mvdfrm\Unity.TextMeshPro.Editor.ref.dll_159E061D77A10B86.mvfrm
