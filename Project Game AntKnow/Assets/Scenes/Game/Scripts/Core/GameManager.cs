@@ -565,13 +565,13 @@ namespace AntKnow.Game
             
             // Move player
             yield return player.MoveBySteps(diceResult);
-            
+
             // Resolve tile
             ResolveTile(player);
-            
-            // End turn (for now, auto end)
-            yield return new WaitForSeconds(1f);
-            EndTurn();
+
+            // ⭐ KHÔNG TỰ ĐỘNG END TURN - Chờ panel đóng
+            // Panel sẽ tự gọi EndTurn() khi user chọn xong
+            // Nếu không có panel (Start, Jail, Travel, etc.) → Auto end turn
         }
         
         /// <summary>
@@ -619,6 +619,8 @@ namespace AntKnow.Game
                     {
                         panelNotification.ShowNotification($"{player.PlayerName} đến Ô Bắt Đầu!");
                     }
+                    // ⭐ Auto end turn (no panel)
+                    StartCoroutine(AutoEndTurnAfterDelay(1f));
                     break;
 
                 case TileType.Property:
@@ -630,13 +632,28 @@ namespace AntKnow.Game
                     Debug.Log($"[GameManager] Event tile - Showing event panel");
                     if (panelEvent != null)
                     {
-                        panelEvent.ShowRandomEvent(() => {
-                            Debug.Log($"[GameManager] Event panel closed");
+                        panelEvent.ShowRandomEvent((moneyChange) => {
+                            // Apply money change
+                            if (moneyChange > 0)
+                            {
+                                player.AddMoney(moneyChange);
+                                Debug.Log($"[GameManager] {player.PlayerName} gained {moneyChange} from event");
+                            }
+                            else if (moneyChange < 0)
+                            {
+                                player.SubtractMoney(-moneyChange);
+                                Debug.Log($"[GameManager] {player.PlayerName} lost {-moneyChange} from event");
+                            }
+
+                            // ⭐ End turn after event
+                            StartCoroutine(AutoEndTurnAfterDelay(0.5f));
                         });
                     }
                     else
                     {
                         Debug.LogWarning("[GameManager] PanelEvent not assigned!");
+                        // ⭐ Auto end turn if no panel
+                        StartCoroutine(AutoEndTurnAfterDelay(1f));
                     }
                     break;
 
@@ -656,11 +673,16 @@ namespace AntKnow.Game
                                 Debug.Log($"[GameManager] {player.PlayerName} answered incorrectly!");
                                 // Penalty handled by PanelQuiz
                             }
+
+                            // ⭐ End turn after quiz
+                            StartCoroutine(AutoEndTurnAfterDelay(0.5f));
                         });
                     }
                     else
                     {
                         Debug.LogWarning("[GameManager] PanelQuiz not assigned!");
+                        // ⭐ Auto end turn if no panel
+                        StartCoroutine(AutoEndTurnAfterDelay(1f));
                     }
                     break;
 
@@ -671,6 +693,8 @@ namespace AntKnow.Game
                     {
                         panelNotification.ShowNotification($"{player.PlayerName} bị giam 2 lượt!");
                     }
+                    // ⭐ Auto end turn (no panel)
+                    StartCoroutine(AutoEndTurnAfterDelay(1f));
                     break;
 
                 case TileType.Travel:
@@ -680,6 +704,8 @@ namespace AntKnow.Game
                     {
                         panelNotification.ShowNotification($"{player.PlayerName} đi du lịch! -100");
                     }
+                    // ⭐ Auto end turn (no panel)
+                    StartCoroutine(AutoEndTurnAfterDelay(1f));
                     break;
             }
         }
@@ -742,6 +768,12 @@ namespace AntKnow.Game
                     {
                         Debug.Log($"[GameManager] {player.PlayerName} is bankrupt!");
                         ShowSellPanel(player);
+                        // Turn will end after sell panel closes
+                    }
+                    else
+                    {
+                        // ⭐ End turn after paying rent
+                        StartCoroutine(AutoEndTurnAfterDelay(1f));
                     }
                 }
             }
@@ -784,27 +816,48 @@ namespace AntKnow.Game
 
             Debug.Log($"[GameManager] Showing PanelBuy for {tileName}");
 
-            panelBuy.ShowBuy(tileName, basePrice, player.Money, (selectedLevel) =>
-            {
-                if (selectedLevel > 0)
+            panelBuy.ShowBuy(tileName, basePrice, player.Money,
+                // ⭐ onBuy callback
+                (selectedLevel) =>
                 {
-                    // Buy with selected level
-                    propertyManager.BuyProperty(tileIndex, playerIdx, basePrice, player);
-
                     if (selectedLevel > 0)
                     {
-                        propertyManager.UpgradeProperty(tileIndex, selectedLevel, basePrice, player);
-                    }
-                }
+                        // Buy property
+                        propertyManager.BuyProperty(tileIndex, playerIdx, basePrice, player);
 
-                // Continue game
-                StartCoroutine(ContinueAfterPanel());
-            },
-            () =>
-            {
-                // Skip
-                StartCoroutine(ContinueAfterPanel());
-            });
+                        Debug.Log($"[GameManager] {player.PlayerName} bought {tileName} for {basePrice}");
+
+                        // Show notification
+                        if (panelNotification != null)
+                        {
+                            panelNotification.ShowNotification($"{player.PlayerName} mua {tileName} ({basePrice})");
+                        }
+
+                        // Upgrade if selected level > 0
+                        if (selectedLevel > 1)
+                        {
+                            propertyManager.UpgradeProperty(tileIndex, selectedLevel - 1, basePrice, player);
+                        }
+                    }
+
+                    // ⭐ End turn after buying/skipping
+                    StartCoroutine(AutoEndTurnAfterDelay(0.5f));
+                },
+                // ⭐ onSkip callback
+                () =>
+                {
+                    Debug.Log($"[GameManager] {player.PlayerName} skipped buying {tileName}");
+
+                    // Show notification
+                    if (panelNotification != null)
+                    {
+                        panelNotification.ShowNotification($"{player.PlayerName} bỏ qua {tileName}");
+                    }
+
+                    // ⭐ End turn after skipping
+                    StartCoroutine(AutoEndTurnAfterDelay(0.5f));
+                }
+            );
         }
 
         /// <summary>
@@ -859,6 +912,16 @@ namespace AntKnow.Game
             yield return new WaitForSeconds(0.5f);
             // Game continues automatically
         }
+
+        /// <summary>
+        /// Auto end turn after delay (for tiles without panels)
+        /// </summary>
+        private IEnumerator AutoEndTurnAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            Debug.Log("[GameManager] Auto ending turn after delay");
+            EndTurn();
+        }
         
         /// <summary>
         /// End turn - WITH ROUND TRACKING & QUIZ SYSTEM
@@ -866,8 +929,10 @@ namespace AntKnow.Game
         private void EndTurn()
         {
             if (!isGameActive) return;
-            if (!IsHost) return; // Only Host manages turns
-            
+
+            // ⭐ Demo Mode OR Host can manage turns
+            if (!demoMode && !IsHost) return;
+
             Debug.Log($"[GameManager] Turn ended. Player {currentPlayerIndex}/{players.Count - 1}");
             
             // Reduce skill card cooldowns for current player
