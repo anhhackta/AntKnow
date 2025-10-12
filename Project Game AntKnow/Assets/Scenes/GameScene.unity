@@ -5337,7 +5337,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: "100 gi\xE2y"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5781,7 +5781,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: "2 ph\xFAt"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7744,7 +7744,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "C\xE2u h\u1ECFi"
+  m_text: "m\u1EA5t bao l\xE2u \u0111\u1EC3 m\xE1u b\u01A1m t\u1EEB tim tu\u1EA7n
+    ho\xE0n 1 v\xF2ng kh\u1EAFp c\u01A1 th\u1EC3 ?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8215,6 +8216,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 627.92}
   m_Pivot: {x: 0, y: 1}
+--- !u!1 &639791126 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8439164293149411922, guid: 3b4583781cb85c847894d88d13eaa0ee, type: 3}
+  m_PrefabInstance: {fileID: 179915440805849536}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &640684043
 GameObject:
   m_ObjectHideFlags: 0
@@ -12147,7 +12153,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panelMe: {fileID: 1270545541}
   panelPlayerContainer: {fileID: 1679934294}
-  panelPlayerPrefab: {fileID: 5486208448102313925, guid: 3b4583781cb85c847894d88d13eaa0ee, type: 3}
+  panelPlayerPrefab: {fileID: 639791126}
+  panelInfo: {fileID: 1234195075}
   maxPlayers: 4
 --- !u!1 &865147941
 GameObject:
@@ -12892,6 +12899,7 @@ GameObject:
   - component: {fileID: 953933029}
   - component: {fileID: 953933031}
   - component: {fileID: 953933030}
+  - component: {fileID: 953933032}
   m_Layer: 5
   m_Name: PanelNotification
   m_TagString: Untagged
@@ -12957,6 +12965,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 953933028}
   m_CullTransparentMesh: 1
+--- !u!114 &953933032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953933028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81c3263eab552814cb72c75d7daf52f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textNotification: {fileID: 89483291}
+  displayDuration: 1
 --- !u!1 &958546600
 GameObject:
   m_ObjectHideFlags: 0
@@ -15377,12 +15399,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 250e2797c1a01794bb9059965f575fc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contentParent: {fileID: 0}
-  propertyItemPrefab: {fileID: 0}
+  contentParent: {fileID: 632520439}
+  propertyItemPrefab: {fileID: 2659553928341365938, guid: 5a03db65e19ace54da83f8c3b55c9d83, type: 3}
   textDebt: {fileID: 0}
   textTotalSell: {fileID: 0}
   textStatus: {fileID: 0}
-  btnSell: {fileID: 0}
+  btnSell: {fileID: 1124071260}
 --- !u!114 &1161345790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15799,21 +15821,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   boardManager: {fileID: 1945438024}
-  panelRoll: {fileID: 0}
+  panelRoll: {fileID: 1423150613}
   propertyManager: {fileID: 698437353}
   players: []
-  playerPrefabMale: {fileID: 1761631817138440393, guid: ed161f424ffd7ab4b8d476cb1ca13aa6, type: 3}
-  playerPrefabFemale: {fileID: 0}
+  playerPrefabMale: {fileID: 3704095023335994387, guid: d25490185033ffb48b8c6bd35a1653f0, type: 3}
+  playerPrefabFemale: {fileID: 6030330821513520076, guid: 65cb442e5be57b4448eebf9cc482d5c9, type: 3}
   rollButton: {fileID: 1227345319}
   turnText: {fileID: 609551908}
   currentPlayerText: {fileID: 40288163}
   timeText: {fileID: 1874067515}
+  panelGame: {fileID: 856381531}
   panelBuy: {fileID: 1875278046}
   panelQuiz: {fileID: 1379265948}
   panelEvent: {fileID: 1445494392}
   panelHouseSell: {fileID: 1161345789}
   panelResult: {fileID: 895946247}
   panelCard: {fileID: 1336266765}
+  panelNotification: {fileID: 953933032}
   maxTurns: 25
   demoMode: 1
   firebaseAuthService: {fileID: 0}
@@ -16878,6 +16902,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1270545539}
   - component: {fileID: 1270545541}
+  - component: {fileID: 1270545542}
   m_Layer: 5
   m_Name: PanelMe
   m_TagString: Untagged
@@ -16926,6 +16951,50 @@ MonoBehaviour:
   spriteMale: {fileID: 21300000, guid: 8d737996dae69bf4d865deb0dfdaf27f, type: 3}
   spriteFemale: {fileID: 21300000, guid: fd72f3528e1a65244b68da6ee9e81f13, type: 3}
   backgroundAlpha: 0.3
+--- !u!114 &1270545542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1270545538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1842667369}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1273584398
 GameObject:
   m_ObjectHideFlags: 0
@@ -17810,7 +17879,7 @@ MonoBehaviour:
   fortuneWheelObject: {fileID: 624869283}
   textWheelResult: {fileID: 78140748}
   answerTime: 2
-  isAnnualQuiz: 0
+  isAnnualQuiz: 1
 --- !u!1 &1385584304
 GameObject:
   m_ObjectHideFlags: 0
@@ -18393,7 +18462,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: "1 ph\xFAt"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -20611,7 +20680,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: "15 gi\xE2y"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -23364,7 +23433,6 @@ GameObject:
   - component: {fileID: 1842667368}
   - component: {fileID: 1842667370}
   - component: {fileID: 1842667369}
-  - component: {fileID: 1842667371}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -23429,62 +23497,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1842667367}
   m_CullTransparentMesh: 1
---- !u!114 &1842667371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1842667367}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 1842667369}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 856381531}
-        m_TargetAssemblyTypeName: AntKnow.Game.PanelGame, Assembly-CSharp
-        m_MethodName: OnPanelMeClicked
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &1844192931
 GameObject:
   m_ObjectHideFlags: 0

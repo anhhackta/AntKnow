@@ -2511,6 +2511,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1822819680108050358, guid: 1550e437534eb2f48a0e6b210d820e90, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2569202432967477330, guid: 1550e437534eb2f48a0e6b210d820e90, type: 3}
       propertyPath: m_Name
       value: ItemSlotPrefab (1)
@@ -3564,7 +3568,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &605644180
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4446,7 +4450,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &740005841
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8566,7 +8570,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1353746249
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10955,7 +10959,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1631236258
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11143,6 +11147,10 @@ PrefabInstance:
     - target: {fileID: 1413323041611818631, guid: 1550e437534eb2f48a0e6b210d820e90, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1822819680108050358, guid: 1550e437534eb2f48a0e6b210d820e90, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2569202432967477330, guid: 1550e437534eb2f48a0e6b210d820e90, type: 3}
       propertyPath: m_Name

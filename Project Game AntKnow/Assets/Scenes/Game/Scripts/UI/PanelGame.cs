@@ -16,7 +16,10 @@ namespace AntKnow.Game
         [SerializeField] private PanelPlayerMe panelMe;
         [SerializeField] private Transform panelPlayerContainer; // Parent cho PanelPlayerPrefab
         [SerializeField] private GameObject panelPlayerPrefab; // Prefab cho mỗi player khác
-        
+
+        [Header("Other Panels")]
+        [SerializeField] private PanelInfo panelInfo; // ⭐ Panel hiển thị thông tin chi tiết player
+
         [Header("Settings")]
         [SerializeField] private int maxPlayers = 4;
         
@@ -165,18 +168,25 @@ namespace AntKnow.Game
 
         /// <summary>
         /// Show PanelInfo for player
+        /// ⭐ SỬ DỤNG REFERENCE ĐÃ ASSIGN - KHÔNG DÙNG FindObjectOfType
         /// </summary>
         public void ShowPlayerInfo(PlayerGameController player)
         {
-            // Find PanelInfo in scene
-            var panelInfo = FindObjectOfType<PanelInfo>();
+            if (player == null)
+            {
+                Debug.LogWarning("[PanelGame] Player is null!");
+                return;
+            }
+
+            // ⭐ Sử dụng reference đã assign trong Inspector
             if (panelInfo != null)
             {
                 panelInfo.Show(player);
+                Debug.Log($"[PanelGame] Showing PanelInfo for {player.PlayerName}");
             }
             else
             {
-                Debug.LogWarning("[PanelGame] PanelInfo not found in scene!");
+                Debug.LogError("[PanelGame] PanelInfo reference is not assigned in Inspector!");
             }
         }
         
