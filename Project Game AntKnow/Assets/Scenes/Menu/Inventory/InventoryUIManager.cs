@@ -53,12 +53,16 @@ namespace AntKnow.Inventory
         [Header("Services")]
         [SerializeField] private InventoryService inventoryService;
         [SerializeField] private FirebaseAuthService firebaseAuthService;
-        
+
+        [Header("Debug")]
+        [SerializeField] private Button buttonTestLoad;
+
         private List<ItemSlot> itemSlots = new List<ItemSlot>();
         private List<ItemSlot> cardSlots = new List<ItemSlot>();
-        
+
         private void Start()
         {
+            Debug.Log("[InventoryUI] Start() called");
             InitializeUI();
             SetupEventListeners();
             LoadInventoryAndLoadout();
@@ -115,6 +119,10 @@ namespace AntKnow.Inventory
             if (buttonSortCards != null)
                 buttonSortCards.onClick.AddListener(SortCards);
 
+            // Debug button
+            if (buttonTestLoad != null)
+                buttonTestLoad.onClick.AddListener(TestLoadInventory);
+
             // Inventory service events
             if (inventoryService != null)
             {
@@ -134,20 +142,27 @@ namespace AntKnow.Inventory
         
         private async void LoadInventoryAndLoadout()
         {
+            // Check if user is logged in
             if (firebaseAuthService == null || firebaseAuthService.Auth == null || firebaseAuthService.Auth.CurrentUser == null)
             {
-                Debug.LogError("[InventoryUI] User not logged in!");
+                Debug.LogWarning("[InventoryUI] User not logged in! Redirecting to LoginScene...");
+
+                // Redirect to LoginScene
+                UnityEngine.SceneManagement.SceneManager.LoadScene("LoginScene");
                 return;
             }
-            
+
             string uid = firebaseAuthService.Auth.CurrentUser.UserId;
-            
-            // Load inventory
-            await inventoryService.LoadInventoryAsync(uid);
-            
-            // Load loadout
-            await inventoryService.LoadLoadoutAsync(uid);
-            
+            Debug.Log($"[InventoryUI] Loading inventory and loadout for user: {uid}");
+
+            // Load inventory and loadout in parallel (FASTER!)
+            var inventoryTask = inventoryService.LoadInventoryAsync(uid);
+            var loadoutTask = inventoryService.LoadLoadoutAsync(uid);
+
+            await System.Threading.Tasks.Task.WhenAll(inventoryTask, loadoutTask);
+
+            Debug.Log("[InventoryUI] Inventory and loadout loaded successfully!");
+
             // Update character image
             UpdateCharacterImage();
         }
@@ -408,6 +423,71 @@ namespace AntKnow.Inventory
             if (maskSlot != null) maskSlot.OnItemChanged -= OnLoadoutSlotChanged;
             if (passiveCardSlot != null) passiveCardSlot.OnItemChanged -= OnLoadoutSlotChanged;
             if (activeCardSlot != null) activeCardSlot.OnItemChanged -= OnLoadoutSlotChanged;
+        }
+
+        // ===== DEBUG METHODS =====
+
+        [ContextMenu("Test Load Inventory")]
+        private async void TestLoadInventory()
+        {
+            Debug.Log("=== TEST LOAD INVENTORY ===");
+
+            if (firebaseAuthService == null)
+            {
+                Debug.LogError("❌ FirebaseAuthService is null!");
+                return;
+            }
+
+            if (firebaseAuthService.Auth == null)
+            {
+                Debug.LogError("❌ Firebase Auth is null!");
+                return;
+            }
+
+            if (firebaseAuthService.Auth.CurrentUser == null)
+            {
+                Debug.LogError("❌ Current User is null! Please login first.");
+                return;
+            }
+
+            string uid = firebaseAuthService.Auth.CurrentUser.UserId;
+            Debug.Log($"✅ User ID: {uid}");
+
+            // Load inventory
+            Debug.Log("Loading inventory...");
+            var inventory = await inventoryService.LoadInventoryAsync(uid);
+            Debug.Log($"✅ Loaded {inventory.Count} items");
+
+            foreach (var item in inventory)
+            {
+                Debug.Log($"  - Item: {item.itemId}, Type: {item.type}, DocId: {item.docId}");
+                if (item.itemData != null)
+                {
+                    Debug.Log($"    ✅ ItemData: Icon={item.itemData.icon}, Name={item.itemData.name}");
+                }
+                else
+                {
+                    Debug.LogError($"    ❌ ItemData is NULL! Check if items/{item.itemId} exists in Firestore!");
+                }
+            }
+
+            // Load loadout
+            Debug.Log("Loading loadout...");
+            var loadout = await inventoryService.LoadLoadoutAsync(uid);
+            Debug.Log($"✅ Loadout: {loadout.skillCardIds.Count} cards, {loadout.equipmentSet.GetAllEquipmentIds().Count} equipment");
+
+            var equipIds = loadout.equipmentSet.GetAllEquipmentIds();
+            foreach (var equipId in equipIds)
+            {
+                Debug.Log($"  - Equipment ID: {equipId}");
+            }
+
+            foreach (var cardId in loadout.skillCardIds)
+            {
+                Debug.Log($"  - Card ID: {cardId}");
+            }
+
+            Debug.Log("=== TEST COMPLETE ===");
         }
     }
 }

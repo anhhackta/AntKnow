@@ -25,6 +25,12 @@ public class MusicPopup : MonoBehaviour
         audioSource.loop = false;
         audioSource.playOnAwake = false;
 
+        // Sync volume with GlobalSettingsManager
+        if (GlobalSettingsManager.Instance != null)
+        {
+            audioSource.volume = GlobalSettingsManager.Instance.GetMusicVolume();
+        }
+
         // Khi mở scene chạy luôn bài đầu
         if (playlist.Count > 0)
         {

@@ -9,15 +9,23 @@ using Firebase.Auth;
 
 namespace AntKnow.Auth
 {
+    /// <summary>
+    /// REFACTORED: Auth UI Controller with English text and improved flow
+    /// Tab = Next field, Enter = Login/Register
+    /// </summary>
     public class AuthUIController : MonoBehaviour
     {
         [Header("Main Panels")]
         [SerializeField] private GameObject panelLog;
         [SerializeField] private GameObject panelLogin;
         [SerializeField] private GameObject panelRegister;
-        [SerializeField] private GameObject panelThongBao;
+        [SerializeField] private GameObject panelNotification;
         [SerializeField] private GameObject logButton;
         [SerializeField] private GameObject buttonStart;
+
+        [Header("Tab Buttons (Outside Panels)")]
+        [SerializeField] private Button buttonLoginTab;      // Tab button to switch to Login
+        [SerializeField] private Button buttonRegisterTab;   // Tab button to switch to Register
 
         [Header("Login Panel")]
         [SerializeField] private TMP_InputField inputUsernameOrEmail;
@@ -26,6 +34,7 @@ namespace AntKnow.Auth
         [SerializeField] private Button buttonLogin;
         [SerializeField] private Button buttonLoginWithGoogle;
         [SerializeField] private TMP_Text textInlineError;
+        [SerializeField] private Button buttonSwitchToRegister; // "Create account" button INSIDE panel
 
         [Header("Register Panel")]
         [SerializeField] private TMP_InputField inputUsername;
@@ -37,13 +46,13 @@ namespace AntKnow.Auth
         [SerializeField] private TMP_Text textCheckPw1;
         [SerializeField] private TMP_Text textCheckPw2;
         [SerializeField] private Button buttonCreateAccount;
+        [SerializeField] private Button buttonBackToLogin; // "Back to Login" button INSIDE panel
 
-        [Header("Tabs and Controls")]
-        [SerializeField] private Button buttonLoginTab;
-        [SerializeField] private Button buttonRegisterTab;
+        [Header("Controls")]
         [SerializeField] private Button buttonClose;
         [SerializeField] private Button buttonLogButton;
         [SerializeField] private Button buttonStartButton;
+        [SerializeField] private Button buttonExit; // NEW: Exit button
 
         [Header("LogButton Sprites")]
         [SerializeField] private Sprite spriteLogin;
@@ -57,12 +66,13 @@ namespace AntKnow.Auth
 
         [Header("Notification")]
         [SerializeField] private TMP_Text textNotification;
+        [SerializeField] private float notificationDuration = 2f; // 2 seconds
 
         private bool isProcessing = false;
         private Coroutine notificationCoroutine;
         private UserData currentUserData;
 
-        // Debounce coroutines để tránh spam Firestore queries
+        // Debounce coroutines
         private Coroutine usernameCheckCoroutine;
         private Coroutine emailCheckCoroutine;
 
@@ -80,8 +90,8 @@ namespace AntKnow.Auth
             panelLog.SetActive(true);
             panelLogin.SetActive(true);
             panelRegister.SetActive(false);
-            panelThongBao.SetActive(false);
-            logButton.SetActive(false);
+            panelNotification.SetActive(false);
+            logButton.SetActive(false); // Hidden initially
             buttonStart.SetActive(false);
 
             // Hide validation texts initially
@@ -96,27 +106,48 @@ namespace AntKnow.Auth
             inputPassword1.contentType = TMP_InputField.ContentType.Password;
             inputPassword2.contentType = TMP_InputField.ContentType.Password;
 
-            // Set placeholders
-            inputUsernameOrEmail.placeholder.GetComponent<TMP_Text>().text = "Username hoặc Email";
+            // Set placeholders (ENGLISH)
+            inputUsernameOrEmail.placeholder.GetComponent<TMP_Text>().text = "Username or Email";
             inputUsername.placeholder.GetComponent<TMP_Text>().text = "Username";
             inputEmail.placeholder.GetComponent<TMP_Text>().text = "Email";
             inputPassword.placeholder.GetComponent<TMP_Text>().text = "Password";
-            inputPassword1.placeholder.GetComponent<TMP_Text>().text = "Password (≥8 ký tự)";
+            inputPassword1.placeholder.GetComponent<TMP_Text>().text = "Password (≥8 characters)";
             inputPassword2.placeholder.GetComponent<TMP_Text>().text = "Confirm Password";
+        }
+
+        private void Update()
+        {
+            // Handle Tab key for navigation
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                HandleTabNavigation();
+            }
+
+            // Handle Enter key for login/register
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+            {
+                HandleEnterKey();
+            }
         }
 
         private void SetupEventListeners()
         {
-            // Tab switching
-            buttonLoginTab.onClick.AddListener(() => SwitchToLoginPanel());
-            buttonRegisterTab.onClick.AddListener(() => SwitchToRegisterPanel());
+            // Tab buttons (outside panels)
+            if (buttonLoginTab != null)
+                buttonLoginTab.onClick.AddListener(SwitchToLoginPanel);
+            if (buttonRegisterTab != null)
+                buttonRegisterTab.onClick.AddListener(SwitchToRegisterPanel);
 
             // Login panel
             buttonLogin.onClick.AddListener(OnLoginClicked);
             buttonLoginWithGoogle.onClick.AddListener(OnGoogleLoginClicked);
+            if (buttonSwitchToRegister != null)
+                buttonSwitchToRegister.onClick.AddListener(SwitchToRegisterPanel);
 
             // Register panel
             buttonCreateAccount.onClick.AddListener(OnRegisterClicked);
+            if (buttonBackToLogin != null)
+                buttonBackToLogin.onClick.AddListener(SwitchToLoginPanel);
 
             // Real-time validation for register panel
             inputUsername.onValueChanged.AddListener(OnUsernameChanged);
@@ -128,6 +159,7 @@ namespace AntKnow.Auth
             buttonClose.onClick.AddListener(OnClosePanelClicked);
             buttonLogButton.onClick.AddListener(OnLogButtonClicked);
             buttonStartButton.onClick.AddListener(OnStartButtonClicked);
+            buttonExit.onClick.AddListener(OnExitClicked);
 
             // Firebase auth events
             if (firebaseAuthService != null)
@@ -136,7 +168,52 @@ namespace AntKnow.Auth
                 firebaseAuthService.OnUserSignedOut += OnUserSignedOut;
                 firebaseAuthService.OnAuthError += OnAuthError;
             }
+        }
 
+        private void HandleTabNavigation()
+        {
+            if (panelLogin.activeSelf)
+            {
+                // Login panel: UsernameOrEmail → Password → RememberMe → Login button
+                if (inputUsernameOrEmail.isFocused)
+                {
+                    inputPassword.Select();
+                }
+                else if (inputPassword.isFocused)
+                {
+                    toggleRememberMe.Select();
+                }
+            }
+            else if (panelRegister.activeSelf)
+            {
+                // Register panel: Username → Email → Password1 → Password2 → Create button
+                if (inputUsername.isFocused)
+                {
+                    inputEmail.Select();
+                }
+                else if (inputEmail.isFocused)
+                {
+                    inputPassword1.Select();
+                }
+                else if (inputPassword1.isFocused)
+                {
+                    inputPassword2.Select();
+                }
+            }
+        }
+
+        private void HandleEnterKey()
+        {
+            if (panelLogin.activeSelf && !isProcessing)
+            {
+                // Press Enter in Login panel → Login
+                OnLoginClicked();
+            }
+            else if (panelRegister.activeSelf && !isProcessing)
+            {
+                // Press Enter in Register panel → Register
+                OnRegisterClicked();
+            }
         }
 
         private void SwitchToLoginPanel()
@@ -162,7 +239,7 @@ namespace AntKnow.Auth
 
             if (string.IsNullOrEmpty(userOrEmail) || string.IsNullOrEmpty(password))
             {
-                ShowInlineError("Vui lòng nhập đầy đủ thông tin");
+                ShowInlineError("Please fill in all fields");
                 return;
             }
 
@@ -175,20 +252,20 @@ namespace AntKnow.Auth
                 
                 if (result.IsSuccess)
                 {
-                    ShowNotification("Đăng nhập thành công!", false);
+                    ShowNotification("Login successful!", false);
                     
                     // Save credentials if remember me is checked
                     if (toggleRememberMe.isOn)
                     {
-                        SaveCredentials(userOrEmail);
+                        SaveCredentials(userOrEmail, password);
                     }
                     else
                     {
                         ClearSavedCredentials();
                     }
 
-                    // Load user data and show avatar panel
-                    await LoadUserDataAndShowAvatar(result.User.UserId);
+                    // Load user data
+                    await LoadUserDataAndProceed(result.User.UserId);
                 }
                 else
                 {
@@ -197,7 +274,7 @@ namespace AntKnow.Auth
             }
             catch (Exception e)
             {
-                ShowInlineError($"Lỗi đăng nhập: {e.Message}");
+                ShowInlineError($"Login error: {e.Message}");
             }
             finally
             {
@@ -207,8 +284,7 @@ namespace AntKnow.Auth
 
         private void OnGoogleLoginClicked()
         {
-            // Tạm thời khóa Google Login - đang update
-            ShowNotification("Google Login đang được cập nhật, vui lòng sử dụng Email/Password", true);
+            ShowNotification("Google Login is under development, please use Email/Password", true);
         }
 
         private async void OnRegisterClicked()
@@ -223,7 +299,7 @@ namespace AntKnow.Auth
             // Validate form
             if (!ValidateRegisterForm())
             {
-                ShowNotification("Vui lòng kiểm tra lại thông tin", true);
+                ShowNotification("Please check your information", true);
                 return;
             }
 
@@ -235,10 +311,10 @@ namespace AntKnow.Auth
                 
                 if (result.IsSuccess)
                 {
-                    ShowNotification("Tạo tài khoản thành công!", false);
+                    ShowNotification("Account created successfully!", false);
                     
-                    // Load user data and show avatar panel
-                    await LoadUserDataAndShowAvatar(result.User.UserId);
+                    // Load user data
+                    await LoadUserDataAndProceed(result.User.UserId);
                 }
                 else
                 {
@@ -247,7 +323,7 @@ namespace AntKnow.Auth
             }
             catch (Exception e)
             {
-                ShowNotification($"Lỗi tạo tài khoản: {e.Message}", true);
+                ShowNotification($"Registration error: {e.Message}", true);
             }
             finally
             {
@@ -255,260 +331,66 @@ namespace AntKnow.Auth
             }
         }
 
-        private void OnUsernameChanged(string value)
+        private async System.Threading.Tasks.Task LoadUserDataAndProceed(string uid)
         {
-            // Cancel coroutine cũ để tránh spam queries
-            if (usernameCheckCoroutine != null)
-            {
-                StopCoroutine(usernameCheckCoroutine);
-            }
-
-            if (string.IsNullOrEmpty(value))
-            {
-                textCheckUsername.gameObject.SetActive(false);
-                return;
-            }
-
-            // Kiểm tra Firebase service có tồn tại không
-            if (firebaseAuthService == null)
-            {
-                textCheckUsername.gameObject.SetActive(true);
-                textCheckUsername.text = "Firebase service not found";
-                textCheckUsername.color = Color.red;
-                return;
-            }
-
-            // Kiểm tra Firebase đã sẵn sàng chưa
-            if (!firebaseAuthService.IsFirebaseReady())
-            {
-                textCheckUsername.gameObject.SetActive(true);
-                textCheckUsername.text = "Đang khởi tạo Firebase...";
-                textCheckUsername.color = Color.yellow;
-                return;
-            }
-
-            // Start debounced check (đợi 0.5s sau khi user ngừng gõ)
-            usernameCheckCoroutine = StartCoroutine(CheckUsernameDebounced(value));
-        }
-
-        private IEnumerator CheckUsernameDebounced(string username)
-        {
-            // Đợi 0.5 giây
-            yield return new WaitForSeconds(0.5f);
-
-            textCheckUsername.gameObject.SetActive(true);
-            textCheckUsername.text = "Đang kiểm tra...";
-            textCheckUsername.color = Color.yellow;
-
-            // Gọi async method trong coroutine
-            var checkTask = firebaseAuthService.IsUsernameTakenAsync(username);
-            yield return new WaitUntil(() => checkTask.IsCompleted);
-
             try
             {
-                bool isTaken = checkTask.Result;
+                // Load user data
+                currentUserData = await firebaseAuthService.GetUserDataAsync(uid);
 
-                if (isTaken)
+                if (currentUserData != null)
                 {
-                    textCheckUsername.text = "Username đã được sử dụng";
-                    textCheckUsername.color = Color.red;
+                    // Set user data in GameDataManager
+                    GameDataManager.Instance.SetUserData(
+                        currentUserData.uid,
+                        currentUserData.username,
+                        currentUserData.email,
+                        currentUserData.ingameName,
+                        currentUserData.gender,
+                        currentUserData.level,
+                        currentUserData.xp,
+                        currentUserData.currencies.antCoin,
+                        currentUserData.currencies.dCoin,
+                        currentUserData.stats.matchesPlayed,
+                        currentUserData.stats.wins
+                    );
+
+                    Debug.Log($"AuthUIController: User data loaded - {currentUserData.username}");
+
+                    // Wait for notification to show (2s)
+                    await System.Threading.Tasks.Task.Delay(2000);
+
+                    // Hide notification
+                    panelNotification.SetActive(false);
+
+                    // Hide panelLog (Login/Register panel)
+                    panelLog.SetActive(false);
+
+                    // Show AvatarPanel with user info
+                    if (avatarPanel != null)
+                    {
+                        avatarPanel.ShowPanel(currentUserData);
+                        Debug.Log("AvatarPanel shown with user info");
+                    }
+
+                    // Show logButton with Logout sprite
+                    logButton.SetActive(true);
+                    UpdateLogButtonSprite();
+
+                    // Show Start button
+                    buttonStart.SetActive(true);
+
+                    Debug.Log("Login successful - Panel hidden, AvatarPanel shown, Start button shown");
                 }
                 else
                 {
-                    textCheckUsername.text = "Username có thể sử dụng";
-                    textCheckUsername.color = Color.green;
+                    ShowNotification("Failed to load user data", true);
                 }
             }
             catch (Exception e)
             {
-                // Xử lý lỗi permissions một cách thân thiện
-                if (e.Message.Contains("permissions") || e.Message.Contains("Permission"))
-                {
-                    textCheckUsername.text = "Không thể kiểm tra username (cần cập nhật Firestore rules)";
-                    textCheckUsername.color = Color.yellow;
-                }
-                else
-                {
-                    textCheckUsername.text = "Lỗi kiểm tra username";
-                    textCheckUsername.color = Color.red;
-                }
-                Debug.LogError($"Username check error: {e.Message}");
+                ShowNotification($"Error loading user data: {e.Message}", true);
             }
-
-            ValidateRegisterForm();
-        }
-
-        private void OnEmailChanged(string value)
-        {
-            // Cancel coroutine cũ để tránh spam queries
-            if (emailCheckCoroutine != null)
-            {
-                StopCoroutine(emailCheckCoroutine);
-            }
-
-            if (string.IsNullOrEmpty(value) || !value.Contains("@"))
-            {
-                textCheckEmail.gameObject.SetActive(false);
-                return;
-            }
-
-            // Kiểm tra Firebase service có tồn tại không
-            if (firebaseAuthService == null)
-            {
-                textCheckEmail.gameObject.SetActive(true);
-                textCheckEmail.text = "Firebase service not found";
-                textCheckEmail.color = Color.red;
-                return;
-            }
-
-            // Kiểm tra Firebase đã sẵn sàng chưa
-            if (!firebaseAuthService.IsFirebaseReady())
-            {
-                textCheckEmail.gameObject.SetActive(true);
-                textCheckEmail.text = "Đang khởi tạo Firebase...";
-                textCheckEmail.color = Color.yellow;
-                return;
-            }
-
-            // Start debounced check (đợi 0.5s sau khi user ngừng gõ)
-            emailCheckCoroutine = StartCoroutine(CheckEmailDebounced(value));
-        }
-
-        private IEnumerator CheckEmailDebounced(string email)
-        {
-            // Đợi 0.5 giây
-            yield return new WaitForSeconds(0.5f);
-
-            textCheckEmail.gameObject.SetActive(true);
-            textCheckEmail.text = "Đang kiểm tra...";
-            textCheckEmail.color = Color.yellow;
-
-            // Gọi async method trong coroutine
-            var checkTask = firebaseAuthService.IsEmailTakenAsync(email);
-            yield return new WaitUntil(() => checkTask.IsCompleted);
-
-            try
-            {
-                bool isTaken = checkTask.Result;
-                
-                if (isTaken)
-                {
-                    textCheckEmail.text = "Email đã được đăng ký";
-                    textCheckEmail.color = Color.red;
-                }
-                else
-                {
-                    textCheckEmail.text = "Email có thể sử dụng";
-                    textCheckEmail.color = Color.green;
-                }
-            }
-            catch (Exception e)
-            {
-                // Xử lý lỗi permissions một cách thân thiện
-                if (e.Message.Contains("permissions") || e.Message.Contains("Permission"))
-                {
-                    textCheckEmail.text = "Không thể kiểm tra email (cần cập nhật Firestore rules)";
-                    textCheckEmail.color = Color.yellow;
-                }
-                else
-                {
-                    textCheckEmail.text = "Lỗi kiểm tra email";
-                    textCheckEmail.color = Color.red;
-                }
-                Debug.LogError($"Email check error: {e.Message}");
-            }
-
-            ValidateRegisterForm();
-        }
-
-        private void OnPassword1Changed(string value)
-        {
-            textCheckPw1.gameObject.SetActive(!string.IsNullOrEmpty(value));
-            
-            if (string.IsNullOrEmpty(value))
-            {
-                return;
-            }
-
-            if (value.Length >= 8)
-            {
-                textCheckPw1.text = "Mật khẩu đủ mạnh";
-                textCheckPw1.color = Color.green;
-            }
-            else
-            {
-                textCheckPw1.text = "Mật khẩu phải ≥8 ký tự";
-                textCheckPw1.color = Color.red;
-            }
-
-            // Also check password2 if it's not empty
-            if (!string.IsNullOrEmpty(inputPassword2.text))
-            {
-                OnPassword2Changed(inputPassword2.text);
-            }
-
-            ValidateRegisterForm();
-        }
-
-        private void OnPassword2Changed(string value)
-        {
-            textCheckPw2.gameObject.SetActive(!string.IsNullOrEmpty(value));
-            
-            if (string.IsNullOrEmpty(value))
-            {
-                return;
-            }
-
-            if (value == inputPassword1.text)
-            {
-                textCheckPw2.text = "Mật khẩu khớp";
-                textCheckPw2.color = Color.green;
-            }
-            else
-            {
-                textCheckPw2.text = "Mật khẩu không khớp";
-                textCheckPw2.color = Color.red;
-            }
-
-            ValidateRegisterForm();
-        }
-
-        private bool ValidateRegisterForm()
-        {
-            bool isValid = true;
-
-            // Check username
-            if (string.IsNullOrEmpty(inputUsername.text) || 
-                (textCheckUsername.color != Color.green && textCheckUsername.color != Color.yellow))
-            {
-                isValid = false;
-            }
-
-            // Check email
-            if (string.IsNullOrEmpty(inputEmail.text) || 
-                !inputEmail.text.Contains("@") ||
-                (textCheckEmail.color != Color.green && textCheckEmail.color != Color.yellow))
-            {
-                isValid = false;
-            }
-
-            // Check password1
-            if (string.IsNullOrEmpty(inputPassword1.text) || 
-                inputPassword1.text.Length < 8 ||
-                textCheckPw1.color != Color.green)
-            {
-                isValid = false;
-            }
-
-            // Check password2
-            if (string.IsNullOrEmpty(inputPassword2.text) || 
-                textCheckPw2.color != Color.green)
-            {
-                isValid = false;
-            }
-
-            buttonCreateAccount.interactable = isValid && !isProcessing;
-            return isValid;
         }
 
         private void OnClosePanelClicked()
@@ -520,10 +402,15 @@ namespace AntKnow.Auth
 
         private void OnLogButtonClicked()
         {
-            if (firebaseAuthService.Auth.CurrentUser != null)
+            if (firebaseAuthService.Auth != null && firebaseAuthService.Auth.CurrentUser != null)
             {
                 // User is logged in, sign out
                 firebaseAuthService.SignOutAsync();
+                GameDataManager.Instance.ClearUserData();
+                ShowNotification("Logged out successfully", false);
+                
+                // Redirect to LoginScene
+                SceneManager.LoadScene("LoginScene");
             }
             else
             {
@@ -536,29 +423,250 @@ namespace AntKnow.Auth
 
         private void OnStartButtonClicked()
         {
-            // Set user data in GameDataManager before switching scenes
             if (currentUserData != null)
             {
-                GameDataManager.Instance.SetUserData(
-                    currentUserData.uid,
-                    currentUserData.username,
-                    currentUserData.email,
-                    currentUserData.ingameName,
-                    currentUserData.gender,
-                    currentUserData.level,
-                    currentUserData.xp,
-                    currentUserData.currencies.antCoin,
-                    currentUserData.currencies.dCoin,
-                    currentUserData.stats.matchesPlayed,
-                    currentUserData.stats.wins
-                );
-                Debug.Log($"AuthUIController: User data set for scene transition - {currentUserData.username}");
+                // Play start sound
+                if (AudioManager.Instance != null)
+                {
+                    AudioManager.Instance.PlayStart();
+                }
+
+                SceneManager.LoadScene("LoadingScene");
             }
-            
-            // Load LoadingScene instead of directly to MenuScene
-            SceneManager.LoadScene("LoadingScene");
         }
 
+        private void OnExitClicked()
+        {
+            Debug.Log("Exit button clicked - Quitting application");
+            Application.Quit();
+
+            #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+            #endif
+        }
+
+        // ===== VALIDATION METHODS =====
+
+        private void OnUsernameChanged(string value)
+        {
+            if (usernameCheckCoroutine != null)
+            {
+                StopCoroutine(usernameCheckCoroutine);
+            }
+
+            if (string.IsNullOrEmpty(value))
+            {
+                textCheckUsername.gameObject.SetActive(false);
+                return;
+            }
+
+            if (firebaseAuthService == null || !firebaseAuthService.IsFirebaseReady())
+            {
+                textCheckUsername.gameObject.SetActive(true);
+                textCheckUsername.text = "Initializing Firebase...";
+                textCheckUsername.color = Color.yellow;
+                return;
+            }
+
+            usernameCheckCoroutine = StartCoroutine(CheckUsernameDebounced(value));
+        }
+
+        private IEnumerator CheckUsernameDebounced(string username)
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            textCheckUsername.gameObject.SetActive(true);
+            textCheckUsername.text = "Checking...";
+            textCheckUsername.color = Color.yellow;
+
+            var checkTask = firebaseAuthService.IsUsernameTakenAsync(username);
+            yield return new WaitUntil(() => checkTask.IsCompleted);
+
+            try
+            {
+                bool isTaken = checkTask.Result;
+
+                if (isTaken)
+                {
+                    textCheckUsername.text = "Username already taken";
+                    textCheckUsername.color = Color.red;
+                }
+                else
+                {
+                    textCheckUsername.text = "Username available";
+                    textCheckUsername.color = Color.green;
+                }
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("permissions") || e.Message.Contains("Permission"))
+                {
+                    textCheckUsername.text = "Cannot check username (Firestore rules need update)";
+                    textCheckUsername.color = Color.yellow;
+                }
+                else
+                {
+                    textCheckUsername.text = "Error checking username";
+                    textCheckUsername.color = Color.red;
+                }
+                Debug.LogError($"Username check error: {e.Message}");
+            }
+
+            ValidateRegisterForm();
+        }
+
+        private void OnEmailChanged(string value)
+        {
+            if (emailCheckCoroutine != null)
+            {
+                StopCoroutine(emailCheckCoroutine);
+            }
+
+            if (string.IsNullOrEmpty(value) || !value.Contains("@"))
+            {
+                textCheckEmail.gameObject.SetActive(false);
+                return;
+            }
+
+            if (firebaseAuthService == null || !firebaseAuthService.IsFirebaseReady())
+            {
+                textCheckEmail.gameObject.SetActive(true);
+                textCheckEmail.text = "Initializing Firebase...";
+                textCheckEmail.color = Color.yellow;
+                return;
+            }
+
+            emailCheckCoroutine = StartCoroutine(CheckEmailDebounced(value));
+        }
+
+        private IEnumerator CheckEmailDebounced(string email)
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            textCheckEmail.gameObject.SetActive(true);
+            textCheckEmail.text = "Checking...";
+            textCheckEmail.color = Color.yellow;
+
+            var checkTask = firebaseAuthService.IsEmailTakenAsync(email);
+            yield return new WaitUntil(() => checkTask.IsCompleted);
+
+            try
+            {
+                bool isTaken = checkTask.Result;
+
+                if (isTaken)
+                {
+                    textCheckEmail.text = "Email already registered";
+                    textCheckEmail.color = Color.red;
+                }
+                else
+                {
+                    textCheckEmail.text = "Email available";
+                    textCheckEmail.color = Color.green;
+                }
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("permissions") || e.Message.Contains("Permission"))
+                {
+                    textCheckEmail.text = "Cannot check email (Firestore rules need update)";
+                    textCheckEmail.color = Color.yellow;
+                }
+                else
+                {
+                    textCheckEmail.text = "Error checking email";
+                    textCheckEmail.color = Color.red;
+                }
+                Debug.LogError($"Email check error: {e.Message}");
+            }
+
+            ValidateRegisterForm();
+        }
+
+        private void OnPassword1Changed(string value)
+        {
+            textCheckPw1.gameObject.SetActive(true);
+
+            if (string.IsNullOrEmpty(value))
+            {
+                textCheckPw1.text = "Password required";
+                textCheckPw1.color = Color.red;
+            }
+            else if (value.Length < 8)
+            {
+                textCheckPw1.text = "Password must be at least 8 characters";
+                textCheckPw1.color = Color.red;
+            }
+            else
+            {
+                textCheckPw1.text = "Password valid";
+                textCheckPw1.color = Color.green;
+            }
+
+            ValidateRegisterForm();
+            OnPassword2Changed(inputPassword2.text);
+        }
+
+        private void OnPassword2Changed(string value)
+        {
+            textCheckPw2.gameObject.SetActive(true);
+
+            if (string.IsNullOrEmpty(value))
+            {
+                textCheckPw2.text = "Confirm password required";
+                textCheckPw2.color = Color.red;
+            }
+            else if (value != inputPassword1.text)
+            {
+                textCheckPw2.text = "Passwords do not match";
+                textCheckPw2.color = Color.red;
+            }
+            else
+            {
+                textCheckPw2.text = "Passwords match";
+                textCheckPw2.color = Color.green;
+            }
+
+            ValidateRegisterForm();
+        }
+
+        private bool ValidateRegisterForm()
+        {
+            bool isValid = true;
+
+            // Check username
+            if (string.IsNullOrEmpty(inputUsername.text) ||
+                textCheckUsername.color != Color.green)
+            {
+                isValid = false;
+            }
+
+            // Check email
+            if (string.IsNullOrEmpty(inputEmail.text) ||
+                textCheckEmail.color != Color.green)
+            {
+                isValid = false;
+            }
+
+            // Check password1
+            if (string.IsNullOrEmpty(inputPassword1.text) ||
+                textCheckPw1.color != Color.green)
+            {
+                isValid = false;
+            }
+
+            // Check password2
+            if (string.IsNullOrEmpty(inputPassword2.text) ||
+                textCheckPw2.color != Color.green)
+            {
+                isValid = false;
+            }
+
+            buttonCreateAccount.interactable = isValid && !isProcessing;
+            return isValid;
+        }
+
+        // ===== FIREBASE AUTH EVENTS =====
 
         private void OnUserSignedIn(FirebaseUser user)
         {
@@ -571,13 +679,12 @@ namespace AntKnow.Auth
             Debug.Log("User signed out");
             buttonStart.SetActive(false);
             currentUserData = null;
-            
-            // Hide avatar panel
+
             if (avatarPanel != null)
             {
                 avatarPanel.HidePanel();
             }
-            
+
             UpdateLogButtonSprite();
         }
 
@@ -585,6 +692,8 @@ namespace AntKnow.Auth
         {
             ShowNotification(error, true);
         }
+
+        // ===== UI HELPER METHODS =====
 
         private void UpdateLogButtonSprite()
         {
@@ -609,19 +718,25 @@ namespace AntKnow.Auth
         {
             textNotification.text = message;
             textNotification.color = isError ? Color.red : Color.green;
-            panelThongBao.SetActive(true);
+            panelNotification.SetActive(true);
+
+            // Play notification sound
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayNotification();
+            }
 
             if (notificationCoroutine != null)
             {
                 StopCoroutine(notificationCoroutine);
             }
-            notificationCoroutine = StartCoroutine(HideNotificationAfterDelay(3f));
+            notificationCoroutine = StartCoroutine(HideNotificationAfterDelay(notificationDuration));
         }
 
         private IEnumerator HideNotificationAfterDelay(float delay)
         {
             yield return new WaitForSeconds(delay);
-            panelThongBao.SetActive(false);
+            panelNotification.SetActive(false);
         }
 
         private void SetProcessing(bool processing)
@@ -632,14 +747,21 @@ namespace AntKnow.Auth
             buttonCreateAccount.interactable = !processing && ValidateRegisterForm();
         }
 
-        private void SaveCredentials(string userOrEmail)
+        // ===== REMEMBER ME FUNCTIONALITY =====
+
+        private void SaveCredentials(string userOrEmail, string password)
         {
             try
             {
                 string encodedUser = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(userOrEmail));
+                string encodedPass = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(password));
+
                 PlayerPrefs.SetString("remember_me", "true");
                 PlayerPrefs.SetString("saved_user", encodedUser);
+                PlayerPrefs.SetString("saved_pass", encodedPass);
                 PlayerPrefs.Save();
+
+                Debug.Log("Credentials saved successfully");
             }
             catch (Exception e)
             {
@@ -651,14 +773,23 @@ namespace AntKnow.Auth
         {
             try
             {
-                if (PlayerPrefs.GetString("remember_me") == "true")
+                string rememberMe = PlayerPrefs.GetString("remember_me", "false");
+
+                if (rememberMe == "true")
                 {
-                    string encodedUser = PlayerPrefs.GetString("saved_user");
-                    if (!string.IsNullOrEmpty(encodedUser))
+                    string encodedUser = PlayerPrefs.GetString("saved_user", "");
+                    string encodedPass = PlayerPrefs.GetString("saved_pass", "");
+
+                    if (!string.IsNullOrEmpty(encodedUser) && !string.IsNullOrEmpty(encodedPass))
                     {
                         string userOrEmail = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(encodedUser));
+                        string password = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(encodedPass));
+
                         inputUsernameOrEmail.text = userOrEmail;
+                        inputPassword.text = password;
                         toggleRememberMe.isOn = true;
+
+                        Debug.Log("Credentials loaded successfully");
                     }
                 }
             }
@@ -670,71 +801,44 @@ namespace AntKnow.Auth
 
         private void ClearSavedCredentials()
         {
-            PlayerPrefs.DeleteKey("remember_me");
-            PlayerPrefs.DeleteKey("saved_user");
-            PlayerPrefs.Save();
-        }
-
-        private async void CheckAuthState()
-        {
-            if (firebaseAuthService != null && firebaseAuthService.Auth != null)
-            {
-                if (firebaseAuthService.Auth.CurrentUser != null)
-                {
-                    await LoadUserDataAndShowAvatar(firebaseAuthService.Auth.CurrentUser.UserId);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Load user data and show avatar panel
-        /// </summary>
-        private async System.Threading.Tasks.Task LoadUserDataAndShowAvatar(string uid)
-        {
             try
             {
-                // Load user data from Firestore
-                currentUserData = await firebaseAuthService.GetUserDataAsync(uid);
-                
-                if (currentUserData != null)
-                {
-                    // Hide login panel and show avatar panel
-                    panelLog.SetActive(false);
-                    logButton.SetActive(true);
-                    buttonStart.SetActive(true);
-                    
-                    // Show avatar panel with user data
-                    if (avatarPanel != null)
-                    {
-                        avatarPanel.ShowPanel(currentUserData);
-                    }
-                    
-                    UpdateLogButtonSprite();
-                    Debug.Log($"User data loaded and avatar panel shown: {currentUserData.username}");
-                }
-                else
-                {
-                    Debug.LogError("Failed to load user data");
-                    ShowNotification("Lỗi tải dữ liệu người dùng", true);
-                }
+                PlayerPrefs.DeleteKey("remember_me");
+                PlayerPrefs.DeleteKey("saved_user");
+                PlayerPrefs.DeleteKey("saved_pass");
+                PlayerPrefs.Save();
+
+                Debug.Log("Credentials cleared");
             }
             catch (Exception e)
             {
-                Debug.LogError($"Error loading user data: {e.Message}");
-                ShowNotification("Lỗi tải dữ liệu người dùng", true);
+                Debug.LogError($"Error clearing credentials: {e.Message}");
             }
         }
 
+        private void CheckAuthState()
+        {
+            if (firebaseAuthService != null && firebaseAuthService.Auth != null)
+            {
+                var currentUser = firebaseAuthService.Auth.CurrentUser;
+                if (currentUser != null)
+                {
+                    Debug.Log($"User already logged in: {currentUser.Email}");
+                    UpdateLogButtonSprite();
+                }
+            }
+        }
 
         private void OnDestroy()
         {
+            // Unsubscribe from events
             if (firebaseAuthService != null)
             {
                 firebaseAuthService.OnUserSignedIn -= OnUserSignedIn;
                 firebaseAuthService.OnUserSignedOut -= OnUserSignedOut;
                 firebaseAuthService.OnAuthError -= OnAuthError;
             }
-
         }
     }
 }
+

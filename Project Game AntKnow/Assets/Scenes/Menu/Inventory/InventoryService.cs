@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using Firebase.Firestore;
@@ -72,31 +73,51 @@ namespace AntKnow.Inventory
             try
             {
                 DebugLog($"Loading inventory for user: {uid}");
-                
+
                 var inventoryRef = firestore.Collection("users").Document(uid).Collection("inventory");
                 var snapshot = await inventoryRef.GetSnapshotAsync();
-                
+
+                DebugLog($"Found {snapshot.Documents.Count()} documents in inventory collection");
+
                 cachedInventory.Clear();
-                
+
                 foreach (var doc in snapshot.Documents)
                 {
+                    DebugLog($"Processing inventory doc: {doc.Id}");
+
                     var item = ParseInventoryItem(doc);
                     if (item != null)
                     {
+                        DebugLog($"Parsed item: itemId={item.itemId}, type={item.type}, docId={item.docId}");
+
                         // Load item data from items collection
                         item.itemData = await GetItemDataAsync(item.itemId);
+
+                        if (item.itemData != null)
+                        {
+                            DebugLog($"✅ Loaded itemData for {item.itemId}, icon: {item.itemData.icon}, name: {item.itemData.name}");
+                        }
+                        else
+                        {
+                            DebugLogError($"❌ Failed to load itemData for {item.itemId} - Check if items/{item.itemId} exists in Firestore!");
+                        }
+
                         cachedInventory.Add(item);
                     }
+                    else
+                    {
+                        DebugLogError($"Failed to parse inventory doc: {doc.Id}");
+                    }
                 }
-                
+
                 DebugLog($"Loaded {cachedInventory.Count} items from inventory");
                 OnInventoryLoaded?.Invoke(cachedInventory);
-                
+
                 return cachedInventory;
             }
             catch (Exception e)
             {
-                DebugLogError($"Error loading inventory: {e.Message}");
+                DebugLogError($"Error loading inventory: {e.Message}\n{e.StackTrace}");
                 OnInventoryError?.Invoke($"Lỗi tải inventory: {e.Message}");
                 return new List<InventoryItem>();
             }

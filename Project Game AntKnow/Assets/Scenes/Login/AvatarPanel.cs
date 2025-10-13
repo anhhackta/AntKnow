@@ -14,8 +14,10 @@ namespace AntKnow.Auth
         [SerializeField] private Text textIngameName;
         [SerializeField] private Text textOnlineStatus;
 
-        [Header("Default Avatar")]
-        [SerializeField] private Sprite defaultAvatarSprite;
+        [Header("Gender Sprites")]
+        [SerializeField] private Sprite maleAvatarSprite;      // Male avatar
+        [SerializeField] private Sprite femaleAvatarSprite;    // Female avatar
+        [SerializeField] private Sprite defaultAvatarSprite;   // Default (if no gender set)
 
         private UserData currentUserData;
         private FirebaseAuthService firebaseAuthService;
@@ -101,17 +103,46 @@ namespace AntKnow.Auth
                 }
                 else
                 {
-                    textIngameName.text = "Chưa đặt tên game";
+                    // Default name if not set
+                    textIngameName.text = "New Player";
                 }
             }
 
-            // Update avatar image
-            if (avatarImage != null && defaultAvatarSprite != null)
+            // Update avatar image based on gender
+            if (avatarImage != null)
             {
-                avatarImage.sprite = defaultAvatarSprite;
+                Sprite avatarToUse = GetAvatarSpriteByGender(userData.gender);
+                avatarImage.sprite = avatarToUse;
             }
 
-            Debug.Log($"Avatar Panel updated for user: {userData.username}");
+            Debug.Log($"Avatar Panel updated for user: {userData.username}, gender: {userData.gender}");
+        }
+
+        /// <summary>
+        /// Get avatar sprite based on gender
+        /// </summary>
+        private Sprite GetAvatarSpriteByGender(string gender)
+        {
+            if (string.IsNullOrEmpty(gender))
+            {
+                // No gender set, use default
+                return defaultAvatarSprite != null ? defaultAvatarSprite : null;
+            }
+
+            switch (gender.ToLower())
+            {
+                case "male":
+                case "nam":
+                    return maleAvatarSprite != null ? maleAvatarSprite : defaultAvatarSprite;
+
+                case "female":
+                case "nữ":
+                case "nu":
+                    return femaleAvatarSprite != null ? femaleAvatarSprite : defaultAvatarSprite;
+
+                default:
+                    return defaultAvatarSprite;
+            }
         }
 
         /// <summary>

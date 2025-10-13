@@ -243,6 +243,13 @@ namespace AntKnow.Auth
 
         private void OnCreateRoomClicked()
         {
+            // Prevent if searching match
+            if (AntKnow.Services.MatchmakerService.Instance.IsSearching)
+            {
+                DebugLogError("Cannot create room while searching for match");
+                return;
+            }
+
             ShowPanelCreateRoom();
         }
 
@@ -341,10 +348,17 @@ namespace AntKnow.Auth
         private async void OnRoomItemClicked(string lobbyId)
         {
             DebugLog($"Room clicked: {lobbyId}");
-            
+
+            // Prevent if searching match
+            if (AntKnow.Services.MatchmakerService.Instance.IsSearching)
+            {
+                DebugLogError("Cannot join room while searching for match");
+                return;
+            }
+
             // Join lobby
             bool joined = await CustomLobbyService.Instance.JoinLobbyByIdAsync(lobbyId);
-            
+
             if (joined)
             {
                 // Event OnLobbyJoined sẽ xử lý việc chuyển panel
@@ -363,6 +377,13 @@ namespace AntKnow.Auth
 
         private async void OnConfirmCreateClicked()
         {
+            // Prevent if searching match
+            if (AntKnow.Services.MatchmakerService.Instance.IsSearching)
+            {
+                DebugLogError("Cannot create room while searching for match");
+                return;
+            }
+
             string roomName = inputRoomName != null ? inputRoomName.text : "";
             if (string.IsNullOrEmpty(roomName))
                 roomName = $"Room_{UnityEngine.Random.Range(1000, 9999)}";

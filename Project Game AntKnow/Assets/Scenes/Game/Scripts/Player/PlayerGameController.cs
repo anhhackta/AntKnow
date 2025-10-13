@@ -450,26 +450,23 @@ namespace AntKnow.Game
         /// <summary>
         /// Show turn indicator
         /// NOTE:
-        /// - Multiplayer: CHỈ HIỆN CHO NGƯỜI CHƠI ĐIỀU KHIỂN (IsOwner)
-        /// - Demo Mode: Luôn hiện (không có network)
+        /// - Multiplayer: ch? Host ho?c Owner m?i g?i request
+        /// - Demo Mode: lu�n hi?n th?
         /// </summary>
         public void ShowTurnIndicator()
         {
-            // ⭐ Check NetworkObject - nếu không có (Demo Mode) → luôn hiện
             var networkObject = GetComponent<NetworkObject>();
             bool isDemoMode = (networkObject == null || !networkObject.IsSpawned);
 
-            // Multiplayer: Chỉ hiện cho owner
-            if (!isDemoMode && !IsOwner)
+            if (!isDemoMode && !IsServer && !IsOwner)
             {
-                Debug.Log($"[PlayerGameController] Turn indicator NOT shown for {playerName} (not owner)");
                 return;
             }
 
             if (turnIndicator != null)
             {
                 turnIndicator.Show();
-                Debug.Log($"[PlayerGameController] Turn indicator shown for {playerName} (Demo: {isDemoMode}, Owner: {IsOwner})");
+                Debug.Log($"[PlayerGameController] Turn indicator shown for {playerName} (Demo: {isDemoMode}, Owner: {IsOwner}, Server: {IsServer})");
             }
         }
 
@@ -478,6 +475,14 @@ namespace AntKnow.Game
         /// </summary>
         public void HideTurnIndicator()
         {
+            var networkObject = GetComponent<NetworkObject>();
+            bool isDemoMode = (networkObject == null || !networkObject.IsSpawned);
+
+            if (!isDemoMode && !IsServer && !IsOwner)
+            {
+                return;
+            }
+
             if (turnIndicator != null)
             {
                 turnIndicator.Hide();
@@ -485,4 +490,5 @@ namespace AntKnow.Game
         }
     }
 }
+
 

@@ -35,6 +35,10 @@ namespace AntKnow.Game
         private int correctAnswerIndex = -1;
         private float timeRemaining = 0f;
         private bool isAnswered = false;
+        private bool answerReported = false;
+        private QuizData currentQuizData;
+        private ColorBlock[] initialButtonColors;
+        private Coroutine timerCoroutine;
         
         private System.Action<bool> onAnswerCallback; // true = correct, false = wrong
         
@@ -45,6 +49,17 @@ namespace AntKnow.Game
             answerTexts[1] = btnAnswer2.GetComponentInChildren<TextMeshProUGUI>();
             answerTexts[2] = btnAnswer3.GetComponentInChildren<TextMeshProUGUI>();
             answerTexts[3] = btnAnswer4.GetComponentInChildren<TextMeshProUGUI>();
+
+            // Cache initial button colors for reset
+            Button[] buttons = { btnAnswer1, btnAnswer2, btnAnswer3, btnAnswer4 };
+            initialButtonColors = new ColorBlock[buttons.Length];
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                if (buttons[i] != null)
+                {
+                    initialButtonColors[i] = buttons[i].colors;
+                }
+            }
             
             // Setup button listeners
             btnAnswer1.onClick.AddListener(() => OnAnswerClicked(0));
@@ -53,27 +68,113 @@ namespace AntKnow.Game
             btnAnswer4.onClick.AddListener(() => OnAnswerClicked(3));
         }
         
-        /// <summary>
-        /// Show quiz panel
-        /// </summary>
-        public void Show(System.Action<bool> onAnswer, bool annualQuiz = false)
+        private void PrepareForQuiz(System.Action<bool> onAnswer, bool annualQuiz, float? overrideAnswerTime)
         {
             onAnswerCallback = onAnswer;
             isAnswered = false;
+            answerReported = false;
             timeRemaining = answerTime;
             isAnnualQuiz = annualQuiz;
-            
+            currentQuizData = null;
+
+            if (overrideAnswerTime.HasValue)
+            {
+                timeRemaining = Mathf.Max(1f, overrideAnswerTime.Value);
+            }
+
             // Hide fortune wheel initially
             if (fortuneWheelObject != null)
             {
                 fortuneWheelObject.SetActive(false);
             }
-            
+            if (textWheelResult != null)
+            {
+                textWheelResult.text = string.Empty;
+            }
+            if (textTimer != null)
+            {
+                textTimer.text = string.Empty;
+            }
+            ResetAnswerButtons();
+        }
+        
+        /// <summary>
+        /// Show quiz panel (legacy - loads question from Firebase)
+        /// </summary>
+        public void Show(System.Action<bool> onAnswer, bool annualQuiz = false)
+        {
+            PrepareForQuiz(onAnswer, annualQuiz, null);
+
             // Load random question from Firebase
             LoadRandomQuestion();
             
             gameObject.SetActive(true);
-            StartCoroutine(TimerCoroutine());
+            RestartTimer();
+        }
+
+        /// <summary>
+        /// Show quiz panel with provided quiz data (recommended for multiplayer)
+        /// </summary>
+        public void Show(QuizData quizData, System.Action<bool> onAnswer, bool annualQuiz = false, float? overrideAnswerTime = null)
+        {
+            PrepareForQuiz(onAnswer, annualQuiz, overrideAnswerTime);
+
+            if (quizData != null)
+            {
+                SetQuestion(
+                    quizData.question ?? "Question",
+                    string.Empty,
+                    quizData.options != null && quizData.options.Length > 0 ? quizData.options[0] : "Option 1",
+                    quizData.options != null && quizData.options.Length > 1 ? quizData.options[1] : "Option 2",
+                    quizData.options != null && quizData.options.Length > 2 ? quizData.options[2] : "Option 3",
+                    quizData.options != null && quizData.options.Length > 3 ? quizData.options[3] : "Option 4",
+                    quizData.correctAnswer
+                );
+            }
+            else
+            {
+                Debug.LogWarning("[PanelQuiz] Provided quiz data is null. Falling back to Firebase load.");
+                LoadRandomQuestion();
+            }
+
+            gameObject.SetActive(true);
+            RestartTimer();
+        }
+
+        /// <summary>
+        /// Restart countdown timer coroutine
+        /// </summary>
+        private void RestartTimer()
+        {
+            if (timerCoroutine != null)
+            {
+                StopCoroutine(timerCoroutine);
+            }
+            timerCoroutine = StartCoroutine(TimerCoroutine());
+        }
+
+        /// <summary>
+        /// Reset button visuals and states for a new quiz
+        /// </summary>
+        private void ResetAnswerButtons()
+        {
+            Button[] buttons = { btnAnswer1, btnAnswer2, btnAnswer3, btnAnswer4 };
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                if (buttons[i] != null)
+                {
+                    if (initialButtonColors != null && i < initialButtonColors.Length)
+                    {
+                        buttons[i].colors = initialButtonColors[i];
+                    }
+                    buttons[i].interactable = true;
+                }
+            }
+
+            if (textDifficulty != null)
+            {
+                textDifficulty.text = string.Empty;
+            }
         }
         
         /// <summary>
@@ -198,6 +299,13 @@ namespace AntKnow.Game
         /// </summary>
         private void SetQuestion(string question, string difficulty, string ans1, string ans2, string ans3, string ans4, int correctIndex)
         {
+            currentQuizData = new QuizData
+            {
+                question = question,
+                options = new[] { ans1, ans2, ans3, ans4 },
+                correctAnswer = Mathf.Clamp(correctIndex, 0, 3)
+            };
+
             if (textQuestion != null)
             {
                 textQuestion.text = question;
@@ -213,7 +321,7 @@ namespace AntKnow.Game
             answerTexts[2].text = ans3;
             answerTexts[3].text = ans4;
             
-            correctAnswerIndex = correctIndex;
+            correctAnswerIndex = currentQuizData.correctAnswer;
             
             // Enable all buttons
             btnAnswer1.interactable = true;
@@ -244,6 +352,8 @@ namespace AntKnow.Game
             {
                 OnTimeUp();
             }
+
+            timerCoroutine = null;
         }
         
         /// <summary>
@@ -252,6 +362,10 @@ namespace AntKnow.Game
         private void OnAnswerClicked(int answerIndex)
         {
             if (isAnswered) return;
+            if (currentQuizData == null)
+            {
+                Debug.LogWarning("[PanelQuiz] No quiz data available when answering.");
+            }
             
             isAnswered = true;
             
@@ -265,8 +379,9 @@ namespace AntKnow.Game
             bool isCorrect = (answerIndex == correctAnswerIndex);
             
             Debug.Log($"[PanelQuiz] Answer {answerIndex} clicked. Correct: {isCorrect}");
-            
-            // Callback
+
+            NotifyAnswer(isCorrect);
+
             StartCoroutine(ShowResultAndClose(isCorrect));
         }
         
@@ -277,9 +392,24 @@ namespace AntKnow.Game
         {
             Debug.Log("[PanelQuiz] Time's up!");
             isAnswered = true;
+            NotifyAnswer(false);
             
             // Treat as wrong answer
             StartCoroutine(ShowResultAndClose(false));
+        }
+        
+        /// <summary>
+        /// Notify listeners about quiz result exactly once
+        /// </summary>
+        private void NotifyAnswer(bool isCorrect)
+        {
+            if (answerReported)
+            {
+                return;
+            }
+
+            answerReported = true;
+            onAnswerCallback?.Invoke(isCorrect);
         }
         
         /// <summary>
@@ -303,9 +433,6 @@ namespace AntKnow.Game
             {
                 yield return StartCoroutine(ShowFortuneWheel());
             }
-            
-            // Callback
-            onAnswerCallback?.Invoke(isCorrect);
             
             // Hide
             Hide();
@@ -389,8 +516,26 @@ namespace AntKnow.Game
         public void Hide()
         {
             StopAllCoroutines();
+            timerCoroutine = null;
+            isAnswered = false;
+            answerReported = false;
+            currentQuizData = null;
+
+            if (fortuneWheelObject != null)
+            {
+                fortuneWheelObject.SetActive(false);
+            }
+            if (textTimer != null)
+            {
+                textTimer.text = string.Empty;
+            }
+            if (textWheelResult != null)
+            {
+                textWheelResult.text = string.Empty;
+            }
+
+            ResetAnswerButtons();
             gameObject.SetActive(false);
         }
     }
 }
-

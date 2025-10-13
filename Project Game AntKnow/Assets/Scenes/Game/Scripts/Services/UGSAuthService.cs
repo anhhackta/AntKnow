@@ -21,9 +21,51 @@ namespace AntKnow.Services
         public static event Action<string> OnUGSAuthError;
 
         // Properties
-        public static bool IsSignedIn => AuthenticationService.Instance.IsSignedIn;
-        public static string PlayerId => AuthenticationService.Instance.PlayerId;
-        public static string PlayerName => AuthenticationService.Instance.PlayerName;
+        public static bool IsSignedIn
+        {
+            get
+            {
+                try
+                {
+                    return UnityServices.State == ServicesInitializationState.Initialized
+                        && AuthenticationService.Instance.IsSignedIn;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
+
+        public static string PlayerId
+        {
+            get
+            {
+                try
+                {
+                    return AuthenticationService.Instance.PlayerId;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        public static string PlayerName
+        {
+            get
+            {
+                try
+                {
+                    return AuthenticationService.Instance.PlayerName;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
 
         private static UGSAuthService _instance;
         public static UGSAuthService Instance

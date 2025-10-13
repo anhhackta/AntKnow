@@ -21,6 +21,57 @@ namespace AntKnow.Game
         public int correctAnswer;
     }
 
+    /// <summary>
+    /// Serialized quiz payload for network transport
+    /// </summary>
+    [System.Serializable]
+    public struct QuizQuestionPayload : INetworkSerializable
+    {
+        public string question;
+        public string option0;
+        public string option1;
+        public string option2;
+        public string option3;
+        public int correctAnswer;
+
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref question);
+            serializer.SerializeValue(ref option0);
+            serializer.SerializeValue(ref option1);
+            serializer.SerializeValue(ref option2);
+            serializer.SerializeValue(ref option3);
+            serializer.SerializeValue(ref correctAnswer);
+        }
+
+        public static QuizQuestionPayload FromQuizData(QuizData data)
+        {
+            QuizQuestionPayload payload = new QuizQuestionPayload
+            {
+                question = data?.question ?? "Question",
+                correctAnswer = data?.correctAnswer ?? 0
+            };
+
+            string[] options = data?.options ?? System.Array.Empty<string>();
+            payload.option0 = options.Length > 0 ? options[0] : "Option 1";
+            payload.option1 = options.Length > 1 ? options[1] : "Option 2";
+            payload.option2 = options.Length > 2 ? options[2] : "Option 3";
+            payload.option3 = options.Length > 3 ? options[3] : "Option 4";
+
+            return payload;
+        }
+
+        public QuizData ToQuizData()
+        {
+            return new QuizData
+            {
+                question = question,
+                options = new[] { option0, option1, option2, option3 },
+                correctAnswer = Mathf.Clamp(correctAnswer, 0, 3)
+            };
+        }
+    }
+
     // ===== NETWORK STRUCTS =====
 
     /// <summary>
@@ -142,6 +193,15 @@ namespace AntKnow.Game
         public bool IsGameActive => isGameActive;
         public int CurrentTurn => currentTurn;
         public PlayerGameController CurrentPlayer => players.Count > 0 ? players[currentPlayerIndex] : null;
+        private int quizSessionCounter = 0;
+        private int activeQuizSessionId = -1;
+        private int activeQuizPlayerIndex = -1;
+        private ulong activeQuizClientId = ulong.MaxValue;
+        private bool activeQuizAnswerReceived = false;
+        private bool activeQuizAnswerCorrect = false;
+        private QuizQuestionPayload activeQuizPayload;
+        private const float QUIZ_TIMEOUT_SECONDS = 30f;
+        private int localQuizSessionId = -1;
 
         private void Awake()
         {
@@ -499,6 +559,10 @@ namespace AntKnow.Game
         /// </summary>
         private void UpdateTurnIndicators()
         {
+            if (!demoMode && !IsServer)
+            {
+                return;
+            }
             for (int i = 0; i < players.Count; i++)
             {
                 if (players[i] != null)
@@ -981,7 +1045,7 @@ namespace AntKnow.Game
         }
 
         /// <summary>
-        /// Auto end turn after delay (for tiles without panels)
+        /// Auto end turn sau delay (dùng cho các ô không mở panel riêng)
         /// </summary>
         private IEnumerator AutoEndTurnAfterDelay(float delay)
         {
@@ -990,101 +1054,323 @@ namespace AntKnow.Game
             EndTurn();
         }
 
-        /// <summary>
-        /// ✅ Handle Quiz tile - Simplified with PanelNotification
-        /// </summary>
-        private IEnumerator HandleQuizTile(PlayerGameController player)
+        private void ResetActiveQuizState()
         {
-            // Load quiz from Firebase
-            QuizData quizData = null;
-            yield return StartCoroutine(LoadRandomQuizCoroutine((data) => quizData = data));
+            activeQuizSessionId = -1;
+            activeQuizPlayerIndex = -1;
+            activeQuizClientId = ulong.MaxValue;
+            activeQuizAnswerReceived = false;
+            activeQuizAnswerCorrect = false;
+            activeQuizPayload = default;
+        }
 
+        private QuizData NormalizeQuizData(QuizData quizData)
+        {
             if (quizData == null)
             {
-                // Fallback demo quiz
                 quizData = new QuizData
                 {
                     question = "2 + 2 = ?",
-                    options = new string[] { "3", "4", "5", "6" },
+                    options = new[] { "3", "4", "5", "6" },
                     correctAnswer = 1
                 };
             }
 
-            // Show question
-            if (panelNotification != null)
+            if (quizData.options == null || quizData.options.Length < 4)
             {
-                string optionsText = $"A) {quizData.options[0]}\nB) {quizData.options[1]}\nC) {quizData.options[2]}\nD) {quizData.options[3]}";
-                panelNotification.ShowNotification($"Quiz:\n{quizData.question}\n\n{optionsText}");
+                string[] fallbackOptions = { "3", "4", "5", "6" };
+                string[] fixedOptions = new string[4];
+                for (int i = 0; i < fixedOptions.Length; i++)
+                {
+                    if (quizData.options != null && i < quizData.options.Length && !string.IsNullOrEmpty(quizData.options[i]))
+                    {
+                        fixedOptions[i] = quizData.options[i];
+                    }
+                    else
+                    {
+                        fixedOptions[i] = fallbackOptions[i];
+                    }
+                }
+                quizData.options = fixedOptions;
             }
 
-            yield return new WaitForSeconds(3f);
+            quizData.correctAnswer = Mathf.Clamp(quizData.correctAnswer, 0, 3);
+            return quizData;
+        }
 
-            // Random answer (demo mode)
-            int playerAnswer = Random.Range(0, 4);
-            bool isCorrect = playerAnswer == quizData.correctAnswer;
-
-            if (isCorrect)
+        private IEnumerator ExecuteQuizSession(PlayerGameController player, QuizData quizData, bool showStartNotification, System.Action<bool> onResult)
+        {
+            if (player == null)
             {
-                // ✅ Correct - No penalty
-                if (panelNotification != null)
+                yield break;
+            }
+
+            int playerIndex = players.IndexOf(player);
+            if (playerIndex < 0)
+            {
+                Debug.LogWarning("[GameManager] ExecuteQuizSession called for unknown player");
+                yield break;
+            }
+
+            if (!demoMode && !IsHost)
+            {
+                yield break;
+            }
+
+            quizData = NormalizeQuizData(quizData);
+
+            quizSessionCounter++;
+            activeQuizSessionId = quizSessionCounter;
+            activeQuizPlayerIndex = playerIndex;
+            activeQuizAnswerReceived = false;
+            activeQuizAnswerCorrect = false;
+            activeQuizPayload = QuizQuestionPayload.FromQuizData(quizData);
+
+            ulong clientId = 0;
+            var networkObject = player.GetComponent<NetworkObject>();
+            if (networkObject != null && networkObject.IsSpawned)
+            {
+                clientId = networkObject.OwnerClientId;
+            }
+            activeQuizClientId = clientId;
+
+            int sessionId = activeQuizSessionId;
+            Debug.Log($"[GameManager] Starting quiz session {sessionId} for {player.PlayerName} (Client {clientId})");
+
+            if (showStartNotification && panelNotification != null)
+            {
+                panelNotification.ShowNotification($"{player.PlayerName} dang tra loi cau hoi...");
+            }
+
+            if (demoMode)
+            {
+                if (panelQuiz != null)
                 {
-                    panelNotification.ShowNotification($"Correct! Answer: {quizData.options[quizData.correctAnswer]}");
+                    panelQuiz.Show(quizData, isCorrect =>
+                    {
+                        activeQuizAnswerReceived = true;
+                        activeQuizAnswerCorrect = isCorrect;
+                    }, false, QUIZ_TIMEOUT_SECONDS);
                 }
-                Debug.Log($"[GameManager] {player.PlayerName} answered correctly!");
+                else
+                {
+                    activeQuizAnswerReceived = true;
+                    activeQuizAnswerCorrect = Random.Range(0, 2) == 0;
+                }
             }
             else
             {
-                // ❌ Wrong - Random penalty
-                int penaltyType = Random.Range(0, 3);
-                string penaltyText = "";
+                StartQuizClientRpc(sessionId, playerIndex, activeQuizPayload, QUIZ_TIMEOUT_SECONDS);
+            }
 
-                switch (penaltyType)
+            float elapsed = 0f;
+            while (!activeQuizAnswerReceived && elapsed < QUIZ_TIMEOUT_SECONDS)
+            {
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            bool answeredCorrectly = activeQuizAnswerReceived && activeQuizAnswerCorrect;
+
+            if (!activeQuizAnswerReceived)
+            {
+                Debug.Log($"[GameManager] Quiz session {sessionId} timed out for {player.PlayerName}");
+                if (!demoMode)
                 {
-                    case 0:
-                        // Trừ tiền ngẫu nhiên (không vượt quá tiền hiện có)
-                        int maxPenalty = Mathf.Min(player.Money, 500);
-                        int moneyPenalty = Random.Range(100, maxPenalty + 1);
-                        player.SubtractMoney(moneyPenalty);
-                        penaltyText = $"Wrong! Penalty: -{moneyPenalty} money";
-                        break;
-
-                    case 1:
-                        // Giảm 1 nhà ngẫu nhiên
-                        bool downgraded = TryDowngradeRandomProperty(player);
-                        penaltyText = downgraded
-                            ? "Wrong! Penalty: Downgraded 1 property"
-                            : "Wrong! Penalty: No properties to downgrade";
-                        break;
-
-                    case 2:
-                        // Không có gì
-                        penaltyText = "Wrong! But lucky - No penalty!";
-                        break;
-                }
-
-                if (panelNotification != null)
-                {
-                    panelNotification.ShowNotification(penaltyText);
-                }
-
-                Debug.Log($"[GameManager] {player.PlayerName} answered incorrectly! {penaltyText}");
-
-                // Update UI
-                if (panelGame != null)
-                {
-                    panelGame.UpdateAllPanels();
+                    QuizTimeoutClientRpc(sessionId, playerIndex);
                 }
             }
 
-            yield return new WaitForSeconds(2f);
+            if (!demoMode)
+            {
+                QuizAnsweredClientRpc(sessionId, playerIndex, answeredCorrectly);
+            }
+            else if (panelQuiz != null)
+            {
+                panelQuiz.Hide();
+            }
 
-            // End turn
-            EndTurn();
+            if (demoMode && panelNotification != null)
+            {
+                panelNotification.ShowNotification(answeredCorrectly ? $"{player.PlayerName} tra loi dung!" : $"{player.PlayerName} tra loi sai!");
+            }
+
+            if (!demoMode)
+            {
+                QuizCompleteClientRpc(sessionId);
+            }
+
+            ResetActiveQuizState();
+
+            onResult?.Invoke(answeredCorrectly);
         }
 
         /// <summary>
-        /// Load random quiz from Firebase
+        /// Handle quiz tile (host authoritative quiz round)
         /// </summary>
+        private IEnumerator HandleQuizTile(PlayerGameController player)
+        {
+            if (player == null)
+            {
+                yield break;
+            }
+
+            if (!demoMode && !IsHost)
+            {
+                yield break;
+            }
+
+            QuizData quizData = null;
+            yield return StartCoroutine(LoadRandomQuizCoroutine(data => quizData = data));
+
+            bool answeredCorrectly = false;
+            yield return StartCoroutine(ExecuteQuizSession(player, quizData, true, result => answeredCorrectly = result));
+
+            if (!answeredCorrectly)
+            {
+                ApplyQuizPenalty(player);
+            }
+            else
+            {
+                Debug.Log($"[GameManager] {player.PlayerName} answered quiz correctly.");
+            }
+
+            if (panelGame != null)
+            {
+                panelGame.UpdateAllPanels();
+            }
+
+            yield return new WaitForSeconds(2f);
+            EndTurn();
+        }
+
+        [ClientRpc]
+        private void StartQuizClientRpc(int sessionId, int playerIndex, QuizQuestionPayload quizPayload, float timeoutSeconds)
+        {
+            if (demoMode)
+            {
+                return;
+            }
+
+            localQuizSessionId = sessionId;
+            QuizData quizData = quizPayload.ToQuizData();
+
+            string playerName = (playerIndex >= 0 && playerIndex < players.Count)
+                ? players[playerIndex].PlayerName
+                : $"Player {playerIndex + 1}";
+
+            int localPlayerIndex = -1;
+            if (NetworkManager.Singleton != null)
+            {
+                ulong localClientId = NetworkManager.Singleton.LocalClientId;
+                var localPlayer = players.Find(p =>
+                {
+                    var netObj = p.GetComponent<NetworkObject>();
+                    return netObj != null && netObj.OwnerClientId == localClientId;
+                });
+                localPlayerIndex = players.IndexOf(localPlayer);
+            }
+
+            if (localPlayerIndex == playerIndex)
+            {
+                Debug.Log("[Client] Local player answering quiz");
+                if (panelQuiz != null)
+                {
+                    panelQuiz.Show(quizData, isCorrect =>
+                    {
+                        SubmitQuizAnswerServerRpc(sessionId, isCorrect);
+                    }, false, timeoutSeconds);
+                }
+                else
+                {
+                    Debug.LogWarning("[Client] PanelQuiz missing, auto-submitting wrong answer");
+                    SubmitQuizAnswerServerRpc(sessionId, false);
+                }
+            }
+            else if (panelNotification != null)
+            {
+                panelNotification.ShowNotification($"{playerName} dang tra loi cau hoi...");
+            }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void SubmitQuizAnswerServerRpc(int sessionId, bool isCorrect, ServerRpcParams rpcParams = default)
+        {
+            if (demoMode)
+            {
+                return;
+            }
+
+            if (sessionId != activeQuizSessionId)
+            {
+                Debug.LogWarning($"[GameManager] Ignoring quiz answer for session {sessionId} (active {activeQuizSessionId})");
+                return;
+            }
+
+            ulong senderClientId = rpcParams.Receive.SenderClientId;
+            if (senderClientId != activeQuizClientId)
+            {
+                Debug.LogWarning($"[GameManager] Quiz answer from unexpected client {senderClientId}");
+                return;
+            }
+
+            activeQuizAnswerReceived = true;
+            activeQuizAnswerCorrect = isCorrect;
+
+            Debug.Log($"[GameManager] Quiz answer received for session {sessionId}: {(isCorrect ? "CORRECT" : "WRONG")}");
+        }
+
+        [ClientRpc]
+        private void QuizAnsweredClientRpc(int sessionId, int playerIndex, bool isCorrect)
+        {
+            string playerName = (playerIndex >= 0 && playerIndex < players.Count)
+                ? players[playerIndex].PlayerName
+                : $"Player {playerIndex + 1}";
+
+            if (panelNotification != null)
+            {
+                panelNotification.ShowNotification(isCorrect
+                    ? $"{playerName} tra loi dung!"
+                    : $"{playerName} tra loi sai!");
+            }
+
+            if (localQuizSessionId == sessionId)
+            {
+                localQuizSessionId = -1;
+            }
+        }
+
+        [ClientRpc]
+        private void QuizTimeoutClientRpc(int sessionId, int playerIndex)
+        {
+            string playerName = (playerIndex >= 0 && playerIndex < players.Count)
+                ? players[playerIndex].PlayerName
+                : $"Player {playerIndex + 1}";
+            if (panelNotification != null)
+            {
+                panelNotification.ShowNotification($"{playerName} het gio tra loi!");
+            }
+
+            if (localQuizSessionId == sessionId && panelQuiz != null)
+            {
+                panelQuiz.Hide();
+            }
+
+            if (localQuizSessionId == sessionId)
+            {
+                localQuizSessionId = -1;
+            }
+        }
+
+        [ClientRpc]
+        private void QuizCompleteClientRpc(int sessionId)
+        {
+            if (localQuizSessionId == sessionId)
+            {
+                localQuizSessionId = -1;
+            }
+        }
+
         private IEnumerator LoadRandomQuizCoroutine(System.Action<QuizData> callback)
         {
             QuizData quizData = null;
@@ -1564,101 +1850,30 @@ namespace AntKnow.Game
             for (int i = 0; i < players.Count; i++)
             {
                 var player = players[i];
-                
-                Debug.Log($"[Host] Quizzing player {i + 1}/{players.Count}: {player.PlayerName}");
-                
-                // TODO: Get quiz from Firebase
-                // For now, use demo quiz
-                
                 bool answeredCorrectly = false;
-                bool quizCompleted = false;
-                
-                // Notify client to show quiz
-                NotifyShowQuizClientRpc(i);
-                
-                // Wait for answer (timeout after 30 seconds)
-                float waitTime = 0f;
-                float timeout = 30f;
-                
-                while (!quizCompleted && waitTime < timeout)
-                {
-                    waitTime += Time.deltaTime;
-                    yield return null;
-                }
-                
-                // If timeout, treat as wrong answer
-                if (!quizCompleted)
-                {
-                    Debug.Log($"[Host] Player {player.PlayerName} timed out!");
-                    answeredCorrectly = false;
-                }
-                
-                // Apply penalty if wrong
+                QuizData quizData = null;
+                yield return StartCoroutine(LoadRandomQuizCoroutine(data => quizData = data));
+
+                yield return StartCoroutine(ExecuteQuizSession(player, quizData, true, result => answeredCorrectly = result));
+
                 if (!answeredCorrectly)
                 {
                     ApplyQuizPenalty(player);
                 }
-                
-                // Delay between players
+
+                if (panelGame != null)
+                {
+                    panelGame.UpdateAllPanels();
+                }
+
                 yield return new WaitForSeconds(2f);
             }
-            
+
             Debug.Log("[Host] === QUIZ ROUND COMPLETED ===");
-            
-            // Resume game
+
             isGameActive = true;
             StartTurn();
         }
-        
-        /// <summary>
-        /// HOST → CLIENT: Show quiz panel
-        /// </summary>
-        [ClientRpc]
-        private void NotifyShowQuizClientRpc(int playerIndex)
-        {
-            // Only show quiz for the specific player
-            ulong localClientId = NetworkManager.Singleton.LocalClientId;
-            var localPlayer = players.Find(p => {
-                var netObj = p.GetComponent<NetworkObject>();
-                return netObj != null && netObj.OwnerClientId == localClientId;
-            });
-            
-            int localPlayerIndex = players.IndexOf(localPlayer);
-            
-            if (localPlayerIndex == playerIndex)
-            {
-                // This is my turn to answer quiz
-                Debug.Log("[Client] 📝 My turn to answer quiz!");
-                
-                if (panelQuiz != null)
-                {
-                    panelQuiz.Show((isCorrect) => {
-                        // Send answer to Host
-                        SendQuizAnswerServerRpc(isCorrect);
-                    });
-                }
-            }
-            else
-            {
-                // Show waiting message
-                Debug.Log($"[Client] Waiting for {players[playerIndex].PlayerName} to answer quiz...");
-            }
-        }
-        
-        /// <summary>
-        /// CLIENT → HOST: Send quiz answer
-        /// </summary>
-        [ServerRpc(RequireOwnership = false)]
-        private void SendQuizAnswerServerRpc(bool isCorrect, ServerRpcParams rpcParams = default)
-        {
-            ulong clientId = rpcParams.Receive.SenderClientId;
-            
-            Debug.Log($"[Host] Received quiz answer from Client {clientId}: {(isCorrect ? "CORRECT" : "WRONG")}");
-            
-            // Mark quiz as completed
-            // (This will be handled by the coroutine)
-        }
-        
         /// <summary>
         /// Apply penalty for wrong quiz answer
         /// </summary>
@@ -1701,4 +1916,3 @@ namespace AntKnow.Game
         }
     }
 }
-

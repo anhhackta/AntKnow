@@ -17,20 +17,21 @@ namespace AntKnow.Auth
         [SerializeField] private Slider progressBar;
         [SerializeField] private Image backgroundPanel;
         [SerializeField] private Text tipsText;
+        [SerializeField] private CanvasGroup canvasGroup; // For fade out effect
 
         [Header("Background Images")]
         [SerializeField] private Sprite[] backgroundSprites;
 
         [Header("Game Tips/Facts")]
         [SerializeField] private string[] gameTips = {
-            "💡 Mẹo: Sử dụng skill cards một cách chiến lược để giành chiến thắng!",
-            "🎮 Fact: Mỗi card có thể được nâng cấp và tiến hóa để tăng sức mạnh.",
-            "⚡ Tip: Kết hợp các equipment để tối ưu hóa chỉ số của bạn.",
-            "🏆 Fact: Thắng trận đấu sẽ nhận được AntCoin và kinh nghiệm.",
-            "🎯 Mẹo: Đọc kỹ câu hỏi quiz để trả lời chính xác.",
-            "💎 Tip: Sử dụng DCoin để mua các vật phẩm đặc biệt.",
-            "🔥 Fact: Card có nhiều sao sẽ có cooldown ngắn hơn.",
-            "🎪 Mẹo: Tham gia nhiều trận đấu để tích lũy kinh nghiệm."
+            "💡 Tip: Use skill cards strategically to win!",
+            "🎮 Fact: Each card can be upgraded and evolved to increase power.",
+            "⚡ Tip: Combine equipment to optimize your stats.",
+            "🏆 Fact: Winning matches will earn you AntCoin and experience.",
+            "🎯 Tip: Read quiz questions carefully to answer correctly.",
+            "💎 Tip: Use DCoin to buy special items.",
+            "🔥 Fact: Cards with more stars have shorter cooldowns.",
+            "🎪 Tip: Join more matches to accumulate experience."
         };
 
         [Header("Settings")]
@@ -41,13 +42,18 @@ namespace AntKnow.Auth
 
         [Header("Loading Steps")]
         [SerializeField] private string[] loadingSteps = {
-            "Đang kết nối Firebase...",
-            "Đang tải thông tin người dùng...",
-            "Đang kiểm tra inventory...",
-            "Đang chuẩn bị loadout...",
-            "Đang tải cấu hình game...",
-            "Hoàn thành!"
+            "Connecting to Firebase...",
+            "Loading user data...",
+            "Checking inventory...",
+            "Preparing loadout...",
+            "Loading game configuration...",
+            "Complete!"
         };
+
+        // Static configuration for reusable loading
+        public static string sourceScene = "LoginScene";  // Where we came from
+        public static string targetScene = "MenuScene";   // Where we're going
+        public static bool checkProfile = true;           // Check ingame name + gender?
 
         private int currentTipIndex = 0;
         private int currentBackgroundIndex = 0;
@@ -141,12 +147,85 @@ namespace AntKnow.Auth
                 yield return new WaitForSeconds(minLoadingTime - elapsedTime);
             }
             
-            // Wait a bit before loading MenuScene
-            yield return new WaitForSeconds(0.5f);
-            
-            // Load SelectCharacterScene
-            Debug.Log("LoadingScene: Loading SelectCharacterScene");
-            SceneManager.LoadScene("SelectCharacterScene");
+            // Fade out loading screen
+            yield return StartCoroutine(FadeOut());
+
+            // Determine next scene based on configuration
+            string nextScene = targetScene;
+
+            // If checkProfile is enabled, verify user has complete profile
+            if (checkProfile)
+            {
+                bool hasIngameName = !string.IsNullOrEmpty(GameDataManager.Instance.currentIngameName);
+                bool hasGender = !string.IsNullOrEmpty(GameDataManager.Instance.currentGender);
+
+                if (hasIngameName && hasGender)
+                {
+                    // User has complete profile, go to target scene
+                    nextScene = targetScene;
+                    Debug.Log($"LoadingScene: User has complete profile (Name: {GameDataManager.Instance.currentIngameName}, Gender: {GameDataManager.Instance.currentGender}), loading {nextScene}");
+                }
+                else
+                {
+                    // User needs to select character
+                    nextScene = "SelectCharacterScene";
+                    Debug.Log($"LoadingScene: User needs to select character (Name: {GameDataManager.Instance.currentIngameName}, Gender: {GameDataManager.Instance.currentGender}), loading {nextScene}");
+                }
+            }
+            else
+            {
+                // No profile check, go directly to target scene
+                Debug.Log($"LoadingScene: Loading {nextScene} (no profile check)");
+            }
+
+            // Load next scene (Single mode will unload LoadingScene)
+            SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
+        }
+
+        private IEnumerator FadeOut()
+        {
+            if (canvasGroup == null)
+            {
+                // No CanvasGroup, just wait a bit
+                yield return new WaitForSeconds(0.5f);
+                yield break;
+            }
+
+            float fadeDuration = 0.5f;
+            float elapsed = 0f;
+
+            while (elapsed < fadeDuration)
+            {
+                elapsed += Time.deltaTime;
+                canvasGroup.alpha = 1f - (elapsed / fadeDuration);
+                yield return null;
+            }
+
+            canvasGroup.alpha = 0f;
+        }
+
+        /// <summary>
+        /// Configure LoadingScene before loading it
+        /// </summary>
+        /// <param name="source">Source scene name (where we came from)</param>
+        /// <param name="target">Target scene name (where we're going)</param>
+        /// <param name="checkUserProfile">Check if user has ingame name + gender?</param>
+        public static void Configure(string source, string target, bool checkUserProfile = false)
+        {
+            sourceScene = source;
+            targetScene = target;
+            checkProfile = checkUserProfile;
+            Debug.Log($"LoadingScene configured: {source} → {target} (checkProfile: {checkUserProfile})");
+        }
+
+        /// <summary>
+        /// Load LoadingScene with configuration
+        /// Example: LoadingSceneController.LoadWithConfig("MenuScene", "GameScene", false);
+        /// </summary>
+        public static void LoadWithConfig(string source, string target, bool checkUserProfile = false)
+        {
+            Configure(source, target, checkUserProfile);
+            UnityEngine.SceneManagement.SceneManager.LoadScene("LoadingScene");
         }
 
         private async Task<bool> PerformRealLoading()
