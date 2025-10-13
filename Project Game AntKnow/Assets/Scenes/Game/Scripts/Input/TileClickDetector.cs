@@ -26,7 +26,13 @@ namespace AntKnow.Game
         {
             if (Input.GetMouseButtonDown(0))
             {
-                // ⭐ RAYCAST TRƯỚC, check UI sau
+                // ✅ FIX: Check if clicking on UI first
+                if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+                {
+                    // Clicking on UI - ignore tile clicks
+                    return;
+                }
+
                 if (mainCamera == null)
                 {
                     Debug.LogError("[TileClick] Camera is NULL!");
@@ -39,8 +45,6 @@ namespace AntKnow.Game
 
                 if (Physics.Raycast(ray, out hit, 100f))
                 {
-                    Debug.Log($"[TileClick] HIT: {hit.collider.gameObject.name}");
-
                     // Tìm TileVisual
                     TileVisual tile = hit.collider.GetComponent<TileVisual>();
                     if (tile == null)
@@ -48,25 +52,11 @@ namespace AntKnow.Game
 
                     if (tile != null)
                     {
-                        Debug.Log($"[TileClick] Found tile! Index: {tile.TileIndex}");
-
                         if (panelTileInfo != null)
                         {
                             panelTileInfo.ShowTileInfo(tile.TileIndex);
                         }
-                        else
-                        {
-                            Debug.LogError("[TileClick] PanelTileInfo is NULL!");
-                        }
                     }
-                    else
-                    {
-                        Debug.LogWarning($"[TileClick] Hit '{hit.collider.gameObject.name}' is not a tile!");
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning("[TileClick] Raycast hit NOTHING!");
                 }
             }
         }

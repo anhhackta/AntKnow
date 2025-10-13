@@ -379,10 +379,16 @@ namespace AntKnow.Game
             int baseMoney = 150;
             int healthBonus = Mathf.RoundToInt(baseMoney * health / 100f);
             int totalMoney = baseMoney + healthBonus;
-            
+
             AddMoney(totalMoney);
-            
+
             Debug.Log($"[PlayerGameController] {playerName} passed Start! +{totalMoney} money (base: {baseMoney}, health bonus: {healthBonus})");
+
+            // ✅ Update UI
+            if (GameManager.Instance != null && GameManager.Instance.panelGame != null)
+            {
+                GameManager.Instance.panelGame.UpdateAllPanels();
+            }
         }
         
         /// <summary>

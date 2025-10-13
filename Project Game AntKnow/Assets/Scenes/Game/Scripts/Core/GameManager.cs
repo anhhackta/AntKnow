@@ -2,13 +2,27 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using AntKnow.Auth;
+using Firebase.Firestore;
 
 namespace AntKnow.Game
 {
+    // ===== HELPER CLASSES =====
+
+    /// <summary>
+    /// Quiz data helper (for simplified quiz system)
+    /// </summary>
+    public class QuizData
+    {
+        public string question;
+        public string[] options;
+        public int correctAnswer;
+    }
+
     // ===== NETWORK STRUCTS =====
-    
+
     /// <summary>
     /// Player loadout data - Client gửi lên Host
     /// </summary>
@@ -76,6 +90,9 @@ namespace AntKnow.Game
     [RequireComponent(typeof(NetworkObject))]
     public class GameManager : NetworkBehaviour
     {
+        // ===== SINGLETON =====
+        public static GameManager Instance { get; private set; }
+
         [Header("Managers")]
         [SerializeField] private BoardManager boardManager;
         [SerializeField] private PanelRoll panelRoll;
@@ -93,7 +110,7 @@ namespace AntKnow.Game
         [SerializeField] private TMPro.TextMeshProUGUI timeText;
 
         [Header("UI Panels")]
-        [SerializeField] private PanelGame panelGame; // ⭐ Panel chính quản lý PanelMe và PanelPlayer
+        public PanelGame panelGame; // ⭐ Panel chính quản lý PanelMe và PanelPlayer (changed to public)
         [SerializeField] private PanelBuy panelBuy;
         [SerializeField] private PanelQuiz panelQuiz;
         [SerializeField] private PanelEvent panelEvent;
@@ -125,6 +142,20 @@ namespace AntKnow.Game
         public bool IsGameActive => isGameActive;
         public int CurrentTurn => currentTurn;
         public PlayerGameController CurrentPlayer => players.Count > 0 ? players[currentPlayerIndex] : null;
+
+        private void Awake()
+        {
+            // Setup singleton
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Debug.LogWarning("[GameManager] Multiple GameManager instances detected! Destroying duplicate.");
+                Destroy(gameObject);
+            }
+        }
 
         /// <summary>
         /// Get player by index
@@ -677,32 +708,9 @@ namespace AntKnow.Game
                     break;
 
                 case TileType.Quiz:
-                    // ⭐ Show quiz panel
-                    Debug.Log($"[GameManager] Quiz tile - Showing quiz panel");
-                    if (panelQuiz != null)
-                    {
-                        panelQuiz.Show((isCorrect) => {
-                            if (isCorrect)
-                            {
-                                Debug.Log($"[GameManager] {player.PlayerName} answered correctly!");
-                                // Reward handled by PanelQuiz
-                            }
-                            else
-                            {
-                                Debug.Log($"[GameManager] {player.PlayerName} answered incorrectly!");
-                                // Penalty handled by PanelQuiz
-                            }
-
-                            // ⭐ End turn after quiz
-                            StartCoroutine(AutoEndTurnAfterDelay(0.5f));
-                        });
-                    }
-                    else
-                    {
-                        Debug.LogWarning("[GameManager] PanelQuiz not assigned!");
-                        // ⭐ Auto end turn if no panel
-                        StartCoroutine(AutoEndTurnAfterDelay(1f));
-                    }
+                    // ✅ SIMPLIFIED: Use PanelNotification for quiz
+                    Debug.Log($"[GameManager] Quiz tile - Loading question...");
+                    StartCoroutine(HandleQuizTile(player));
                     break;
 
                 case TileType.Jail:
@@ -980,6 +988,217 @@ namespace AntKnow.Game
             yield return new WaitForSeconds(delay);
             Debug.Log("[GameManager] Auto ending turn after delay");
             EndTurn();
+        }
+
+        /// <summary>
+        /// ✅ Handle Quiz tile - Simplified with PanelNotification
+        /// </summary>
+        private IEnumerator HandleQuizTile(PlayerGameController player)
+        {
+            // Load quiz from Firebase
+            QuizData quizData = null;
+            yield return StartCoroutine(LoadRandomQuizCoroutine((data) => quizData = data));
+
+            if (quizData == null)
+            {
+                // Fallback demo quiz
+                quizData = new QuizData
+                {
+                    question = "2 + 2 = ?",
+                    options = new string[] { "3", "4", "5", "6" },
+                    correctAnswer = 1
+                };
+            }
+
+            // Show question
+            if (panelNotification != null)
+            {
+                string optionsText = $"A) {quizData.options[0]}\nB) {quizData.options[1]}\nC) {quizData.options[2]}\nD) {quizData.options[3]}";
+                panelNotification.ShowNotification($"Quiz:\n{quizData.question}\n\n{optionsText}");
+            }
+
+            yield return new WaitForSeconds(3f);
+
+            // Random answer (demo mode)
+            int playerAnswer = Random.Range(0, 4);
+            bool isCorrect = playerAnswer == quizData.correctAnswer;
+
+            if (isCorrect)
+            {
+                // ✅ Correct - No penalty
+                if (panelNotification != null)
+                {
+                    panelNotification.ShowNotification($"Correct! Answer: {quizData.options[quizData.correctAnswer]}");
+                }
+                Debug.Log($"[GameManager] {player.PlayerName} answered correctly!");
+            }
+            else
+            {
+                // ❌ Wrong - Random penalty
+                int penaltyType = Random.Range(0, 3);
+                string penaltyText = "";
+
+                switch (penaltyType)
+                {
+                    case 0:
+                        // Trừ tiền ngẫu nhiên (không vượt quá tiền hiện có)
+                        int maxPenalty = Mathf.Min(player.Money, 500);
+                        int moneyPenalty = Random.Range(100, maxPenalty + 1);
+                        player.SubtractMoney(moneyPenalty);
+                        penaltyText = $"Wrong! Penalty: -{moneyPenalty} money";
+                        break;
+
+                    case 1:
+                        // Giảm 1 nhà ngẫu nhiên
+                        bool downgraded = TryDowngradeRandomProperty(player);
+                        penaltyText = downgraded
+                            ? "Wrong! Penalty: Downgraded 1 property"
+                            : "Wrong! Penalty: No properties to downgrade";
+                        break;
+
+                    case 2:
+                        // Không có gì
+                        penaltyText = "Wrong! But lucky - No penalty!";
+                        break;
+                }
+
+                if (panelNotification != null)
+                {
+                    panelNotification.ShowNotification(penaltyText);
+                }
+
+                Debug.Log($"[GameManager] {player.PlayerName} answered incorrectly! {penaltyText}");
+
+                // Update UI
+                if (panelGame != null)
+                {
+                    panelGame.UpdateAllPanels();
+                }
+            }
+
+            yield return new WaitForSeconds(2f);
+
+            // End turn
+            EndTurn();
+        }
+
+        /// <summary>
+        /// Load random quiz from Firebase
+        /// </summary>
+        private IEnumerator LoadRandomQuizCoroutine(System.Action<QuizData> callback)
+        {
+            QuizData quizData = null;
+            bool loaded = false;
+
+            // Call async method
+            LoadRandomQuizAsync((data) => {
+                quizData = data;
+                loaded = true;
+            });
+
+            // Wait for load
+            float timeout = 5f;
+            float elapsed = 0f;
+            while (!loaded && elapsed < timeout)
+            {
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            callback?.Invoke(quizData);
+        }
+
+        /// <summary>
+        /// Load random quiz from Firebase (async)
+        /// </summary>
+        private async void LoadRandomQuizAsync(System.Action<QuizData> callback)
+        {
+            try
+            {
+                FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
+                float anchor = Random.Range(0f, 1f);
+
+                Query query = db.Collection("quizzes")
+                    .OrderBy("randomValue")
+                    .StartAt(anchor)
+                    .Limit(1);
+
+                QuerySnapshot snapshot = await query.GetSnapshotAsync();
+
+                if (snapshot.Count == 0)
+                {
+                    query = db.Collection("quizzes").OrderBy("randomValue").Limit(1);
+                    snapshot = await query.GetSnapshotAsync();
+                }
+
+                if (snapshot.Count > 0)
+                {
+                    DocumentSnapshot doc = snapshot.Documents.First();
+                    Dictionary<string, object> data = doc.ToDictionary();
+
+                    QuizData quizData = new QuizData
+                    {
+                        question = data.ContainsKey("question") ? data["question"].ToString() : "",
+                        correctAnswer = data.ContainsKey("correctAnswer") ? System.Convert.ToInt32(data["correctAnswer"]) : 0
+                    };
+
+                    // Parse options
+                    if (data.ContainsKey("options") && data["options"] is List<object> optionsList)
+                    {
+                        quizData.options = new string[4];
+                        for (int i = 0; i < 4 && i < optionsList.Count; i++)
+                        {
+                            quizData.options[i] = optionsList[i]?.ToString() ?? "";
+                        }
+                    }
+
+                    callback?.Invoke(quizData);
+                }
+                else
+                {
+                    callback?.Invoke(null);
+                }
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"[GameManager] Error loading quiz: {e.Message}");
+                callback?.Invoke(null);
+            }
+        }
+
+        /// <summary>
+        /// Try to downgrade a random property owned by player
+        /// </summary>
+        private bool TryDowngradeRandomProperty(PlayerGameController player)
+        {
+            if (propertyManager == null) return false;
+
+            int playerIndex = players.IndexOf(player);
+            List<int> ownedProperties = new List<int>();
+
+            // Find all owned properties with level > 0
+            for (int i = 0; i < 36; i++)
+            {
+                if (propertyManager.IsPropertyOwned(i) &&
+                    propertyManager.GetPropertyOwner(i) == playerIndex &&
+                    propertyManager.GetPropertyLevel(i) > 0)
+                {
+                    ownedProperties.Add(i);
+                }
+            }
+
+            if (ownedProperties.Count == 0) return false;
+
+            // Random property
+            int randomIndex = Random.Range(0, ownedProperties.Count);
+            int tileIndex = ownedProperties[randomIndex];
+            int currentLevel = propertyManager.GetPropertyLevel(tileIndex);
+
+            // Downgrade using PropertyManager
+            propertyManager.SetPropertyLevel(tileIndex, currentLevel - 1);
+
+            Debug.Log($"[GameManager] Downgraded property {tileIndex} from level {currentLevel} to {currentLevel - 1}");
+            return true;
         }
         
         /// <summary>
