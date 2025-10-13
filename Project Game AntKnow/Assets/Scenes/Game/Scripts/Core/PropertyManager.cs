@@ -77,6 +77,28 @@ namespace AntKnow.Game
             }
             return 0;
         }
+
+        /// <summary>
+        /// Set property level (for downgrades or direct level changes)
+        /// </summary>
+        public void SetPropertyLevel(int tileId, int newLevel)
+        {
+            if (!IsPropertyOwned(tileId))
+            {
+                Debug.LogWarning($"[PropertyManager] Cannot set level - Property {tileId} not owned!");
+                return;
+            }
+
+            if (newLevel < 0 || newLevel > 5)
+            {
+                Debug.LogWarning($"[PropertyManager] Invalid level {newLevel}! Must be 0-5");
+                return;
+            }
+
+            propertyLevels[tileId] = newLevel;
+            UpdatePropertyVisual(tileId);
+            Debug.Log($"[PropertyManager] Property {tileId} level set to {newLevel}");
+        }
         
         /// <summary>
         /// Buy property

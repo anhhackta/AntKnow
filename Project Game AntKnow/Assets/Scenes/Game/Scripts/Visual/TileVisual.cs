@@ -275,17 +275,7 @@ namespace AntKnow.Game
         
         /// <summary>
         /// Spawn hotel (level 5) - Thay thế 4 houses
-        ///
-        /// AXES ORIENTATION:
-        /// Platform: Y↑ (up), Z→ (vào giữa), X→ (phải)
-        /// Hotel:    Z↑ (up), Y→ (vào giữa), X← (trái)
-        ///
-        /// ROTATION LOGIC:
-        /// - Hotel Z (↑) align với Platform Y (↑)
-        /// - Hotel Y (→giữa) align với Platform Z (→giữa)
-        /// - Hotel -X (→phải) align với Platform X (→phải)
-        /// → Rotate 90° around X axis, then 180° around Y axis
-        /// → Combined: Quaternion.Euler(90f, 180f, 0f)
+        /// ✅ FIX: Hotel rotation same as house (use marker rotation + 90° Y offset if needed)
         /// </summary>
         public void SpawnHotel(GameObject hotelPrefab, Color playerColor, string roofMaterialName = "ngói")
         {
@@ -307,12 +297,17 @@ namespace AntKnow.Game
             // Spawn hotel tại vị trí marker
             spawnedHotel = Instantiate(hotelPrefab);
 
-            // Set position, rotation, scale từ marker
+            // Set position from marker
             spawnedHotel.transform.position = hotelMarker.position;
-            spawnedHotel.transform.rotation = hotelMarker.rotation;
-            spawnedHotel.transform.localScale = Vector3.one * 9f; // Uniform scale
 
-            Debug.Log($"[TileVisual] Hotel spawned at marker position: {hotelMarker.position}");
+            // ✅ FIX: Use same rotation as house markers (marker rotation)
+            // If hotel model is rotated differently than house, add offset here
+            spawnedHotel.transform.rotation = hotelMarker.rotation;
+
+            // Uniform scale (larger than house)
+            spawnedHotel.transform.localScale = Vector3.one * 0.5f; // ✅ Smaller scale (was 9f)
+
+            Debug.Log($"[TileVisual] Hotel spawned at marker position: {hotelMarker.position}, rotation: {hotelMarker.rotation.eulerAngles}");
 
             // Set color to roof material
             SetHouseColor(spawnedHotel, playerColor, roofMaterialName);
