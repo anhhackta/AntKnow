@@ -24,8 +24,8 @@ namespace AntKnow.Auth
 
         private void Awake()
         {
-            // Hide text initially
-            HideNotification();
+            // Ẩn panel ban đầu
+            gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -35,11 +35,13 @@ namespace AntKnow.Auth
         {
             DebugLog($"Showing notification: {message}");
 
+            // Hiện CẢ PANEL
+            gameObject.SetActive(true);
+
             // Set text
             if (notificationText != null)
             {
                 notificationText.text = message;
-                notificationText.gameObject.SetActive(true);
             }
 
             // Auto hide
@@ -59,11 +61,8 @@ namespace AntKnow.Auth
         {
             DebugLog("Hiding notification");
 
-            if (notificationText != null)
-            {
-                notificationText.text = "";
-                notificationText.gameObject.SetActive(false);
-            }
+            // Ẩn CẢ PANEL
+            gameObject.SetActive(false);
 
             if (autoHideCoroutine != null)
             {
@@ -82,11 +81,11 @@ namespace AntKnow.Auth
         }
 
         /// <summary>
-        /// Hiện thông báo "Tìm thấy trận, đang join..."
+        /// Hiện thông báo "Match Found" rồi ẩn ngay (2s)
         /// </summary>
         public void ShowMatchFoundNotification()
         {
-            ShowNotification("🎮 Tìm thấy trận! Đang join phòng...", 3f);
+            ShowNotification("Match Found", 2f);
         }
 
         /// <summary>

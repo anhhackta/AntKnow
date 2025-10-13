@@ -176,26 +176,50 @@ namespace AntKnow.Auth
         /// </summary>
         public async void OpenCustomRoomPanel()
         {
+            DebugLog("=== OpenCustomRoomPanel CALLED ===");
+
             // Sign in to UGS if needed
             if (!UGSAuthService.IsSignedIn)
             {
+                DebugLog("UGS not signed in, signing in...");
                 bool signedIn = await UGSAuthService.Instance.AutoSignInFromFirebaseAsync();
                 if (!signedIn)
                 {
                     DebugLogError("Failed to sign in to UGS");
                     return;
                 }
+                DebugLog("UGS signed in successfully");
             }
-            
+
             // Show PanelCustomRoom
-            if (panelCustomRoom != null)
-                panelCustomRoom.SetActive(true);
-            
+            if (panelCustomRoom == null)
+            {
+                DebugLogError("panelCustomRoom is NULL! Please assign in Inspector!");
+                return;
+            }
+
+            DebugLog($"Setting panelCustomRoom active: {panelCustomRoom.name}");
+            panelCustomRoom.SetActive(true);
+            DebugLog($"panelCustomRoom.activeSelf: {panelCustomRoom.activeSelf}");
+
+            // IMPORTANT: Force panelContainer active
+            if (panelContainer == null)
+            {
+                DebugLogError("panelContainer is NULL! Please assign in Inspector!");
+                return;
+            }
+
+            DebugLog($"Setting panelContainer active: {panelContainer.name}");
+            panelContainer.SetActive(true);
+            DebugLog($"panelContainer.activeSelf: {panelContainer.activeSelf}");
+
             // Show PanelRoom (mặc định)
             ShowPanelRoom();
-            
+
             // Load room list
             await RefreshRoomList();
+
+            DebugLog("=== OpenCustomRoomPanel COMPLETE ===");
         }
 
         #endregion
@@ -204,11 +228,39 @@ namespace AntKnow.Auth
 
         private void ShowPanelRoom()
         {
-            if (panelRoom != null) panelRoom.SetActive(true);
+            DebugLog("=== ShowPanelRoom START ===");
+
+            if (panelRoom == null)
+            {
+                DebugLogError("panelRoom is NULL!");
+                return;
+            }
+
+            if (panelCreateRoom == null)
+            {
+                DebugLogError("panelCreateRoom is NULL!");
+            }
+
+            if (panelJoinRoom == null)
+            {
+                DebugLogError("panelJoinRoom is NULL!");
+            }
+
+            panelRoom.SetActive(true);
             if (panelCreateRoom != null) panelCreateRoom.SetActive(false);
             if (panelJoinRoom != null) panelJoinRoom.SetActive(false);
-            
-            DebugLog("Showing PanelRoom");
+
+            DebugLog($"panelRoom.activeSelf: {panelRoom.activeSelf}");
+            DebugLog($"panelRoom.activeInHierarchy: {panelRoom.activeInHierarchy}");
+
+            // Check parent
+            Transform parent = panelRoom.transform.parent;
+            if (parent != null)
+            {
+                DebugLog($"panelRoom parent: {parent.name}, active: {parent.gameObject.activeSelf}");
+            }
+
+            DebugLog("=== ShowPanelRoom END ===");
         }
 
         private void ShowPanelCreateRoom()
@@ -441,11 +493,34 @@ namespace AntKnow.Auth
         private void OnPlayersUpdated(List<Player> players)
         {
             DebugLog($"Players updated: {players.Count}");
-            
-            // Update player count
+
+            // Update player count with status
             if (textPlayerCount != null)
-                textPlayerCount.text = $"{players.Count}/{GameConfig.MAX_PLAYERS}";
-            
+            {
+                string status = GetLobbyStatus(players.Count, GameConfig.MAX_PLAYERS);
+                textPlayerCount.text = $"{players.Count}/{GameConfig.MAX_PLAYERS} - {status}";
+            }
+
+            // Update start button
+            bool isHost = CustomLobbyService.Instance.IsHost;
+            if (isHost && buttonStartGame != null)
+            {
+                int currentPlayers = players.Count;
+                buttonStartGame.interactable = (currentPlayers >= 2);
+
+                // Update button text
+                var buttonText = buttonStartGame.GetComponentInChildren<Text>();
+                if (buttonText != null)
+                {
+                    if (currentPlayers >= GameConfig.MAX_PLAYERS)
+                        buttonText.text = "Bắt đầu (Đủ người)";
+                    else if (currentPlayers >= 2)
+                        buttonText.text = $"Bắt đầu ({currentPlayers}/{GameConfig.MAX_PLAYERS})";
+                    else
+                        buttonText.text = "Chờ thêm người...";
+                }
+            }
+
             UpdatePlayerList(players);
         }
 
@@ -454,17 +529,54 @@ namespace AntKnow.Auth
             // Update room name
             if (textRoomName != null)
                 textRoomName.text = lobby.Name;
-            
-            // Update player count
+
+            // Update player count with status
             if (textPlayerCount != null)
-                textPlayerCount.text = $"{lobby.Players.Count}/{lobby.MaxPlayers}";
-            
+            {
+                int currentPlayers = lobby.Players.Count;
+                int maxPlayers = lobby.MaxPlayers;
+                string status = GetLobbyStatus(currentPlayers, maxPlayers);
+                textPlayerCount.text = $"{currentPlayers}/{maxPlayers} - {status}";
+            }
+
             // Show/hide start button (chỉ host)
             bool isHost = CustomLobbyService.Instance.IsHost;
             if (buttonStartGame != null)
+            {
                 buttonStartGame.gameObject.SetActive(isHost);
-            
+
+                // Enable start button nếu đủ min 2 players
+                int currentPlayers = lobby.Players.Count;
+                int maxPlayers = lobby.MaxPlayers;
+                buttonStartGame.interactable = (currentPlayers >= 2);
+
+                // Update button text
+                var buttonText = buttonStartGame.GetComponentInChildren<Text>();
+                if (buttonText != null)
+                {
+                    if (currentPlayers >= maxPlayers)
+                        buttonText.text = "Bắt đầu (Đủ người)";
+                    else if (currentPlayers >= 2)
+                        buttonText.text = $"Bắt đầu ({currentPlayers}/{maxPlayers})";
+                    else
+                        buttonText.text = "Chờ thêm người...";
+                }
+            }
+
             UpdatePlayerList(lobby.Players);
+        }
+
+        /// <summary>
+        /// Get lobby status text
+        /// </summary>
+        private string GetLobbyStatus(int current, int max)
+        {
+            if (current >= max)
+                return "Đủ người";
+            else if (current >= 2)
+                return "Có thể bắt đầu";
+            else
+                return "Chờ thêm người";
         }
 
         private void UpdatePlayerList(List<Player> players)
@@ -564,16 +676,16 @@ namespace AntKnow.Auth
         private async void OnGameStarting(string relayJoinCode)
         {
             DebugLog($"Game starting with Relay code: {relayJoinCode}");
-            
+
             // Setup GameSessionData
             var sessionData = GameSessionData.Instance;
             sessionData.SetFromGameDataManager();
             sessionData.SetUnityPlayerId(UGSAuthService.PlayerId);
-            
+
             bool isHost = CustomLobbyService.Instance.IsHost;
             string lobbyId = CustomLobbyService.Instance.CurrentLobby?.Id;
             sessionData.SetNetworkInfo(relayJoinCode, isHost, lobbyId);
-            
+
             // Join Relay
             if (isHost)
             {
@@ -584,9 +696,9 @@ namespace AntKnow.Auth
                 await RelayService.Instance.JoinRelayAsync(relayJoinCode);
                 RelayService.Instance.StartClient();
             }
-            
-            // Load game scene
-            SceneManager.LoadScene(GameConfig.GAME_SCENE_NAME);
+
+            // Load LoadingScene → GameScene
+            LoadingSceneController.LoadWithConfig("MenuScene", "GameScene", checkUserProfile: false);
         }
 
         #endregion

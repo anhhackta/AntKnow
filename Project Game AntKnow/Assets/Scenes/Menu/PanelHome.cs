@@ -178,14 +178,16 @@ namespace AntKnow.Auth
         }
 
         /// <summary>
-        /// Event: Search time updated
+        /// Event: Search time updated (elapsed time - đếm lên)
         /// </summary>
-        private void OnSearchTimeUpdated(float remainingTime)
+        private void OnSearchTimeUpdated(float elapsedTime)
         {
             if (textWaitTimer != null)
             {
-                int seconds = Mathf.CeilToInt(remainingTime);
-                textWaitTimer.text = $"Đang tìm... {seconds}s";
+                int totalSeconds = Mathf.FloorToInt(elapsedTime);
+                int minutes = totalSeconds / 60;
+                int seconds = totalSeconds % 60;
+                textWaitTimer.text = $"{minutes:00}:{seconds:00}";
             }
         }
 
