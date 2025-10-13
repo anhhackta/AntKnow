@@ -61,10 +61,13 @@ namespace AntKnow.Auth
                 return;
             }
 
-            // Check if user has ingame name
-            if (gameDataManager.NeedsIngameNameSetup())
+            // Check if user has BOTH ingame name AND gender
+            bool hasIngameName = !string.IsNullOrEmpty(gameDataManager.currentIngameName);
+            bool hasGender = !string.IsNullOrEmpty(gameDataManager.currentGender);
+
+            if (!hasIngameName || !hasGender)
             {
-                Debug.LogError("MenuScene: User missing ingame name, redirecting to SelectCharacterScene");
+                Debug.LogWarning($"MenuScene: User missing profile data (Name: {gameDataManager.currentIngameName}, Gender: {gameDataManager.currentGender}), redirecting to SelectCharacterScene");
                 SceneManager.LoadScene("SelectCharacterScene");
                 return;
             }
@@ -76,6 +79,9 @@ namespace AntKnow.Auth
             {
                 firebaseAuthService = FindObjectOfType<FirebaseAuthService>();
             }
+
+            // Initialize UGS (Unity Gaming Services)
+            await InitializeUGS();
 
             // Setup UI
             SetupUI();
@@ -97,10 +103,54 @@ namespace AntKnow.Auth
             }
             else
             {
-                Debug.LogError("MenuScene: PanelHome is null! Please assign it in the inspector.");
+                Debug.LogWarning("MenuScene: PanelHome is null! Trying to find it...");
+                panelHome = FindObjectOfType<PanelHome>();
+                if (panelHome != null)
+                {
+                    Debug.Log("MenuScene: PanelHome found, updating character display");
+                    panelHome.ForceUpdateCharacterSprite();
+                }
+                else
+                {
+                    Debug.LogError("MenuScene: PanelHome not found in scene!");
+                }
             }
 
             // PanelSliderManager sẽ tự động show panel đầu tiên
+        }
+
+        /// <summary>
+        /// Initialize Unity Gaming Services (UGS)
+        /// </summary>
+        private async System.Threading.Tasks.Task InitializeUGS()
+        {
+            try
+            {
+                Debug.Log("MenuScene: Initializing Unity Gaming Services...");
+
+                // Check if already initialized
+                if (AntKnow.Services.UGSAuthService.IsSignedIn)
+                {
+                    Debug.Log("MenuScene: UGS already initialized and signed in");
+                    return;
+                }
+
+                // Auto sign in from Firebase
+                bool signedIn = await AntKnow.Services.UGSAuthService.Instance.AutoSignInFromFirebaseAsync();
+
+                if (signedIn)
+                {
+                    Debug.Log("MenuScene: UGS initialized and signed in successfully");
+                }
+                else
+                {
+                    Debug.LogWarning("MenuScene: UGS initialized but failed to sign in (matchmaking will not work)");
+                }
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"MenuScene: Failed to initialize UGS: {e.Message}");
+            }
         }
 
         private void SetupUI()

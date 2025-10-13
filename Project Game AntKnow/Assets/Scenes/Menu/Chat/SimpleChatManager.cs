@@ -11,10 +11,14 @@ using Unity.Services.Core;
 namespace AntKnow.Chat
 {
     /// <summary>
-    /// Simple Chat Manager - Chat đơn giản sử dụng Vivox thật
+    /// Simple Chat Manager - Singleton chat manager using Vivox
+    /// Persists across scenes and panel switches
     /// </summary>
     public class SimpleChatManager : MonoBehaviour
     {
+        // Singleton instance
+        public static SimpleChatManager Instance { get; private set; }
+
         [Header("Simple UI")]
         [SerializeField] private InputField chatInput;
         [SerializeField] private TextMeshProUGUI chatDisplay;
@@ -22,42 +26,60 @@ namespace AntKnow.Chat
         [SerializeField] private Button sendButton;
         [SerializeField] private Button toggleButton;
         [SerializeField] private GameObject chatPanel;
-        
+
         [Header("Settings")]
-        [SerializeField] private bool autoConnect = true;
-        [SerializeField] private bool showPanelByDefault = true; // Show chat panel by default
+        [SerializeField] private bool autoConnect = false; // Don't auto-connect, join when user opens chat
+        [SerializeField] private bool showPanelByDefault = false; // Hide chat panel by default
         [SerializeField] private bool useMockChat = false; // Use real Vivox chat
-        
+
         [Header("Vivox Settings")]
         [SerializeField] private string server = "https://unity.vivox.com/appconfig/18968-proje-59535-udash";
         [SerializeField] private string domain = "mtu1xp.vivox.com";
         [SerializeField] private string issuer = "18968-proje-59535-udash";
         [SerializeField] private string key = "9diWIL6eBlHhlQCQzlu5dRJDIIwyQb2x";
-        [SerializeField] private string globalChannelName = "GlobalChat";
-        
+
         // State
         private bool isConnected = false;
         private bool isPanelVisible = false;
         private List<string> messages = new List<string>();
         private string currentUserId;
         private string currentDisplayName;
+        private string currentChannelName = "GlobalChat"; // Current channel name (can be changed for game rooms)
         
+        private void Awake()
+        {
+            // Singleton pattern with DontDestroyOnLoad
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+                Debug.Log("[SimpleChat] Singleton instance created and persisted");
+            }
+            else
+            {
+                Debug.LogWarning("[SimpleChat] Duplicate instance detected, destroying...");
+                Destroy(gameObject);
+                return;
+            }
+        }
+
         private void Start()
         {
             SetupUI();
             SetupVivoxEvents();
-            
-            // Show panel by default
-            if (showPanelByDefault && chatPanel != null)
+
+            // Hide panel by default
+            if (chatPanel != null)
             {
-                chatPanel.SetActive(true);
-                isPanelVisible = true;
+                chatPanel.SetActive(showPanelByDefault);
+                isPanelVisible = showPanelByDefault;
             }
-            
-            if (autoConnect)
-            {
-                ConnectToChat();
-            }
+
+            // Don't auto-connect, wait for user to open chat
+            // if (autoConnect)
+            // {
+            //     ConnectToChat();
+            // }
         }
         
         /// <summary>
@@ -83,13 +105,7 @@ namespace AntKnow.Chat
                 chatInput.onEndEdit.AddListener(OnInputEndEdit);
                 chatInput.placeholder.GetComponent<TextMeshProUGUI>().text = "Nhập tin nhắn...";
             }
-            
-            // Hide chat panel by default
-            if (chatPanel != null)
-            {
-                chatPanel.SetActive(false);
-            }
-            
+
             // Update toggle button text
             UpdateToggleButton();
         }
@@ -109,7 +125,7 @@ namespace AntKnow.Chat
         /// <summary>
         /// Connect to chat (mock or real)
         /// </summary>
-        public async void ConnectToChat()
+        public async Task ConnectToChat()
         {
             try
             {
@@ -156,15 +172,13 @@ namespace AntKnow.Chat
         private async Task ConnectToMockChat()
         {
             Debug.Log("[SimpleChat] Using Mock Chat (no Vivox package needed)");
-            
+
             // Simulate connection delay
             await Task.Delay(1000);
-            
-            // Simulate receiving some messages
-            await Task.Delay(2000);
-            AddMessage("System", "Chào mừng đến với chat global!");
-            AddMessage("Admin", "Đây là chat test, không cần Vivox package");
-            
+
+            // No welcome messages, just connect silently
+            // User will see messages when others chat
+
             Debug.Log("[SimpleChat] Mock chat connected");
         }
         
@@ -257,16 +271,69 @@ namespace AntKnow.Chat
         {
             try
             {
-                Debug.Log($"[SimpleChat] Joining channel: {globalChannelName}...");
-                
-                await VivoxService.Instance.JoinGroupChannelAsync(globalChannelName, ChatCapability.TextOnly);
-                
-                Debug.Log($"[SimpleChat] Successfully joined channel: {globalChannelName}");
+                Debug.Log($"[SimpleChat] Joining channel: {currentChannelName}...");
+
+                await VivoxService.Instance.JoinGroupChannelAsync(currentChannelName, ChatCapability.TextOnly);
+
+                Debug.Log($"[SimpleChat] Successfully joined channel: {currentChannelName}");
             }
             catch (Exception e)
             {
                 Debug.LogError($"[SimpleChat] Vivox join channel failed: {e.Message}");
                 throw;
+            }
+        }
+
+        /// <summary>
+        /// Join a specific channel (for game rooms)
+        /// Example: JoinChannelByName("GameRoom_12345")
+        /// </summary>
+        public async void JoinChannelByName(string channelName)
+        {
+            if (string.IsNullOrEmpty(channelName))
+            {
+                Debug.LogError("[SimpleChat] Channel name is null or empty");
+                return;
+            }
+
+            try
+            {
+                // Leave current channel if connected
+                if (isConnected)
+                {
+                    await LeaveChannel();
+                }
+
+                // Update current channel name
+                currentChannelName = channelName;
+                Debug.Log($"[SimpleChat] Switching to channel: {currentChannelName}");
+
+                // Connect and join new channel
+                await ConnectToChat();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[SimpleChat] Failed to join channel {channelName}: {e.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Leave current channel
+        /// </summary>
+        private async Task LeaveChannel()
+        {
+            try
+            {
+                if (VivoxService.Instance != null)
+                {
+                    Debug.Log($"[SimpleChat] Leaving channel: {currentChannelName}...");
+                    await VivoxService.Instance.LeaveChannelAsync(currentChannelName);
+                    Debug.Log($"[SimpleChat] Left channel: {currentChannelName}");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"[SimpleChat] Failed to leave channel: {e.Message}");
             }
         }
         
@@ -340,10 +407,10 @@ namespace AntKnow.Chat
         {
             try
             {
-                Debug.Log($"[SimpleChat] Sending message to {globalChannelName}: {message}");
-                
-                await VivoxService.Instance.SendChannelTextMessageAsync(globalChannelName, message);
-                
+                Debug.Log($"[SimpleChat] Sending message to {currentChannelName}: {message}");
+
+                await VivoxService.Instance.SendChannelTextMessageAsync(currentChannelName, message);
+
                 Debug.Log("[SimpleChat] Message sent successfully");
             }
             catch (Exception e)
@@ -365,15 +432,17 @@ namespace AntKnow.Chat
         }
         
         /// <summary>
-        /// Add message to display
+        /// Add message to display (simple format: time + sender + message)
         /// </summary>
         private void AddMessage(string sender, string message)
         {
+            // Simple format: [HH:mm] Sender: Message
+            // No "System" prefix, just natural chat
             string formattedMessage = $"[{DateTime.Now:HH:mm}] {sender}: {message}";
             messages.Add(formattedMessage);
-            
+
             UpdateChatDisplay();
-            
+
             // Auto-scroll to bottom
             if (chatScrollRect != null)
             {
@@ -416,14 +485,21 @@ namespace AntKnow.Chat
         public void ToggleChat()
         {
             isPanelVisible = !isPanelVisible;
-            
+
             if (chatPanel != null)
             {
                 chatPanel.SetActive(isPanelVisible);
             }
-            
+
+            // Join chat when user opens panel for the first time
+            if (isPanelVisible && !isConnected)
+            {
+                Debug.Log("[SimpleChat] User opened chat, connecting and joining global chat...");
+                ConnectToChat();
+            }
+
             UpdateToggleButton();
-            
+
             Debug.Log($"[SimpleChat] Chat panel {(isPanelVisible ? "opened" : "closed")}");
         }
         
@@ -500,16 +576,35 @@ namespace AntKnow.Chat
         
         private void OnDestroy()
         {
-            // Unsubscribe from Vivox events
-            if (VivoxService.Instance != null)
+            // Only cleanup if this is the singleton instance being destroyed
+            if (Instance == this)
             {
-                VivoxService.Instance.LoggedIn -= OnVivoxLoggedIn;
-                VivoxService.Instance.LoggedOut -= OnVivoxLoggedOut;
-                VivoxService.Instance.ChannelJoined -= OnVivoxChannelJoined;
-                VivoxService.Instance.ChannelMessageReceived -= OnVivoxMessageReceived;
+                Debug.Log("[SimpleChat] Singleton instance being destroyed, cleaning up...");
+
+                // Unsubscribe from Vivox events
+                if (VivoxService.Instance != null)
+                {
+                    VivoxService.Instance.LoggedIn -= OnVivoxLoggedIn;
+                    VivoxService.Instance.LoggedOut -= OnVivoxLoggedOut;
+                    VivoxService.Instance.ChannelJoined -= OnVivoxChannelJoined;
+                    VivoxService.Instance.ChannelMessageReceived -= OnVivoxMessageReceived;
+                }
+
+                // Disconnect from chat when singleton is destroyed (app quit or scene unload)
+                DisconnectFromChat();
             }
-            
+        }
+
+        /// <summary>
+        /// Manually disconnect from chat (call when user logs out)
+        /// </summary>
+        public void ManualDisconnect()
+        {
+            Debug.Log("[SimpleChat] Manual disconnect requested");
             DisconnectFromChat();
+            isConnected = false;
+            messages.Clear();
+            UpdateChatDisplay();
         }
     }
 }

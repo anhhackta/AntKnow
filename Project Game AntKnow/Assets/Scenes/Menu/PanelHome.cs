@@ -27,8 +27,10 @@ namespace AntKnow.Auth
 
         [Header("References")]
         [SerializeField] private LobbyUIManager lobbyUIManager; // Reference to Lobby UI Manager
+        [SerializeField] private PanelMatchNotification panelMatchNotification; // Reference to Match Notification
 
         private GameDataManager gameDataManager;
+        private bool isSearchingMatch = false;
 
         private void Start()
         {
@@ -71,6 +73,7 @@ namespace AntKnow.Auth
 
         private void SubscribeToMatchmaker()
         {
+            AntKnow.Services.MatchmakerService.OnMatchmakingStarted += OnMatchmakingStarted;
             AntKnow.Services.MatchmakerService.OnSearchTimeUpdated += OnSearchTimeUpdated;
             AntKnow.Services.MatchmakerService.OnMatchmakingCancelled += OnMatchmakingCancelled;
             AntKnow.Services.MatchmakerService.OnMatchFound += OnMatchFound;
@@ -80,6 +83,13 @@ namespace AntKnow.Auth
         {
             Debug.Log("PanelHome: Find Match button clicked");
 
+            // Prevent multiple clicks
+            if (isSearchingMatch)
+            {
+                Debug.LogWarning("PanelHome: Already searching for match");
+                return;
+            }
+
             // Sign in to UGS if needed
             if (!AntKnow.Services.UGSAuthService.IsSignedIn)
             {
@@ -87,6 +97,8 @@ namespace AntKnow.Auth
                 if (!signedIn)
                 {
                     Debug.LogError("PanelHome: Failed to sign in to UGS");
+                    if (panelMatchNotification != null)
+                        panelMatchNotification.ShowErrorNotification("Không thể đăng nhập UGS");
                     return;
                 }
             }
@@ -95,15 +107,49 @@ namespace AntKnow.Auth
             bool started = await AntKnow.Services.MatchmakerService.Instance.StartMatchmakingAsync();
             if (started)
             {
+                isSearchingMatch = true;
+
                 // Show wait button
                 if (buttonWaitGame != null)
                     buttonWaitGame.gameObject.SetActive(true);
+
+                // Disable buttons
+                SetButtonsInteractable(false);
+
+                // Show notification
+                if (panelMatchNotification != null)
+                    panelMatchNotification.ShowSearchingNotification();
             }
         }
 
         private void OnCustomRoomClicked()
         {
+            OnCustomRoomClickedFromSubmenu();
+        }
+
+        /// <summary>
+        /// Public method for SubmenuPlay - Find Match
+        /// </summary>
+        public void OnFindMatchClickedFromSubmenu()
+        {
+            OnFindMatchClicked();
+        }
+
+        /// <summary>
+        /// Public method for SubmenuPlay - Create Lobby
+        /// </summary>
+        public void OnCustomRoomClickedFromSubmenu()
+        {
             Debug.Log("PanelHome: Custom Room button clicked");
+
+            // Prevent if searching match
+            if (isSearchingMatch)
+            {
+                Debug.LogWarning("PanelHome: Cannot create room while searching for match");
+                if (panelMatchNotification != null)
+                    panelMatchNotification.ShowErrorNotification("Đang tìm trận, không thể tạo phòng");
+                return;
+            }
 
             if (lobbyUIManager != null)
             {
@@ -121,6 +167,19 @@ namespace AntKnow.Auth
             AntKnow.Services.MatchmakerService.Instance.CancelMatchmaking();
         }
 
+        /// <summary>
+        /// Event: Matchmaking started
+        /// </summary>
+        private void OnMatchmakingStarted()
+        {
+            Debug.Log("PanelHome: Matchmaking started");
+            isSearchingMatch = true;
+            SetButtonsInteractable(false);
+        }
+
+        /// <summary>
+        /// Event: Search time updated
+        /// </summary>
         private void OnSearchTimeUpdated(float remainingTime)
         {
             if (textWaitTimer != null)
@@ -130,17 +189,51 @@ namespace AntKnow.Auth
             }
         }
 
+        /// <summary>
+        /// Event: Matchmaking cancelled
+        /// </summary>
         private void OnMatchmakingCancelled()
         {
+            Debug.Log("PanelHome: Matchmaking cancelled");
+            isSearchingMatch = false;
+
             if (buttonWaitGame != null)
                 buttonWaitGame.gameObject.SetActive(false);
+
+            // Re-enable buttons
+            SetButtonsInteractable(true);
+
+            // Show notification
+            if (panelMatchNotification != null)
+                panelMatchNotification.ShowCancelledNotification();
         }
 
+        /// <summary>
+        /// Event: Match found
+        /// </summary>
         private void OnMatchFound(Unity.Services.Lobbies.Models.Lobby lobby)
         {
             Debug.Log($"PanelHome: Match found - {lobby.Name}");
+            isSearchingMatch = false;
+
             if (buttonWaitGame != null)
                 buttonWaitGame.gameObject.SetActive(false);
+
+            // Show notification
+            if (panelMatchNotification != null)
+                panelMatchNotification.ShowMatchFoundNotification();
+        }
+
+        /// <summary>
+        /// Enable/Disable buttons khi tìm trận
+        /// </summary>
+        private void SetButtonsInteractable(bool interactable)
+        {
+            if (buttonFindMatch != null)
+                buttonFindMatch.interactable = interactable;
+
+            if (buttonCustomRoom != null)
+                buttonCustomRoom.interactable = interactable;
         }
 
         public void UpdateCharacterDisplay()
@@ -261,6 +354,7 @@ namespace AntKnow.Auth
             }
 
             // Unsubscribe from matchmaker
+            AntKnow.Services.MatchmakerService.OnMatchmakingStarted -= OnMatchmakingStarted;
             AntKnow.Services.MatchmakerService.OnSearchTimeUpdated -= OnSearchTimeUpdated;
             AntKnow.Services.MatchmakerService.OnMatchmakingCancelled -= OnMatchmakingCancelled;
             AntKnow.Services.MatchmakerService.OnMatchFound -= OnMatchFound;

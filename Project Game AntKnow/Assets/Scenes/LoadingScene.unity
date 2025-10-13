@@ -482,33 +482,25 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 99a449a72962f2740ad9ee33c5ead7a5, type: 3}
   - {fileID: 21300000, guid: bb125d60b7256834c9b7d4ce4f93df62, type: 3}
   gameTips:
-  - "\U0001F4A1 M\u1EB9o: S\u1EED d\u1EE5ng skill cards m\u1ED9t c\xE1ch chi\u1EBFn
-    l\u01B0\u1EE3c \u0111\u1EC3 gi\xE0nh chi\u1EBFn th\u1EAFng!"
-  - "\U0001F3AE Fact: M\u1ED7i card c\xF3 th\u1EC3 \u0111\u01B0\u1EE3c n\xE2ng c\u1EA5p
-    v\xE0 ti\u1EBFn h\xF3a \u0111\u1EC3 t\u0103ng s\u1EE9c m\u1EA1nh."
-  - "\u26A1 Tip: K\u1EBFt h\u1EE3p c\xE1c equipment \u0111\u1EC3 t\u1ED1i \u01B0u
-    h\xF3a ch\u1EC9 s\u1ED1 c\u1EE7a b\u1EA1n."
-  - "\U0001F3C6 Fact: Th\u1EAFng tr\u1EADn \u0111\u1EA5u s\u1EBD nh\u1EADn \u0111\u01B0\u1EE3c
-    AntCoin v\xE0 kinh nghi\u1EC7m."
-  - "\U0001F3AF M\u1EB9o: \u0110\u1ECDc k\u1EF9 c\xE2u h\u1ECFi quiz \u0111\u1EC3
-    tr\u1EA3 l\u1EDDi ch\xEDnh x\xE1c."
-  - "\U0001F48E Tip: S\u1EED d\u1EE5ng DCoin \u0111\u1EC3 mua c\xE1c v\u1EADt ph\u1EA9m
-    \u0111\u1EB7c bi\u1EC7t."
-  - "\U0001F525 Fact: Card c\xF3 nhi\u1EC1u sao s\u1EBD c\xF3 cooldown ng\u1EAFn
-    h\u01A1n."
-  - "\U0001F3AA M\u1EB9o: Tham gia nhi\u1EC1u tr\u1EADn \u0111\u1EA5u \u0111\u1EC3
-    t\xEDch l\u0169y kinh nghi\u1EC7m."
+  - "\U0001F4A1 Tip: Use skill cards strategically to win!"
+  - "\U0001F3AE Fact: Each card can be upgraded and evolved to increase power."
+  - "\u26A1 Tip: Combine equipment to optimize your stats."
+  - "\U0001F3C6 Fact: Winning the match will get AntCoin and experience."
+  - "\U0001F3AF Tip: Read the quiz questions carefully to answer correctly."
+  - "\U0001F48E Tip: Use DCoin to buy special items."
+  - "\U0001F525 Fact: Cards with more stars will have shorter cooldowns."
+  - "\U0001F3AA Tip: Play many matches to gain experience."
   tipChangeInterval: 2
   backgroundChangeInterval: 2
   minLoadingTime: 2
   maxLoadingTime: 10
   loadingSteps:
-  - "\u0110ang k\u1EBFt n\u1ED1i Firebase..."
-  - "\u0110ang t\u1EA3i th\xF4ng tin ng\u01B0\u1EDDi d\xF9ng..."
-  - "\u0110ang ki\u1EC3m tra inventory..."
-  - "\u0110ang chu\u1EA9n b\u1ECB loadout..."
-  - "\u0110ang t\u1EA3i c\u1EA5u h\xECnh game..."
-  - "Ho\xE0n th\xE0nh!"
+  - Connecting to Firebase...
+  - Loading user information...
+  - Checking inventory...
+  - Preparing to loadout...
+  - Loading game configuration...
+  - ' Complete!'
 --- !u!4 &1139345120
 Transform:
   m_ObjectHideFlags: 0

@@ -36,6 +36,12 @@ namespace AntKnow.Game
                 textNotification.text = message;
             }
 
+            // Play notification sound
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayNotification();
+            }
+
             // ⭐ Check and activate ALL parents in hierarchy
             Transform current = transform.parent;
             while (current != null)

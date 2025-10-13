@@ -19,11 +19,13 @@ namespace AntKnow.Auth
         [SerializeField] private GameObject femaleCharacterModel;
         [SerializeField] private float modelRotationSpeed = 30f;
 
-        [Header("Selection Cubes")]
-        [SerializeField] private GameObject maleSelectionCube;
-        [SerializeField] private GameObject femaleSelectionCube;
-        [SerializeField] private Material selectedCubeMaterial;
-        [SerializeField] private Material normalCubeMaterial;
+        [Header("Selection Spotlights")]
+        [SerializeField] private Light maleSpotlight;
+        [SerializeField] private Light femaleSpotlight;
+        [SerializeField] private Color selectedSpotlightColor = Color.yellow;
+        [SerializeField] private Color normalSpotlightColor = Color.white;
+        [SerializeField] private float selectedSpotlightIntensity = 3f;
+        [SerializeField] private float normalSpotlightIntensity = 1f;
 
         [Header("UI Elements")]
         [SerializeField] private InputField inputIngameName;
@@ -37,14 +39,9 @@ namespace AntKnow.Auth
         private string selectedGender = "";
         private bool isProcessing = false;
 
-        private void Start()
+        private void Awake()
         {
-            InitializeSelectCharacterScene();
-        }
-
-        private async void InitializeSelectCharacterScene()
-        {
-            // Get GameDataManager instance
+            // CRITICAL: Check profile BEFORE scene is visible
             gameDataManager = GameDataManager.Instance;
 
             // Check if user is logged in
@@ -55,7 +52,30 @@ namespace AntKnow.Auth
                 return;
             }
 
-            Debug.Log($"SelectCharacterScene: Initializing for user {gameDataManager.currentUsername}");
+            // Check if user already has BOTH ingame name AND gender
+            bool hasIngameName = !string.IsNullOrEmpty(gameDataManager.currentIngameName);
+            bool hasGender = !string.IsNullOrEmpty(gameDataManager.currentGender);
+
+            if (hasIngameName && hasGender)
+            {
+                // User has complete profile, skip this scene immediately
+                Debug.Log($"SelectCharacterScene: User already has complete profile (Name: {gameDataManager.currentIngameName}, Gender: {gameDataManager.currentGender}), skipping to MenuScene");
+                SceneManager.LoadScene("MenuScene");
+                return;
+            }
+
+            // User needs to select character, continue to Start()
+            Debug.Log($"SelectCharacterScene: User needs to complete profile (Name: {gameDataManager.currentIngameName}, Gender: {gameDataManager.currentGender})");
+        }
+
+        private void Start()
+        {
+            InitializeSelectCharacterScene();
+        }
+
+        private async void InitializeSelectCharacterScene()
+        {
+            Debug.Log($"SelectCharacterScene: Initializing UI for user {gameDataManager.currentUsername}");
 
             // Find FirebaseAuthService
             if (firebaseAuthService == null)
@@ -69,12 +89,21 @@ namespace AntKnow.Auth
             // Initialize UI
             InitializeUI();
 
-            // Check if user already has ingame name
-            if (!string.IsNullOrEmpty(gameDataManager.currentIngameName))
+            // Pre-fill ingame name if exists
+            bool hasIngameName = !string.IsNullOrEmpty(gameDataManager.currentIngameName);
+            if (hasIngameName && inputIngameName != null)
             {
-                Debug.Log("SelectCharacterScene: User already has ingame name, going to MenuScene");
-                SceneManager.LoadScene("MenuScene");
-                return;
+                inputIngameName.text = gameDataManager.currentIngameName;
+                Debug.Log($"SelectCharacterScene: Pre-filled ingame name: {gameDataManager.currentIngameName}");
+            }
+
+            // Pre-select gender if exists
+            bool hasGender = !string.IsNullOrEmpty(gameDataManager.currentGender);
+            if (hasGender)
+            {
+                selectedGender = gameDataManager.currentGender;
+                UpdateSpotlightSelection();
+                Debug.Log($"SelectCharacterScene: Pre-selected gender: {gameDataManager.currentGender}");
             }
         }
 
@@ -99,10 +128,13 @@ namespace AntKnow.Auth
 
         private void AddModelClickListener(GameObject model, string gender)
         {
-            // Add collider if not exists
+            // Add CapsuleCollider if not exists (better for character models)
             if (model.GetComponent<Collider>() == null)
             {
-                model.AddComponent<BoxCollider>();
+                var capsuleCollider = model.AddComponent<CapsuleCollider>();
+                capsuleCollider.height = 2f;
+                capsuleCollider.radius = 0.5f;
+                capsuleCollider.center = new Vector3(0, 1f, 0);
             }
 
             // Add click handler
@@ -123,7 +155,7 @@ namespace AntKnow.Auth
         {
             // Set initial selection to male
             selectedGender = "male";
-            UpdateCubeSelection();
+            UpdateSpotlightSelection();
         }
 
         public void SelectCharacter(string gender)
@@ -131,37 +163,38 @@ namespace AntKnow.Auth
             selectedGender = gender;
             Debug.Log($"SelectCharacterScene: Selected gender: {gender}");
 
-            // Update cube selection visual
-            UpdateCubeSelection();
+            // Update spotlight selection visual
+            UpdateSpotlightSelection();
         }
 
-        private void UpdateCubeSelection()
+        private void UpdateSpotlightSelection()
         {
-            // Update male cube
-            if (maleSelectionCube != null)
+            // Update male spotlight
+            if (maleSpotlight != null)
             {
-                UpdateCubeVisual(maleSelectionCube, selectedGender == "male");
+                UpdateSpotlightVisual(maleSpotlight, selectedGender == "male");
             }
 
-            // Update female cube
-            if (femaleSelectionCube != null)
+            // Update female spotlight
+            if (femaleSpotlight != null)
             {
-                UpdateCubeVisual(femaleSelectionCube, selectedGender == "female");
+                UpdateSpotlightVisual(femaleSpotlight, selectedGender == "female");
             }
         }
 
-        private void UpdateCubeVisual(GameObject cube, bool isSelected)
+        private void UpdateSpotlightVisual(Light spotlight, bool isSelected)
         {
-            var renderer = cube.GetComponent<Renderer>();
-            if (renderer != null)
+            if (spotlight != null)
             {
-                if (isSelected && selectedCubeMaterial != null)
+                if (isSelected)
                 {
-                    renderer.material = selectedCubeMaterial;
+                    spotlight.color = selectedSpotlightColor;
+                    spotlight.intensity = selectedSpotlightIntensity;
                 }
-                else if (normalCubeMaterial != null)
+                else
                 {
-                    renderer.material = normalCubeMaterial;
+                    spotlight.color = normalSpotlightColor;
+                    spotlight.intensity = normalSpotlightIntensity;
                 }
             }
         }

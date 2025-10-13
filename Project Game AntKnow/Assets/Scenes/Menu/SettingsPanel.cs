@@ -46,11 +46,62 @@ public class SettingsPanel : MonoBehaviour
 
     void OnEnable()
     {
+        // Auto-populate AudioSources from AudioManager and PopupMusic
+        AutoPopulateAudioSources();
+
         LoadPrefs(out float mv, out float sv, out bool fs, out int resIx);
+
+        // Sync with AudioManager if exists
+        if (AudioManager.Instance != null)
+        {
+            mv = AudioManager.Instance.GetMusicVolume();
+            sv = AudioManager.Instance.GetSFXVolume();
+        }
+
         // Nếu đang Windowed mà res không tồn tại, chọn gần nhất
         resIx = Mathf.Clamp(resIx, 0, fixedRes.Length - 1);
         ApplyAll(mv, sv, fs, resIx, applyToSystem:true, save:false);
         RefreshUI(mv, sv, fs, resIx);
+    }
+
+    /// <summary>
+    /// Tự động tìm và gắn AudioSources từ AudioManager và PopupMusic
+    /// </summary>
+    void AutoPopulateAudioSources()
+    {
+        // Clear existing lists
+        musicSources.Clear();
+        sfxSources.Clear();
+
+        // Find AudioManager
+        if (AudioManager.Instance != null)
+        {
+            // Get AudioSources from AudioManager using public methods
+            var musicSrc = AudioManager.Instance.GetMusicSource();
+            var sfxSrc = AudioManager.Instance.GetSFXSource();
+
+            if (musicSrc != null)
+            {
+                musicSources.Add(musicSrc);
+                Debug.Log("SettingsPanel: Added AudioManager music source");
+            }
+
+            if (sfxSrc != null)
+            {
+                sfxSources.Add(sfxSrc);
+                Debug.Log("SettingsPanel: Added AudioManager SFX source");
+            }
+        }
+
+        // Find PopupMusic (LoginScene)
+        var popupMusic = FindObjectOfType<MusicPopup>();
+        if (popupMusic != null && popupMusic.audioSource != null)
+        {
+            musicSources.Add(popupMusic.audioSource);
+            Debug.Log("SettingsPanel: Added PopupMusic source");
+        }
+
+        Debug.Log($"SettingsPanel: Total music sources = {musicSources.Count}, sfx sources = {sfxSources.Count}");
     }
 
     void WireEvents()
@@ -60,11 +111,23 @@ public class SettingsPanel : MonoBehaviour
             ApplyMusic(v);
             SaveFloat(K_Music, v);
             UpdateMusicIcon(v);
+
+            // Update AudioManager
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.SetMusicVolume(v);
+            }
         });
         sfxSlider.onValueChanged.AddListener(v =>
         {
             ApplySFX(v);
             SaveFloat(K_SFX, v);
+
+            // Update AudioManager
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.SetSFXVolume(v);
+            }
         });
         fullscreenToggle.onValueChanged.AddListener(isOn =>
         {
