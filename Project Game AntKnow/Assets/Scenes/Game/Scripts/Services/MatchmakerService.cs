@@ -27,8 +27,13 @@ namespace AntKnow.Services
 
         // Properties
         public bool IsSearching { get; private set; }
-        public float RemainingSearchTime { get; private set; }
+        public float ElapsedSearchTime { get; private set; } // Thời gian ĐÃ TÌM (đếm lên)
         public Lobby CurrentMatch { get; private set; }
+
+        // Auto start timer (30s sau khi đủ 2 người)
+        private float autoStartTimer = 0f;
+        private bool isWaitingForAutoStart = false;
+        private const float AUTO_START_DELAY = 30f; // 30 giây
 
         private static MatchmakerService _instance;
         public static MatchmakerService Instance
@@ -86,10 +91,13 @@ namespace AntKnow.Services
                     return false;
                 }
 
+                // IMPORTANT: Leave any existing lobby first
+                await LeaveCurrentLobbyAsync();
+
                 DebugLog("Starting matchmaking...");
                 IsSearching = true;
-                RemainingSearchTime = GameConfig.MATCHMAKING_TIMEOUT;
-                
+                ElapsedSearchTime = 0f; // Reset elapsed time
+
                 OnMatchmakingStarted?.Invoke();
 
                 // Start search coroutine
@@ -144,23 +152,15 @@ namespace AntKnow.Services
         /// </summary>
         private IEnumerator SearchForMatchCoroutine()
         {
-            while (IsSearching && RemainingSearchTime > 0)
+            while (IsSearching)
             {
                 // Try to find or create a match
                 yield return StartCoroutine(TryFindMatchCoroutine());
-                
+
                 if (!IsSearching) break;
-                
+
                 // Wait before retry
                 yield return new WaitForSeconds(GameConfig.MATCHMAKING_RETRY_INTERVAL);
-            }
-
-            // Timeout
-            if (IsSearching)
-            {
-                DebugLogError("Matchmaking timeout");
-                OnMatchmakingError?.Invoke("Hết thời gian tìm trận");
-                CancelMatchmaking();
             }
         }
 
@@ -205,11 +205,11 @@ namespace AntKnow.Services
                     // Found available lobby, try to join
                     var targetLobby = queryResponse.Results[0];
                     DebugLog($"Found available lobby: {targetLobby.Name} ({targetLobby.Players.Count}/{targetLobby.MaxPlayers})");
-                    
+
                     try
                     {
                         var joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(targetLobby.Id);
-                        await OnMatchJoined(joinedLobby);
+                        await OnMatchJoined(joinedLobby, isJoining: true); // TRUE = Join lobby có sẵn
                         return true;
                     }
                     catch (LobbyServiceException e)
@@ -260,8 +260,8 @@ namespace AntKnow.Services
                 };
 
                 var lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, GameConfig.MAX_PLAYERS, createOptions);
-                await OnMatchJoined(lobby);
-                
+                await OnMatchJoined(lobby, isJoining: false); // FALSE = Tạo lobby mới
+
                 DebugLog($"Created new match lobby: {lobby.Name}");
             }
             catch (Exception e)
@@ -274,18 +274,20 @@ namespace AntKnow.Services
         /// <summary>
         /// Xử lý khi tham gia trận thành công
         /// </summary>
-        private async Task OnMatchJoined(Lobby lobby)
+        /// <param name="lobby">Lobby đã join</param>
+        /// <param name="isJoining">TRUE = Join lobby có sẵn, FALSE = Tạo lobby mới</param>
+        private async Task OnMatchJoined(Lobby lobby, bool isJoining)
         {
             CurrentMatch = lobby;
             IsSearching = false;
-            
+
             // Stop search coroutines
             if (searchCoroutine != null)
             {
                 StopCoroutine(searchCoroutine);
                 searchCoroutine = null;
             }
-            
+
             if (countdownCoroutine != null)
             {
                 StopCoroutine(countdownCoroutine);
@@ -293,8 +295,19 @@ namespace AntKnow.Services
             }
 
             DebugLog($"Joined match: {lobby.Name} ({lobby.Players.Count}/{lobby.MaxPlayers})");
-            
-            OnMatchFound?.Invoke(lobby);
+
+            // CHỈ fire OnMatchFound khi JOIN lobby có sẵn (có người khác)
+            // KHÔNG fire khi TẠO lobby mới (1 mình)
+            if (isJoining)
+            {
+                DebugLog("Match found! Joined existing lobby.");
+                OnMatchFound?.Invoke(lobby);
+            }
+            else
+            {
+                DebugLog("Created new lobby, waiting for other players...");
+            }
+
             OnPlayersCountUpdated?.Invoke(lobby.Players.Count, lobby.MaxPlayers);
 
             // Start monitoring lobby for player changes
@@ -339,12 +352,79 @@ namespace AntKnow.Services
 
                 OnPlayersCountUpdated?.Invoke(updatedLobby.Players.Count, updatedLobby.MaxPlayers);
 
-                // Check if lobby is full
-                if (updatedLobby.Players.Count >= updatedLobby.MaxPlayers)
+                int playerCount = updatedLobby.Players.Count;
+                int maxPlayers = updatedLobby.MaxPlayers;
+                bool isHost = updatedLobby.HostId == UGSAuthService.PlayerId;
+
+                // Check if game started (relay code exists)
+                if (updatedLobby.Data != null && updatedLobby.Data.ContainsKey("GameStarted"))
                 {
-                    DebugLog("Lobby is full, starting game...");
-                    // Game will be started by lobby host
-                    return false;
+                    string gameStarted = updatedLobby.Data["GameStarted"].Value;
+                    if (gameStarted == "true")
+                    {
+                        DebugLog("Game started by host, joining...");
+
+                        // Get relay code
+                        if (updatedLobby.Data.ContainsKey("RelayJoinCode"))
+                        {
+                            string relayJoinCode = updatedLobby.Data["RelayJoinCode"].Value;
+
+                            if (!isHost)
+                            {
+                                // Client: Join relay
+                                await RelayService.Instance.JoinRelayAsync(relayJoinCode);
+                            }
+
+                            // Load LoadingScene → GameScene
+                            LoadingSceneController.LoadWithConfig("MenuScene", "GameScene", checkUserProfile: false);
+                        }
+
+                        return false;
+                    }
+                }
+
+                // MATCHMAKER AUTO START LOGIC (Host only)
+                if (isHost)
+                {
+                    // Đủ 4 người → Start ngay
+                    if (playerCount >= maxPlayers)
+                    {
+                        DebugLog($"Lobby full ({playerCount}/{maxPlayers}), auto starting game...");
+                        await AutoStartGameAsync();
+                        return false;
+                    }
+
+                    // Đủ 2-3 người → Bắt đầu đếm 30s
+                    if (playerCount >= 2)
+                    {
+                        if (!isWaitingForAutoStart)
+                        {
+                            // Bắt đầu đếm ngược 30s
+                            isWaitingForAutoStart = true;
+                            autoStartTimer = AUTO_START_DELAY;
+                            DebugLog($"Match ready ({playerCount}/{maxPlayers}), waiting {AUTO_START_DELAY}s for more players...");
+                        }
+                        else
+                        {
+                            // Đang đếm ngược
+                            autoStartTimer -= 2f; // Update mỗi 2s (theo MonitorLobbyCoroutine)
+                            DebugLog($"Auto start in {autoStartTimer:F0}s ({playerCount}/{maxPlayers})");
+
+                            // Hết thời gian → Auto start
+                            if (autoStartTimer <= 0)
+                            {
+                                DebugLog($"Auto start timer expired, starting game with {playerCount} players...");
+                                await AutoStartGameAsync();
+                                return false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Chưa đủ 2 người → Reset timer
+                        isWaitingForAutoStart = false;
+                        autoStartTimer = 0f;
+                    }
                 }
 
                 return true;
@@ -357,15 +437,95 @@ namespace AntKnow.Services
         }
 
         /// <summary>
-        /// Countdown timer
+        /// Auto start game (Matchmaker only)
+        /// </summary>
+        private async Task AutoStartGameAsync()
+        {
+            try
+            {
+                DebugLog("Auto starting matchmaker game...");
+
+                // Fire OnMatchFound event → Hiện "Match Found" notification
+                OnMatchFound?.Invoke(CurrentMatch);
+
+                // Create Relay
+                string relayJoinCode = await RelayService.Instance.CreateRelayAsync();
+                if (string.IsNullOrEmpty(relayJoinCode))
+                {
+                    DebugLogError("Failed to create relay");
+                    return;
+                }
+
+                // Update lobby with relay code
+                var updateOptions = new UpdateLobbyOptions
+                {
+                    Data = new Dictionary<string, DataObject>
+                    {
+                        { "RelayJoinCode", new DataObject(DataObject.VisibilityOptions.Public, relayJoinCode) },
+                        { "GameStarted", new DataObject(DataObject.VisibilityOptions.Public, "true") }
+                    }
+                };
+
+                await LobbyService.Instance.UpdateLobbyAsync(CurrentMatch.Id, updateOptions);
+
+                DebugLog($"Game starting with relay code: {relayJoinCode}");
+
+                // Wait 2s để user thấy notification
+                await Task.Delay(2000);
+
+                // Load LoadingScene → GameScene
+                LoadingSceneController.LoadWithConfig("MenuScene", "GameScene", checkUserProfile: false);
+            }
+            catch (Exception e)
+            {
+                DebugLogError($"Failed to auto start game: {e.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Leave current lobby if any
+        /// </summary>
+        private async Task LeaveCurrentLobbyAsync()
+        {
+            try
+            {
+                // Get joined lobbies
+                var joinedLobbies = await LobbyService.Instance.GetJoinedLobbiesAsync();
+
+                if (joinedLobbies != null && joinedLobbies.Count > 0)
+                {
+                    foreach (var lobbyId in joinedLobbies)
+                    {
+                        try
+                        {
+                            await LobbyService.Instance.RemovePlayerAsync(lobbyId, UGSAuthService.PlayerId);
+                            DebugLog($"Left lobby: {lobbyId}");
+                        }
+                        catch (Exception e)
+                        {
+                            DebugLogError($"Failed to leave lobby {lobbyId}: {e.Message}");
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                DebugLogError($"Failed to get joined lobbies: {e.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Elapsed timer - Đếm thời gian ĐÃ TÌM (đếm lên)
         /// </summary>
         private IEnumerator CountdownCoroutine()
         {
-            while (IsSearching && RemainingSearchTime > 0)
+            ElapsedSearchTime = 0f;
+
+            while (IsSearching)
             {
-                OnSearchTimeUpdated?.Invoke(RemainingSearchTime);
+                OnSearchTimeUpdated?.Invoke(ElapsedSearchTime);
                 yield return new WaitForSeconds(1f);
-                RemainingSearchTime -= 1f;
+                ElapsedSearchTime += 1f; // Đếm LÊN
             }
         }
 
