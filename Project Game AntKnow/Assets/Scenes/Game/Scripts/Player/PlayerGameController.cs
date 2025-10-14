@@ -50,6 +50,11 @@ namespace AntKnow.Game
         [Header("Turn Indicator")]
         [SerializeField] private TurnIndicator turnIndicator;
 
+        // ===== EVENTS FOR UI UPDATES =====
+        public event System.Action<int> OnMoneyChanged;
+        public event System.Action<int> OnPositionChanged;
+        public event System.Action<int> OnJailCounterChanged;
+
         // Public Properties (Simplified - no NetworkVariable overhead)
         public string PlayerName => playerName;
         public string PlayerId => playerId;
@@ -169,6 +174,34 @@ namespace AntKnow.Game
             Debug.Log($"[PlayerGameController] Initialized {name} (Male: {male})");
             Debug.Log($"[PlayerGameController] Stats - HP:{hp} AGI:{agi} INT:{intel} LUCK:{lck} RES:{res}");
             Debug.Log($"[PlayerGameController] Starting - Money:{money} Tile:{currentTile}");
+            
+            // ✅ SYNC to all clients if this is server
+            if (IsServer && IsSpawned)
+            {
+                SyncPlayerDataClientRpc(name, id, male, hp, agi, intel, lck, res, money, currentTile, playerIndex);
+            }
+        }
+        
+        /// <summary>
+        /// HOST → ALL CLIENTS: Sync player data after initialization
+        /// </summary>
+        [ClientRpc]
+        private void SyncPlayerDataClientRpc(string name, string id, bool male, int hp, int agi, int intel, int lck, int res, int startMoney, int startTile, int index)
+        {
+            // Update all data on clients
+            playerName = name;
+            playerId = id;
+            isMale = male;
+            health = hp;
+            agility = agi;
+            intelligence = intel;
+            luck = lck;
+            resistance = res;
+            money = startMoney;
+            currentTile = startTile;
+            playerIndex = index;
+            
+            Debug.Log($"[PlayerGameController] Synced player data: {name} (Money: {money}, Tile: {currentTile})");
         }
         
         /// <summary>
@@ -313,7 +346,17 @@ namespace AntKnow.Game
             SetAnimation(false);
             isMoving = false;
 
-            Debug.Log($"[PlayerGameController] {playerName} reached tile {currentTile}");
+            Debug.Log($"[PlayerGameController] {playerName} finished moving to tile {currentTile}");
+            
+            // ✅ SYNC POSITION TO ALL CLIENTS
+            if (IsServer)
+            {
+                SyncPositionClientRpc(currentTile);
+            }
+            
+            // Fire event for local UI update
+            OnPositionChanged?.Invoke(currentTile);
+
         }        /// <summary>
         /// Move to waypoint with bounce effect
         /// </summary>
@@ -361,14 +404,17 @@ namespace AntKnow.Game
         }
         
         /// <summary>
-        /// Set animation state
+        /// Set animation state (currently only Idle animation exists)
         /// </summary>
         private void SetAnimation(bool isRunning)
         {
-            if (animator != null)
-            {
-                animator.SetBool("isRunning", isRunning);
-            }
+            // Animator chỉ có Idle animation, không có isRunning parameter
+            // TODO: Thêm Run animation và parameter khi có asset
+            
+            // if (animator != null)
+            // {
+            //     animator.SetBool("isRunning", isRunning);
+            // }
         }
         
         /// <summary>
@@ -398,6 +444,15 @@ namespace AntKnow.Game
         {
             money += amount;
             Debug.Log($"[PlayerGameController] {playerName} money: {money} (+{amount})");
+            
+            // Fire event locally
+            OnMoneyChanged?.Invoke(money);
+            
+            // Sync to all clients
+            if (IsServer)
+            {
+                SyncMoneyClientRpc(money);
+            }
         }
         
         /// <summary>
@@ -407,6 +462,15 @@ namespace AntKnow.Game
         {
             money -= amount;
             Debug.Log($"[PlayerGameController] {playerName} money: {money} (-{amount})");
+            
+            // Fire event locally
+            OnMoneyChanged?.Invoke(money);
+            
+            // Sync to all clients
+            if (IsServer)
+            {
+                SyncMoneyClientRpc(money);
+            }
         }
         
         /// <summary>
@@ -416,8 +480,60 @@ namespace AntKnow.Game
         {
             jailCounter = turns;
             Debug.Log($"[PlayerGameController] {playerName} in jail for {jailCounter} turns");
+            
+            // Fire event locally
+            OnJailCounterChanged?.Invoke(jailCounter);
+            
+            // Sync to all clients
+            if (IsServer)
+            {
+                SyncJailCounterClientRpc(jailCounter);
+            }
         }
         
+        // ===== NETWORK SYNC METHODS =====
+        
+        /// <summary>
+        /// HOST → ALL CLIENTS: Sync money changes
+        /// </summary>
+        [ClientRpc]
+        private void SyncMoneyClientRpc(int newMoney)
+        {
+            if (money != newMoney)
+            {
+                money = newMoney;
+                OnMoneyChanged?.Invoke(money);
+                Debug.Log($"[PlayerGameController] {playerName} money synced: {money}");
+            }
+        }
+        
+        /// <summary>
+        /// HOST → ALL CLIENTS: Sync jail counter changes
+        /// </summary>
+        [ClientRpc]
+        private void SyncJailCounterClientRpc(int newJailCounter)
+        {
+            if (jailCounter != newJailCounter)
+            {
+                jailCounter = newJailCounter;
+                OnJailCounterChanged?.Invoke(jailCounter);
+                Debug.Log($"[PlayerGameController] {playerName} jail counter synced: {jailCounter}");
+            }
+        }
+        
+        /// <summary>
+        /// HOST → ALL CLIENTS: Sync position changes (called after movement)
+        /// </summary>
+        [ClientRpc]
+        private void SyncPositionClientRpc(int newTile)
+        {
+            if (currentTile != newTile)
+            {
+                currentTile = newTile;
+                OnPositionChanged?.Invoke(currentTile);
+                Debug.Log($"[PlayerGameController] {playerName} position synced: Tile {currentTile}");
+            }
+        }
         /// <summary>
         /// Decrease jail counter
         /// </summary>
@@ -451,7 +567,7 @@ namespace AntKnow.Game
         /// Show turn indicator
         /// NOTE:
         /// - Multiplayer: ch? Host ho?c Owner m?i g?i request
-        /// - Demo Mode: lu�n hi?n th?
+        /// - Demo Mode: lu�n hi?n th?
         /// </summary>
         public void ShowTurnIndicator()
         {

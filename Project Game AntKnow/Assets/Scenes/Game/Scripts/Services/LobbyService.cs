@@ -383,32 +383,15 @@ namespace AntKnow.Services
                     return false;
                 }
 
-                // Check if all players are ready
-                bool allReady = true;
-                foreach (var player in CurrentLobby.Players)
+                // Check minimum players (bỏ check IsReady vì chưa implement)
+                int playerCount = CurrentLobby?.Players.Count ?? 0;
+                if (playerCount < GameConfig.MIN_PLAYERS)
                 {
-                    if (player.Data.TryGetValue("IsReady", out var readyData))
-                    {
-                        if (readyData.Value != "true")
-                        {
-                            allReady = false;
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        allReady = false;
-                        break;
-                    }
-                }
-
-                if (!allReady)
-                {
-                    OnLobbyError?.Invoke("Tất cả người chơi phải sẵn sàng");
+                    OnLobbyError?.Invoke($"Cần ít nhất {GameConfig.MIN_PLAYERS} người chơi");
                     return false;
                 }
 
-                DebugLog("Starting game...");
+                DebugLog($"Starting game with {playerCount} players...");
 
                 // Create Relay allocation (no parameters - uses GameConfig.RELAY_MAX_CONNECTIONS)
                 var relayJoinCode = await RelayService.Instance.CreateRelayAsync();

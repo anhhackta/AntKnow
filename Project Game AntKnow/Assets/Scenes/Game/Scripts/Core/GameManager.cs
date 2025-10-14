@@ -269,6 +269,165 @@ namespace AntKnow.Game
             {
                 StartGame();
             }
+            
+            // ✅ Subscribe to client disconnect events
+            if (IsServer)
+            {
+                NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
+                Debug.Log("[GameManager] Subscribed to client disconnect events");
+            }
+        }
+        
+        /// <summary>
+        /// Called when client disconnects (SERVER ONLY)
+        /// </summary>
+        private void OnClientDisconnected(ulong clientId)
+        {
+            if (!IsServer) return;
+            
+            Debug.Log($"[GameManager] ⚠️ Client {clientId} disconnected!");
+            
+            // Remove player from game
+            RemovePlayerByClientId(clientId);
+            
+            // Check win condition
+            CheckWinByDisconnect();
+        }
+        
+        /// <summary>
+        /// Remove player by clientId
+        /// </summary>
+        private void RemovePlayerByClientId(ulong clientId)
+        {
+            for (int i = players.Count - 1; i >= 0; i--)
+            {
+                if (players[i].OwnerClientId == clientId)
+                {
+                    string playerName = players[i].PlayerName;
+                    PlayerGameController player = players[i];
+                    
+                    players.RemoveAt(i);
+                    
+                    Debug.Log($"[GameManager] ❌ Removed player: {playerName} (ClientId: {clientId})");
+                    
+                    // Notify all clients
+                    AnnouncePlayerLeftClientRpc(playerName);
+                    
+                    // Destroy player object
+                    if (player != null && player.gameObject != null)
+                    {
+                        Destroy(player.gameObject);
+                    }
+                    
+                    break;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Check if only 1 player left → Auto win
+        /// </summary>
+        private void CheckWinByDisconnect()
+        {
+            if (!IsServer || !isGameActive) return;
+            
+            if (players.Count <= 1)
+            {
+                if (players.Count == 1)
+                {
+                    // Last player wins!
+                    PlayerGameController winner = players[0];
+                    Debug.Log($"[GameManager] 🏆 AUTO WIN: {winner.PlayerName} (last player standing)");
+                    
+                    // End game
+                    EndGameWithWinner(winner.PlayerName, "Last Player Standing");
+                }
+                else
+                {
+                    // No players left (rare case)
+                    Debug.Log($"[GameManager] ⚠️ No players left in game!");
+                    EndGameNoWinner();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// End game with winner
+        /// </summary>
+        private void EndGameWithWinner(string winnerName, string reason)
+        {
+            if (!IsServer) return;
+            
+            isGameActive = false;
+            
+            Debug.Log($"[GameManager] === GAME OVER ===");
+            Debug.Log($"[GameManager] Winner: {winnerName}");
+            Debug.Log($"[GameManager] Reason: {reason}");
+            
+            // Show winner to all clients
+            ShowWinnerClientRpc(winnerName, reason);
+        }
+        
+        /// <summary>
+        /// End game with no winner
+        /// </summary>
+        private void EndGameNoWinner()
+        {
+            if (!IsServer) return;
+            
+            isGameActive = false;
+            
+            Debug.Log($"[GameManager] === GAME OVER (NO WINNER) ===");
+            
+            // Show draw to all clients
+            ShowDrawClientRpc();
+        }
+        
+        /// <summary>
+        /// HOST → ALL CLIENTS: Announce player left
+        /// </summary>
+        [ClientRpc]
+        private void AnnouncePlayerLeftClientRpc(string playerName)
+        {
+            Debug.Log($"[GameManager] 📢 {playerName} left the game");
+            
+            // Show notification
+            if (panelNotification != null)
+            {
+                panelNotification.ShowNotification($"{playerName} đã rời khỏi trận");
+            }
+        }
+        
+        /// <summary>
+        /// HOST → ALL CLIENTS: Show winner
+        /// </summary>
+        [ClientRpc]
+        private void ShowWinnerClientRpc(string winnerName, string reason)
+        {
+            Debug.Log($"[GameManager] 🏆 WINNER: {winnerName} ({reason})");
+            
+            if (panelResult != null)
+            {
+                // Assuming panelResult has ShowWinner method
+                // panelResult.ShowWinner(winnerName, reason);
+                panelResult.gameObject.SetActive(true);
+                Debug.Log($"[GameManager] Showing winner panel: {winnerName}");
+            }
+        }
+        
+        /// <summary>
+        /// HOST → ALL CLIENTS: Show draw
+        /// </summary>
+        [ClientRpc]
+        private void ShowDrawClientRpc()
+        {
+            Debug.Log($"[GameManager] 🤝 DRAW - No winner");
+            
+            if (panelResult != null)
+            {
+                panelResult.gameObject.SetActive(true);
+                Debug.Log($"[GameManager] Showing draw panel");
+            }
         }
         
         private void Update()
@@ -322,13 +481,37 @@ namespace AntKnow.Game
         {
             Debug.Log("[GameManager] Loading players from lobby...");
 
-            // Get session data
+            // ⚠️ CRITICAL: Load GameSessionData from Firebase/Unity Auth on BOTH Host and Client!
             var sessionData = GameSessionData.Instance;
             if (sessionData == null)
             {
                 Debug.LogError("[GameManager] GameSessionData not found!");
                 yield break;
             }
+            
+            // ⚠️ FORCE RELOAD from GameDataManager on Client
+            // Vì Client join qua Relay không đi qua MenuScene flow
+            Debug.Log($"[GameManager] Current sessionData player: {sessionData.playerName} (UID: {sessionData.firebaseUID})");
+            
+            if (string.IsNullOrEmpty(sessionData.firebaseUID) || string.IsNullOrEmpty(sessionData.playerName))
+            {
+                Debug.LogWarning("[GameManager] GameSessionData empty! Loading from GameDataManager...");
+                sessionData.SetFromGameDataManager();
+                yield return new WaitForSeconds(0.5f); // Wait for Firebase data
+                
+                Debug.Log($"[GameManager] After reload: {sessionData.playerName} (UID: {sessionData.firebaseUID})");
+            }
+            
+            // Double-check GameDataManager exists
+            var gdm = GameDataManager.Instance;
+            if (gdm == null)
+            {
+                Debug.LogError("[GameManager] GameDataManager not found! Cannot get player data!");
+                yield break;
+            }
+            
+            Debug.Log($"[GameManager] GameDataManager data: {gdm.currentIngameName} (Level {gdm.currentLevel}, Gender: {gdm.currentGender})");
+            Debug.Log($"[GameManager] Stats: HP={sessionData.totalHealth} AGI={sessionData.totalAgility} INT={sessionData.totalIntelligence} LUCK={sessionData.totalLuck} RES={sessionData.totalResistance}");
 
             // Get connected clients
             if (NetworkManager.Singleton == null)
@@ -368,7 +551,12 @@ namespace AntKnow.Game
                 skillCardIdsStr = string.Join(",", skillCardEffectIds) // "autoStepForward,purchaseDiscount"
             };
             
-            Debug.Log($"[GameManager] Local loadout skill cards: {localLoadout.skillCardIdsStr}");
+            Debug.Log($"[GameManager] Created local loadout:");
+            Debug.Log($"  - Name: {localLoadout.playerName}");
+            Debug.Log($"  - ID: {localLoadout.playerId}");
+            Debug.Log($"  - Gender: {(localLoadout.isMale ? "Male" : "Female")}");
+            Debug.Log($"  - Stats: HP={localLoadout.health} AGI={localLoadout.agility} INT={localLoadout.intelligence} LUCK={localLoadout.luck} RES={localLoadout.resistance}");
+            Debug.Log($"  - Skill Cards: {localLoadout.skillCardIdsStr}");
 
             if (IsHost)
             {
@@ -376,7 +564,7 @@ namespace AntKnow.Game
                 ulong localClientId = NetworkManager.Singleton.LocalClientId;
                 playerLoadouts[localClientId] = localLoadout;
                 
-                Debug.Log($"[Host] Added own loadout: {localLoadout.playerName}");
+                Debug.Log($"[Host] Added own loadout to dictionary (ClientId: {localClientId})");
                 
                 // Wait for all clients to send their loadouts
                 Debug.Log($"[Host] Waiting for {NetworkManager.Singleton.ConnectedClients.Count} client loadouts...");
@@ -396,9 +584,17 @@ namespace AntKnow.Game
             else
             {
                 // CLIENT: Send loadout to Host
-                Debug.Log($"[Client] Sending loadout to Host: {localLoadout.playerName}");
+                Debug.Log($"[Client] ========== SENDING LOADOUT TO HOST ==========");
+                Debug.Log($"[Client] ClientId: {NetworkManager.Singleton.LocalClientId}");
+                Debug.Log($"[Client] Player Name: {localLoadout.playerName}");
+                Debug.Log($"[Client] Player ID: {localLoadout.playerId}");
+                Debug.Log($"[Client] Gender: {(localLoadout.isMale ? "Male" : "Female")}");
+                Debug.Log($"[Client] Stats: HP={localLoadout.health} AGI={localLoadout.agility} INT={localLoadout.intelligence} LUCK={localLoadout.luck} RES={localLoadout.resistance}");
+                Debug.Log($"[Client] Calling SendLoadoutToHostServerRpc...");
+                
                 SendLoadoutToHostServerRpc(localLoadout);
                 
+                Debug.Log($"[Client] ServerRpc called! Waiting for Host to start game...");
                 // Wait for game to start
                 Debug.Log("[Client] Waiting for Host to start game...");
             }
@@ -499,6 +695,8 @@ namespace AntKnow.Game
                 player.SetPlayerIndex(players.Count - 1);
 
                 Debug.Log($"[GameManager] Spawned network player: {name} (ClientId: {clientId}, Index: {players.Count - 1}) with {skillCardIds.Count} skill cards");
+                
+                // ⚠️ NOTE: Panel assignment will be done in DiscoverAndSetupPlayers() on ALL clients
             }
         }
         
@@ -541,16 +739,78 @@ namespace AntKnow.Game
                 return;
             }
 
-            // Enable roll button
+            // ⭐ Update roll button state (check ownership in multiplayer)
+            UpdateRollButtonState();
+        }
+
+        /// <summary>
+        /// Update roll button state - chỉ enable cho player của client này
+        /// </summary>
+        private void UpdateRollButtonState()
+        {
             if (rollButton != null)
             {
-                rollButton.interactable = true;
+                rollButton.interactable = CanCurrentPlayerRoll();
             }
 
-            // ⭐ Enable PanelRoll button (if exists)
             if (panelRoll != null)
             {
-                panelRoll.SetRollButtonEnabled(true);
+                panelRoll.SetRollButtonEnabled(CanCurrentPlayerRoll());
+            }
+
+            // Update turn text với visual feedback
+            UpdateTurnText();
+        }
+
+        /// <summary>
+        /// Check nếu current player có thể roll (ownership check)
+        /// </summary>
+        private bool CanCurrentPlayerRoll()
+        {
+            if (demoMode) return true; // Demo: Luôn cho phép
+            
+            PlayerGameController player = CurrentPlayer;
+            if (player == null) return false;
+
+            // Multiplayer: Check ownership
+            return IsMyPlayer(player);
+        }
+
+        /// <summary>
+        /// Check nếu player này thuộc về local client
+        /// </summary>
+        private bool IsMyPlayer(PlayerGameController player)
+        {
+            if (demoMode) return true;
+
+            var sessionData = GameSessionData.Instance;
+            if (sessionData == null) return false;
+
+            // So sánh PlayerId với firebaseUID của local client
+            return player.PlayerId == sessionData.firebaseUID;
+        }
+
+        /// <summary>
+        /// Update turn text với visual feedback
+        /// </summary>
+        private void UpdateTurnText()
+        {
+            if (turnText == null) return;
+
+            PlayerGameController player = CurrentPlayer;
+            if (player == null) return;
+
+            bool isMyTurn = CanCurrentPlayerRoll();
+
+            if (isMyTurn)
+            {
+                turnText.text = "🎲 YOUR TURN!";
+                turnText.color = Color.green;
+            }
+            else
+            {
+                turnText.text = $"⏳ {player.PlayerName}'s Turn";
+                turnText.color = Color.white;
             }
         }
 
@@ -1655,14 +1915,27 @@ namespace AntKnow.Game
         private void SendLoadoutToHostServerRpc(PlayerLoadoutData loadout, ServerRpcParams rpcParams = default)
         {
             ulong clientId = rpcParams.Receive.SenderClientId;
+            
+            Debug.Log($"[Host] ========== RECEIVED LOADOUT FROM CLIENT ==========");
+            Debug.Log($"[Host] Client ID: {clientId}");
+            Debug.Log($"[Host] Player Name: {loadout.playerName}");
+            Debug.Log($"[Host] Player ID: {loadout.playerId}");
+            Debug.Log($"[Host] Gender: {(loadout.isMale ? "Male" : "Female")}");
+            Debug.Log($"[Host] Stats: HP={loadout.health} AGI={loadout.agility} INT={loadout.intelligence} LUCK={loadout.luck} RES={loadout.resistance}");
+            Debug.Log($"[Host] Skill Cards: {loadout.skillCardIdsStr}");
+            
             playerLoadouts[clientId] = loadout;
             
-            Debug.Log($"[Host] Received loadout from Client {clientId}: {loadout.playerName} (HP:{loadout.health} AGI:{loadout.agility} INT:{loadout.intelligence} LUCK:{loadout.luck} RES:{loadout.resistance})");
+            Debug.Log($"[Host] Total loadouts received: {playerLoadouts.Count}/{NetworkManager.Singleton.ConnectedClients.Count}");
             
             // Check if all loadouts received
             if (playerLoadouts.Count >= NetworkManager.Singleton.ConnectedClients.Count)
             {
-                Debug.Log($"[Host] All {playerLoadouts.Count} loadouts received! Starting game...");
+                Debug.Log($"[Host] ✅ ALL {playerLoadouts.Count} LOADOUTS RECEIVED! Starting game...");
+            }
+            else
+            {
+                Debug.Log($"[Host] Still waiting for {NetworkManager.Singleton.ConnectedClients.Count - playerLoadouts.Count} more loadouts...");
             }
         }
         
@@ -1698,6 +1971,79 @@ namespace AntKnow.Game
             }
             
             Debug.Log($"[Host] Spawned {players.Count} players successfully!");
+            
+            // ✅ Notify ALL clients (including Host) to discover and setup players
+            NotifyPlayersSpawnedClientRpc();
+        }
+        
+        /// <summary>
+        /// HOST → ALL CLIENTS: Players have been spawned, discover and setup
+        /// </summary>
+        [ClientRpc]
+        private void NotifyPlayersSpawnedClientRpc()
+        {
+            Debug.Log($"[Client] Discovering spawned players...");
+            
+            // Small delay to ensure all NetworkObjects are spawned
+            StartCoroutine(DiscoverAndSetupPlayers());
+        }
+        
+        /// <summary>
+        /// Discover all spawned PlayerGameControllers and setup panels
+        /// </summary>
+        private System.Collections.IEnumerator DiscoverAndSetupPlayers()
+        {
+            // Wait for network objects to be fully spawned
+            yield return new WaitForSeconds(0.5f);
+            
+            // Find all PlayerGameController in scene
+            PlayerGameController[] allPlayers = FindObjectsOfType<PlayerGameController>();
+            
+            Debug.Log($"[Client] Found {allPlayers.Length} players in scene");
+            
+            // Clear current players list if not Host
+            if (!IsHost)
+            {
+                players.Clear();
+            }
+            
+            // Add players and assign panels
+            foreach (var player in allPlayers)
+            {
+                if (player == null || !player.IsSpawned) continue;
+                
+                // Add to list if not already there
+                if (!players.Contains(player))
+                {
+                    players.Add(player);
+                    Debug.Log($"[Client] Added player: {player.PlayerName} (Owner: {player.OwnerClientId})");
+                }
+                
+                // Assign panel for this player
+                ulong clientId = player.OwnerClientId;
+                bool isLocalPlayer = (clientId == NetworkManager.Singleton.LocalClientId);
+                
+                if (isLocalPlayer)
+                {
+                    // Local player → PanelMe
+                    if (panelGame != null)
+                    {
+                        panelGame.Initialize(player);
+                        Debug.Log($"[Client] 👤 Assigned {player.PlayerName} to PanelMe (Local Player)");
+                    }
+                }
+                else
+                {
+                    // Remote player → PanelPlayer
+                    if (panelGame != null)
+                    {
+                        panelGame.AddPlayerPanel(player);
+                        Debug.Log($"[Client] 👥 Assigned {player.PlayerName} to PanelPlayer (Remote Player)");
+                    }
+                }
+            }
+            
+            Debug.Log($"[Client] ✅ Player discovery complete! {players.Count} players ready.");
         }
         
         // ========== TURN ORDER SELECTION ==========

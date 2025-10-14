@@ -26,6 +26,10 @@ namespace AntKnow.Services
         public bool IsHost { get; private set; }
         public bool IsConnected { get; private set; }
 
+        // ✅ Store allocation data for re-configuration in GameScene
+        private Allocation hostAllocation;
+        private JoinAllocation clientAllocation;
+
         private static RelayService _instance;
         public static RelayService Instance
         {
@@ -108,6 +112,9 @@ namespace AntKnow.Services
                 // Create allocation (maxConnections = MAX_PLAYERS - 1 vì host không tính)
                 var allocation = await Unity.Services.Relay.RelayService.Instance.CreateAllocationAsync(GameConfig.RELAY_MAX_CONNECTIONS);
                 
+                // ✅ Store allocation for later re-configuration
+                hostAllocation = allocation;
+                
                 // Get join code
                 var joinCode = await Unity.Services.Relay.RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
                 
@@ -179,6 +186,9 @@ namespace AntKnow.Services
                 // Join allocation
                 var allocation = await Unity.Services.Relay.RelayService.Instance.JoinAllocationAsync(joinCode);
                 
+                // ✅ Store allocation for later re-configuration
+                clientAllocation = allocation;
+                
                 CurrentJoinCode = joinCode;
                 IsHost = false;
                 IsConnected = true;
@@ -218,6 +228,69 @@ namespace AntKnow.Services
             {
                 DebugLogError($"Unexpected error joining relay: {e.Message}");
                 OnRelayError?.Invoke($"Lỗi không xác định: {e.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// ✅ Re-configure transport in GameScene (gọi TRƯỚC khi StartHost/StartClient)
+        /// </summary>
+        public bool ConfigureTransportForGameScene()
+        {
+            EnsureTransport();
+            
+            if (transport == null)
+            {
+                DebugLogError("Cannot configure transport - UnityTransport not found!");
+                return false;
+            }
+
+            if (!IsConnected)
+            {
+                DebugLogError("Not connected to Relay!");
+                return false;
+            }
+
+            try
+            {
+                if (IsHost && hostAllocation != null)
+                {
+                    // Re-configure for Host
+                    transport.SetRelayServerData(
+                        hostAllocation.RelayServer.IpV4,
+                        (ushort)hostAllocation.RelayServer.Port,
+                        hostAllocation.AllocationIdBytes,
+                        hostAllocation.Key,
+                        hostAllocation.ConnectionData
+                    );
+                    
+                    DebugLog("✅ Transport re-configured for HOST in GameScene");
+                    return true;
+                }
+                else if (!IsHost && clientAllocation != null)
+                {
+                    // Re-configure for Client
+                    transport.SetRelayServerData(
+                        clientAllocation.RelayServer.IpV4,
+                        (ushort)clientAllocation.RelayServer.Port,
+                        clientAllocation.AllocationIdBytes,
+                        clientAllocation.Key,
+                        clientAllocation.ConnectionData,
+                        clientAllocation.HostConnectionData
+                    );
+                    
+                    DebugLog("✅ Transport re-configured for CLIENT in GameScene");
+                    return true;
+                }
+                else
+                {
+                    DebugLogError("No allocation data available!");
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                DebugLogError($"Error configuring transport: {e.Message}");
                 return false;
             }
         }

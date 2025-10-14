@@ -686,18 +686,22 @@ namespace AntKnow.Auth
             string lobbyId = CustomLobbyService.Instance.CurrentLobby?.Id;
             sessionData.SetNetworkInfo(relayJoinCode, isHost, lobbyId);
 
-            // Join Relay
+            // Join Relay để setup transport (nhưng KHÔNG start NetworkManager ở đây)
             if (isHost)
             {
-                RelayService.Instance.StartHost();
+                // Host: Create relay (đã tạo rồi trong StartGameAsync)
+                // Không cần làm gì ở đây
+                DebugLog("Host ready, relay already created");
             }
             else
             {
+                // Client: Join relay để setup transport
                 await RelayService.Instance.JoinRelayAsync(relayJoinCode);
-                RelayService.Instance.StartClient();
+                DebugLog("Client joined relay, transport configured");
             }
 
             // Load LoadingScene → GameScene
+            // GameScene sẽ tự động StartHost/StartClient khi load xong
             LoadingSceneController.LoadWithConfig("MenuScene", "GameScene", checkUserProfile: false);
         }
 

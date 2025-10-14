@@ -1,12 +1,15 @@
 using UnityEngine;
+using Unity.Netcode;
 using System.Collections.Generic;
 
 namespace AntKnow.Game
 {
     /// <summary>
     /// Quản lý property system (mua, nâng cấp, thuê, bán)
+    /// ✅ NetworkBehaviour để sync houses giữa all clients
     /// </summary>
-    public class PropertyManager : MonoBehaviour
+    [RequireComponent(typeof(NetworkObject))]
+    public class PropertyManager : NetworkBehaviour
     {
         [Header("Visual")]
         [SerializeField] private PropertyVisual propertyVisual;
@@ -142,7 +145,31 @@ namespace AntKnow.Game
             UpdatePropertyVisual(tileId);
 
             Debug.Log($"[PropertyManager] Player {playerIndex} bought property {tileId} for {basePrice} - COMPLETE");
+            
+            // ✅ SYNC to all clients
+            if (IsServer)
+            {
+                SyncPropertyOwnershipClientRpc(tileId, playerIndex, 0, propertyRentMultipliers[tileId]);
+            }
+            
             return true;
+        }
+        
+        /// <summary>
+        /// HOST → ALL CLIENTS: Sync property ownership and level
+        /// </summary>
+        [ClientRpc]
+        private void SyncPropertyOwnershipClientRpc(int tileId, int ownerIndex, int level, float rentMultiplier)
+        {
+            // Update local data
+            propertyOwners[tileId] = ownerIndex;
+            propertyLevels[tileId] = level;
+            propertyRentMultipliers[tileId] = rentMultiplier;
+            
+            // Update visual
+            UpdatePropertyVisual(tileId);
+            
+            Debug.Log($"[PropertyManager] Synced property {tileId}: Owner={ownerIndex}, Level={level}, RentMult={rentMultiplier}");
         }
         
         /// <summary>
@@ -185,7 +212,30 @@ namespace AntKnow.Game
             UpdatePropertyVisual(tileId);
 
             Debug.Log($"[PropertyManager] Property {tileId} upgraded to level {targetLevel} for {totalCost}");
+            
+            // ✅ SYNC to all clients
+            if (IsServer)
+            {
+                SyncPropertyUpgradeClientRpc(tileId, targetLevel, propertyRentMultipliers[tileId]);
+            }
+            
             return true;
+        }
+        
+        /// <summary>
+        /// HOST → ALL CLIENTS: Sync property upgrade
+        /// </summary>
+        [ClientRpc]
+        private void SyncPropertyUpgradeClientRpc(int tileId, int newLevel, float rentMultiplier)
+        {
+            // Update local data
+            propertyLevels[tileId] = newLevel;
+            propertyRentMultipliers[tileId] = rentMultiplier;
+            
+            // Update visual
+            UpdatePropertyVisual(tileId);
+            
+            Debug.Log($"[PropertyManager] Synced property upgrade {tileId}: Level={newLevel}, RentMult={rentMultiplier}");
         }
         
         /// <summary>
