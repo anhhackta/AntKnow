@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Firebase.Firestore;
+using Firebase.Extensions;
 
 namespace AntKnow.Auth
 {
@@ -31,8 +34,12 @@ namespace AntKnow.Auth
         public string currentGender;
         public int currentLevel = 1;
         public int currentXp = 0;
+        
+        // ⚠️ IMPORTANT: DB uses currencies.antCoin/dCoin (nested)
+        // But we use flat fields here for simplicity in Unity
         public int currentAntCoin = 0;
         public int currentDCoin = 0;
+        
         public int currentMatchesPlayed = 0;
         public int currentMatchesWon = 0;
 
@@ -41,12 +48,17 @@ namespace AntKnow.Auth
         public bool hasInventory = false;
         public bool hasLoadout = false;
 
+        private FirebaseFirestore db;
+
         private void Awake()
         {
             if (_instance == null)
             {
                 _instance = this;
                 DontDestroyOnLoad(gameObject);
+                
+                // Initialize Firestore
+                db = FirebaseFirestore.DefaultInstance;
             }
             else if (_instance != this)
             {
@@ -96,6 +108,84 @@ namespace AntKnow.Auth
             hasLoadout = false;
             
             Debug.Log("GameDataManager: User data cleared");
+        }
+
+        /// <summary>
+        /// Refresh user data from Firebase (sau khi purchase/transaction)
+        /// </summary>
+        public async void RefreshUserData()
+        {
+            if (string.IsNullOrEmpty(currentUserId))
+            {
+                Debug.LogError("GameDataManager: Cannot refresh - no user ID");
+                return;
+            }
+
+            if (db == null)
+            {
+                Debug.LogError("GameDataManager: Firestore not initialized");
+                return;
+            }
+
+            Debug.Log($"[GameDataManager] Refreshing user data for {currentUserId}...");
+
+            try
+            {
+                var userDoc = await db.Collection("users").Document(currentUserId).GetSnapshotAsync();
+                
+                if (userDoc.Exists)
+                {
+                    var data = userDoc.ToDictionary();
+                    
+                    // ⚠️ IMPORTANT: DB schema uses currencies.antCoin/dCoin (nested map)
+                    if (data.ContainsKey("currencies") && data["currencies"] is Dictionary<string, object> currencies)
+                    {
+                        if (currencies.ContainsKey("antCoin"))
+                        {
+                            currentAntCoin = Convert.ToInt32(currencies["antCoin"]);
+                        }
+                        
+                        if (currencies.ContainsKey("dCoin"))
+                        {
+                            currentDCoin = Convert.ToInt32(currencies["dCoin"]);
+                        }
+                    }
+                    else
+                    {
+                        // Fallback: Try flat fields (for backward compatibility)
+                        if (data.ContainsKey("antCoin"))
+                        {
+                            currentAntCoin = Convert.ToInt32(data["antCoin"]);
+                        }
+                        
+                        if (data.ContainsKey("dCoin"))
+                        {
+                            currentDCoin = Convert.ToInt32(data["dCoin"]);
+                        }
+                    }
+                    
+                    // Update level/XP
+                    if (data.ContainsKey("level"))
+                    {
+                        currentLevel = Convert.ToInt32(data["level"]);
+                    }
+                    
+                    if (data.ContainsKey("xp"))
+                    {
+                        currentXp = Convert.ToInt32(data["xp"]);
+                    }
+
+                    Debug.Log($"[GameDataManager] User data refreshed - AntCoin: {currentAntCoin}, DCoin: {currentDCoin}");
+                }
+                else
+                {
+                    Debug.LogError($"GameDataManager: User document not found for {currentUserId}");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"GameDataManager: Failed to refresh user data - {e.Message}");
+            }
         }
 
         /// <summary>

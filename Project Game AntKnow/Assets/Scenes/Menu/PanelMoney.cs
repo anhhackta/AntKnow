@@ -2,11 +2,13 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using AntKnow.Auth;
+using AntKnow.Shop;
 
 namespace AntKnow.Auth
 {
     /// <summary>
     /// Panel hiển thị tiền tệ và thời gian thực
+    /// Auto-refresh khi có giao dịch shop
     /// </summary>
     public class PanelMoney : MonoBehaviour
     {
@@ -19,6 +21,7 @@ namespace AntKnow.Auth
 
         [Header("Settings")]
         [SerializeField] private bool updateTime = true;
+        [SerializeField] private bool autoRefreshOnPurchase = true;
 
         private GameDataManager gameDataManager;
         private string lastTimeString = "";
@@ -26,6 +29,41 @@ namespace AntKnow.Auth
         public void Initialize()
         {
             gameDataManager = GameDataManager.Instance;
+            UpdateCurrencyDisplay();
+
+            // Subscribe to shop purchase events
+            if (autoRefreshOnPurchase)
+            {
+                ShopService.Instance.OnPurchaseSuccess += OnPurchaseSuccess;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            // Unsubscribe from events
+            if (autoRefreshOnPurchase)
+            {
+                ShopService.Instance.OnPurchaseSuccess -= OnPurchaseSuccess;
+            }
+        }
+
+        /// <summary>
+        /// Handle purchase success - refresh display
+        /// </summary>
+        private void OnPurchaseSuccess(string currency, int quantity)
+        {
+            Debug.Log($"[PanelMoney] Purchase detected, refreshing display...");
+            
+            // Wait a frame for GameDataManager to update
+            StartCoroutine(RefreshAfterDelay());
+        }
+
+        /// <summary>
+        /// Refresh display after short delay
+        /// </summary>
+        private System.Collections.IEnumerator RefreshAfterDelay()
+        {
+            yield return new WaitForSeconds(0.5f);
             UpdateCurrencyDisplay();
         }
 
@@ -75,6 +113,14 @@ namespace AntKnow.Auth
             }
 
             Debug.Log("=== END PANELMONEY DEBUG ===");
+        }
+
+        /// <summary>
+        /// Public method to refresh display manually
+        /// </summary>
+        public void RefreshDisplay()
+        {
+            UpdateCurrencyDisplay();
         }
 
         private void UpdateTimeDisplay()

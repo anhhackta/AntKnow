@@ -475,6 +475,8 @@ GameObject:
   - component: {fileID: 4741361210488282528}
   - component: {fileID: 1638158552978908339}
   - component: {fileID: 7560616152759919029}
+  - component: {fileID: -6646727991910579932}
+  - component: {fileID: 1441306254260560883}
   m_Layer: 0
   m_Name: MaleModel
   m_TagString: Untagged
@@ -533,7 +535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1251672530
+  GlobalObjectIdHash: 344955579
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -578,7 +580,69 @@ MonoBehaviour:
   boardManager: {fileID: 0}
   boardCenter: {x: 0, y: 0, z: 0}
   animator: {fileID: 4741361210488282528}
-  turnIndicator: {fileID: 0}
+  turnIndicator: {fileID: 1441306254260560883}
+--- !u!114 &-6646727991910579932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3704095023335994387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 0
+  AutoOwnerAuthorityTickOffset: 1
+  PositionInterpolationType: 0
+  RotationInterpolationType: 0
+  ScaleInterpolationType: 0
+  PositionLerpSmoothing: 1
+  PositionMaxInterpolationTime: 0.1
+  RotationLerpSmoothing: 1
+  RotationMaxInterpolationTime: 0.1
+  ScaleLerpSmoothing: 1
+  ScaleMaxInterpolationTime: 0.1
+  AuthorityMode: 0
+  TickSyncChildren: 0
+  UseUnreliableDeltas: 0
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  SwitchTransformSpaceWhenParented: 0
+  Interpolate: 1
+  SlerpPosition: 0
+--- !u!114 &1441306254260560883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3704095023335994387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41ce38d58627d2d478df0c3a05e126cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pingObject: {fileID: 2219825264340011979, guid: 82b49152e3ea75a4083294cffe31cfeb, type: 3}
+  bobSpeed: 2
+  bobHeight: 0.3
+  offset: {x: 0, y: 2.5, z: 0}
 --- !u!1 &3796026551465665928
 GameObject:
   m_ObjectHideFlags: 0

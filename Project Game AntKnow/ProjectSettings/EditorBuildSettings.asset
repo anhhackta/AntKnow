@@ -20,5 +20,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameScene.unity
     guid: 43795568f934947279e74f753742b73c
+  - enabled: 1
+    path: Assets/Scenes/DemoScene.unity
+    guid: 9930197892a5cb8438da50e2230ce93f
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

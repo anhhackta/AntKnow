@@ -35,8 +35,50 @@ namespace AntKnow.Game
         /// </summary>
         protected override void SubscribeToEvents()
         {
-            // PanelPlayer doesn't need to subscribe to events
-            // It gets updated externally by PanelGame
+            if (player != null)
+            {
+                // ✅ Subscribe to money changes
+                player.OnMoneyChanged += OnMoneyChanged;
+                player.OnPositionChanged += OnPositionChanged;
+                player.OnJailCounterChanged += OnJailCounterChanged;
+            }
+        }
+        
+        /// <summary>
+        /// Unsubscribe from events when destroyed
+        /// </summary>
+        private void OnDestroy()
+        {
+            if (player != null)
+            {
+                player.OnMoneyChanged -= OnMoneyChanged;
+                player.OnPositionChanged -= OnPositionChanged;
+                player.OnJailCounterChanged -= OnJailCounterChanged;
+            }
+        }
+        
+        /// <summary>
+        /// Called when player money changes
+        /// </summary>
+        private void OnMoneyChanged(int newMoney)
+        {
+            UpdateMoney(newMoney);
+        }
+        
+        /// <summary>
+        /// Called when player position changes
+        /// </summary>
+        private void OnPositionChanged(int newPosition)
+        {
+            // Optional: Update position display if needed
+        }
+        
+        /// <summary>
+        /// Called when jail counter changes
+        /// </summary>
+        private void OnJailCounterChanged(int newCounter)
+        {
+            // Optional: Update jail status if needed
         }
         
         /// <summary>

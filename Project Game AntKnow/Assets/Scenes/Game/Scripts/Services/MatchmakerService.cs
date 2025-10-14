@@ -6,6 +6,7 @@ using UnityEngine;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using AntKnow.Auth;
+using AntKnow.Game;
 
 namespace AntKnow.Services
 {
@@ -371,8 +372,15 @@ namespace AntKnow.Services
 
                             if (!isHost)
                             {
-                                // Client: Join relay
+                                // Client: Setup GameSessionData
+                                var sessionData = GameSessionData.Instance;
+                                sessionData.SetFromGameDataManager();
+                                sessionData.SetUnityPlayerId(UGSAuthService.PlayerId);
+                                sessionData.SetNetworkInfo(relayJoinCode, host: false, updatedLobby.Id);
+
+                                // Client: Join relay to configure transport
                                 await RelayService.Instance.JoinRelayAsync(relayJoinCode);
+                                DebugLog("Client joined relay, transport configured");
                             }
 
                             // Load LoadingScene → GameScene
@@ -469,6 +477,12 @@ namespace AntKnow.Services
                 await LobbyService.Instance.UpdateLobbyAsync(CurrentMatch.Id, updateOptions);
 
                 DebugLog($"Game starting with relay code: {relayJoinCode}");
+
+                // Setup GameSessionData (Host)
+                var sessionData = GameSessionData.Instance;
+                sessionData.SetFromGameDataManager();
+                sessionData.SetUnityPlayerId(UGSAuthService.PlayerId);
+                sessionData.SetNetworkInfo(relayJoinCode, host: true, CurrentMatch.Id);
 
                 // Wait 2s để user thấy notification
                 await Task.Delay(2000);

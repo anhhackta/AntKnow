@@ -96,8 +96,20 @@ namespace AntKnow.Game
             DebugLog($"Firebase UID: {firebaseUID}");
             DebugLog($"Currency: AntCoin={antCoin}, DCoin={dCoin}");
 
-            // TODO: Load loadout từ Firebase
-            // Hiện tại để trống, sẽ implement sau
+            // ⚠️ CRITICAL: Load loadout data from GameDataManager
+            // For now, use placeholder data
+            // TODO: Implement Firebase loadout loading
+            
+            // ⚠️ Calculate total stats from loadout
+            // Hiện tại chưa có loadout system hoàn chỉnh, dùng stats mặc định
+            totalHealth = 100;
+            totalAgility = 50;
+            totalIntelligence = 50;
+            totalLuck = 50;
+            totalResistance = 50;
+            
+            DebugLog($"Stats set to default: HP={totalHealth} AGI={totalAgility} INT={totalIntelligence} LUCK={totalLuck} RES={totalResistance}");
+            DebugLog("⚠️ TODO: Implement real loadout loading from Firebase!");
         }
 
         /// <summary>
